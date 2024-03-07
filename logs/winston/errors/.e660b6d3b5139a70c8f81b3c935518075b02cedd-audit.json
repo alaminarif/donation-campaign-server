@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "D:\\Workspace\\Projects\\Clone\\backend-project-setup-ts\\logs\\winston\\errors\\.e660b6d3b5139a70c8f81b3c935518075b02cedd-audit.json",
+    "files": [
+        {
+            "date": 1709798339735,
+            "name": "D:\\Workspace\\Projects\\Clone\\backend-project-setup-ts\\logs\\winston\\errors\\uni-2024-07-03-13-error.log",
+            "hash": "04245ae9e3fefa03abed222f27b14b79d4982f8ab185bfe3414aefb002bf9a63"
+        }
+    ],
+    "hashType": "sha256"
+}
