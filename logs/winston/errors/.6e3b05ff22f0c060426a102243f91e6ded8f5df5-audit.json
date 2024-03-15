@@ -1,0 +1,65 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\errors\\.6e3b05ff22f0c060426a102243f91e6ded8f5df5-audit.json",
+    "files": [
+        {
+            "date": 1709799842344,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\errors\\uni-2024-07-03-14-error.log",
+            "hash": "0ff4ea159d66e565a21d7f7c2c7b70f113d4f1270d82bbcc60e21f9614f17ea4"
+        },
+        {
+            "date": 1709873635398,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\errors\\uni-2024-08-03-10-error.log",
+            "hash": "7cbcd8d277dfd8622b8f0972d226dc355902308ae9ab88a9a6821ad619b4445a"
+        },
+        {
+            "date": 1710308502544,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\errors\\uni-2024-13-03-11-error.log",
+            "hash": "d79f5bcc956e4534c339d18417083bfbfbc7b9b7eae8a28380aa139139c36594"
+        },
+        {
+            "date": 1710309646830,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\errors\\uni-2024-13-03-12-error.log",
+            "hash": "7b54b775b84c56054cfc0bbe4b14c4eda49eba6774237cf561b9110cc586930b"
+        },
+        {
+            "date": 1710322469897,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\errors\\uni-2024-13-03-15-error.log",
+            "hash": "ce572b025ff17e6f3fcaec7e70e9c80507147c94b32d3f803365308e3a9dedd7"
+        },
+        {
+            "date": 1710324039858,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\errors\\uni-2024-13-03-16-error.log",
+            "hash": "9088207ae6eab9bd163eaa155da6f82577521c1ec31a68649c435a5305fa771b"
+        },
+        {
+            "date": 1710415995838,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\errors\\uni-2024-14-03-17-error.log",
+            "hash": "08b0f088548510da1743c2e2f9616cd89559345eaaa24863d703512287f06429"
+        },
+        {
+            "date": 1710417626321,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\errors\\uni-2024-14-03-18-error.log",
+            "hash": "0204850bfd04f29815195ad8f8dbba65d462eeba24a13f293d06fcae90e3b866"
+        },
+        {
+            "date": 1710472695514,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\errors\\uni-2024-15-03-09-error.log",
+            "hash": "cf184fd3b048d4784ca9d863348276419816efc6ecf3b5d09e190ce90f8d7540"
+        },
+        {
+            "date": 1710476436863,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\errors\\uni-2024-15-03-10-error.log",
+            "hash": "904b063dfc1d6afdaa27168f1e7429194942fdb38f092fa9c4f7ba03b215b95f"
+        },
+        {
+            "date": 1710479515510,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\errors\\uni-2024-15-03-11-error.log",
+            "hash": "2a1f3d8a3e349f36bf1a059f1df6c9a522ea8f1119226c9d7365a0dab9d518cb"
+        }
+    ],
+    "hashType": "sha256"
+}

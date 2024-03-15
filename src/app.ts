@@ -1,8 +1,15 @@
-import express, { Application, urlencoded } from 'express';
+import express, {
+  Application,
+  NextFunction,
+  Request,
+  Response,
+  urlencoded,
+} from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import globalErrodHandler from './app/middleware/GlobalErrorHandler';
+import globalErrodHandler from './app/middlewares/GlobalErrorHandler';
 import routes from './app/routes/';
+import httpStatus from 'http-status';
 const app: Application = express();
 
 app.use(cors());
@@ -17,4 +24,20 @@ app.use('/api/v1', routes);
 // });
 
 app.use(globalErrodHandler);
+
+// handle api not fund
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(httpStatus.NOT_FOUND).json({
+    success: false,
+    message: 'Not Found',
+    errorMessages: [
+      {
+        path: req.originalUrl,
+        message: 'API Not Found',
+      },
+    ],
+  });
+  next();
+});
 export default app;
+// 0W4O25Cb22yasv3c

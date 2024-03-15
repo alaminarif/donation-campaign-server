@@ -1,0 +1,42 @@
+Wed Mar 13 2024  11:47:12 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "expected": "'user' | 'admin'",
+    "received": "undefined",
+    "code": "invalid_type",
+    "path": [
+      "body",
+      "role"
+    ],
+    "message": "role is required"
+  }
+]
+Wed Mar 13 2024  11:47:58 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "received": "us",
+    "code": "invalid_enum_value",
+    "options": [
+      "user",
+      "admin"
+    ],
+    "path": [
+      "body",
+      "role"
+    ],
+    "message": "Invalid enum value. Expected 'user' | 'admin', received 'us'"
+  }
+]
+Wed Mar 13 2024  11:48:16 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "received": "us",
+    "code": "invalid_enum_value",
+    "options": [
+      "user",
+      "admin"
+    ],
+    "path": [
+      "body",
+      "role"
+    ],
+    "message": "Invalid enum value. Expected 'user' | 'admin', received 'us'"
+  }
+]

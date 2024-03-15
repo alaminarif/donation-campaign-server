@@ -1,0 +1,37 @@
+Wed Mar 13 2024  16:5:49 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ User does not exist
+Wed Mar 13 2024  16:22:15 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ User does not exist
+Wed Mar 13 2024  16:24:47 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ User does not exist
+Wed Mar 13 2024  16:29:48 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Invalid Resfresh Token
+Wed Mar 13 2024  16:32:44 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Invalid Resfresh Token
+Wed Mar 13 2024  16:33:26 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Invalid Resfresh Token
+Wed Mar 13 2024  16:33:32 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Invalid Resfresh Token
+Wed Mar 13 2024  16:35:37 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Invalid Resfresh Token
+Wed Mar 13 2024  16:36:53 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Invalid Resfresh Token
+Wed Mar 13 2024  16:44:28 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Invalid Refresh Token
+Wed Mar 13 2024  16:45:9 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Invalid Refresh Token
+Wed Mar 13 2024  16:45:17 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "cookies",
+      "refreshToken"
+    ],
+    "message": "Refresh Token is required"
+  }
+]
+Wed Mar 13 2024  16:46:3 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "cookies",
+      "refreshToken"
+    ],
+    "message": "Refresh Token is required"
+  }
+]
+Wed Mar 13 2024  16:46:12 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Invalid Refresh Token
+Wed Mar 13 2024  16:52:42 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Invalid Refresh Token
