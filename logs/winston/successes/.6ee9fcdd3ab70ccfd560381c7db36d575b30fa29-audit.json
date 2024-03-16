@@ -59,6 +59,36 @@
             "date": 1710479515502,
             "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\successes\\uni-2024-15-03-11-success.log",
             "hash": "c6f0d05a4b926158133a628adaa30ab2e124c5b32437ce685bb9b89c990cd459"
+        },
+        {
+            "date": 1710563122761,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\successes\\uni-2024-16-03-10-success.log",
+            "hash": "958ee15bf27e9a8a9b9c8f0d4a9170a6967fcd96dc899ad1d83390518e52c0e2"
+        },
+        {
+            "date": 1710566383067,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\successes\\uni-2024-16-03-11-success.log",
+            "hash": "39deba154f8b3135ee8c44fc6534d1862282936e36eb810ea3eb1d18547b6bb0"
+        },
+        {
+            "date": 1710570701202,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\successes\\uni-2024-16-03-12-success.log",
+            "hash": "b9ec07e99ee01eb4e54757c231c636e943c29a01e657eadd97cb21a92fea69ee"
+        },
+        {
+            "date": 1710577816361,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\successes\\uni-2024-16-03-14-success.log",
+            "hash": "88e869b5f502371284e32dbc152f35484d1427298773ef7ade98a8bb812b35a9"
+        },
+        {
+            "date": 1710579668167,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\successes\\uni-2024-16-03-15-success.log",
+            "hash": "176062a13b8c1648213a9294e782eab886f5383241f5f6979b56d1d7990b906e"
+        },
+        {
+            "date": 1710583272642,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\successes\\uni-2024-16-03-16-success.log",
+            "hash": "884d18238ed15f78907ee5712982293383f99944a2b48e5debe314d42e7038c3"
         }
     ],
     "hashType": "sha256"

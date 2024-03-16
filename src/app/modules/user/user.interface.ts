@@ -26,4 +26,7 @@ export type UserModel = {
   ): Promise<boolean>;
 } & Model<IUser>;
 
+export type IUserFilters = {
+  searchTerm?: string;
+};
 // export type UserModel = Model<IUser, Record<string, unknown>>;

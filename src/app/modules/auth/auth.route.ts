@@ -10,7 +10,7 @@ const router = express.Router();
 router.post(
   '/create-user',
   validateRequest(UserValidation.createUserZodSchema),
-  auth(ENUM_USER_ROLE.USER),
+  // auth(ENUM_USER_ROLE.USER),
   AuthController.createUser
 );
 
@@ -24,6 +24,12 @@ router.post(
   '/refresh-token',
   validateRequest(AuthValidation.refreshTokenZodSchema),
   AuthController.refreshToken
+);
+router.post(
+  '/change-password',
+  validateRequest(AuthValidation.changePasswordZodSchema),
+  auth(ENUM_USER_ROLE.USER),
+  AuthController.changePassword
 );
 
 export const AuthRoutes = router;

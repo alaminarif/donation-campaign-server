@@ -26,6 +26,9 @@ const UserSchema = new Schema<IUser, UserModel>(
       required: true,
       select: 0,
     },
+    passwordchangedAt: {
+      type: Date,
+    },
     role: {
       type: String,
       enum: role,

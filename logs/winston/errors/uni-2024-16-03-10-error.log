@@ -1,0 +1,12 @@
+Sat Mar 16 2024  10:26:11 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ User does not exist
+Sat Mar 16 2024  10:27:20 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ User does not exist
+Sat Mar 16 2024  10:28:47 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ jwt expired
+Sat Mar 16 2024  10:28:58 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Password is incorrect
+Sat Mar 16 2024  10:29:32 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Password is incorrect
+Sat Mar 16 2024  10:30:43 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Password is incorrect
+Sat Mar 16 2024  10:31:21 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ jwt expired
+Sat Mar 16 2024  10:31:44 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ yor are not authorized
+Sat Mar 16 2024  10:32:50 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Invalid salt. Salt must be in the form of: $Vers$log2(NumRounds)$saltvalue
+Sat Mar 16 2024  10:35:18 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ old password is incorrect
+Sat Mar 16 2024  10:35:56 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ old password is incorrect
+Sat Mar 16 2024  10:37:25 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Cast to ObjectId failed for value "{ email: 'Freeda_Schowalter70@hotmail.com' }" (type Object) at path "_id" for model "User"
