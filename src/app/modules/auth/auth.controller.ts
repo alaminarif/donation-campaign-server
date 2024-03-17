@@ -4,7 +4,7 @@ import sendResponse from '../../../share/sendResponse';
 import { IUser } from '../user/user.interface';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
-import { ILoginUserResponse, IRefreshTokenResponse } from './auth.interface';
+import { ILoginResponse, IRefreshTokenResponse } from './auth.interface';
 import config from '../../../config';
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
@@ -35,7 +35,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   };
   res.cookie('refreshToken', refreshToken, cookieOptions);
 
-  sendResponse<ILoginUserResponse>(res, {
+  sendResponse<ILoginResponse>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User loggedin successfully !',

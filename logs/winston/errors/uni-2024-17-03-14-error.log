@@ -1,0 +1,24 @@
+Sun Mar 17 2024  14:4:7 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ yor are not authorized
+Sun Mar 17 2024  14:5:16 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ yor are not authorized
+Sun Mar 17 2024  14:7:45 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ yor are not authorized
+Sun Mar 17 2024  14:8:58 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ yor are not authorized
+Sun Mar 17 2024  14:9:39 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ yor are not authorized
+Sun Mar 17 2024  14:10:48 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ yor are not authorized
+Sun Mar 17 2024  14:12:44 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ yor are not authorized
+Sun Mar 17 2024  14:16:19 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ admin_model_1.Admin.isAdminExist is not a function
+Sun Mar 17 2024  14:19:5 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ admin_model_1.Admin.isAdminExist is not a function
+Sun Mar 17 2024  14:19:38 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ admin_model_1.Admin.isAdminExist is not a function
+Sun Mar 17 2024  14:20:43 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ admin_model_1.Admin.isAdminExist is not a function
+Sun Mar 17 2024  14:24:34 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ yor are not authorized
+Sun Mar 17 2024  14:35:37 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "body",
+      "email"
+    ],
+    "message": "email is required"
+  }
+]

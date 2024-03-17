@@ -5,23 +5,13 @@ const createToken = (
   secret: Secret,
   expireTime: string
 ): string => {
-  // console.log(
-  //   'payload:',
-  //   payload,
-  //   'secrect:',
-  //   secret,
-  //   'expireTime : ',
-  //   expireTime
-  // );
-  return jwt.sign(payload, secret, {
-    expiresIn: expireTime,
-  });
+  return jwt.sign(payload, secret, { expiresIn: expireTime });
 };
 
-const verifyToken = (token: string, secret: Secret): JwtPayload => {
+const verifyToken = (token: string, secret: Secret) => {
   return jwt.verify(token, secret) as JwtPayload;
 };
-
+// console.log('verify', verifyToken);
 export const jwtHelpers = {
   createToken,
   verifyToken,

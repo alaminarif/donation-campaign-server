@@ -1,15 +1,17 @@
 {
-  "name": "",
+  "name": "DonationCampaign",
   "version": "1.0.0",
   "description": "",
   "main": "src/server.ts",
   "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint:check": "eslint --ignore-path .eslintignore --ext .js,.ts .",
     "lint:fix": "eslint --fix",
     "prettier:check": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
-    "lint-prettier": " yarn lint:check && yarn prettier:check",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
+    "lint-prettier": " yarn lint:check && yarn prettier:check"
   },
   "lint-staged": {
     "src/**/*.ts": "yarn lint-prettier"

@@ -49,13 +49,19 @@ const AdminSchema = new Schema<IAdmin, AdminModel>(
   }
 );
 
-AdminSchema.statics.isUserExist = async function (
+AdminSchema.statics.isAdminExist = async function (
   email: string
 ): Promise<Pick<IAdmin, 'email' | 'password' | 'role'> | null> {
   return await Admin.findOne({ email }, { email: 1, password: 1, role: 1 });
 };
 
 //
+AdminSchema.statics.isPasswordMatched = async function (
+  givenPassword: string,
+  savedPassword: string
+): Promise<boolean> {
+  return await bcrypt.compare(givenPassword, savedPassword);
+};
 
 AdminSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(

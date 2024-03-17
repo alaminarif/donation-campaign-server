@@ -4,8 +4,8 @@ import ApiError from '../../../errors/ApiError';
 import { IUser } from '../user/user.interface';
 import { User } from './../user/user.model';
 import {
-  ILoginUser,
-  ILoginUserResponse,
+  ILogin,
+  ILoginResponse,
   IRefreshTokenResponse,
   IchangePassword,
 } from './auth.interface';
@@ -19,7 +19,7 @@ const createUser = async (payload: IUser): Promise<IUser | null> => {
   return result;
 };
 
-const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
+const loginUser = async (payload: ILogin): Promise<ILoginResponse> => {
   const { email, password } = payload;
 
   const isUserExist = await User.isUserExist(email);
@@ -96,14 +96,11 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
       token,
       config.jwt.refresh_secret as Secret
     );
-    console.log('userEmail', verifiedToken);
   } catch (err) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
   }
 
   const { userEmail } = verifiedToken;
-
-  console.log('userEmail', userEmail);
 
   // checking deleted user's refresh token
 

@@ -17,23 +17,6 @@ export type IAdmin = {
 };
 
 // auth part
-export type ILoginAdmin = {
-  email: string;
-  password: string;
-};
-
-export type ILoginAdminResponse = {
-  refreshToken?: string;
-  accessToken: string;
-};
-export type IRefreshTokenResponse = {
-  accessToken: string;
-};
-
-export type IchangePassword = {
-  oldPassword: string;
-  newPassword: string;
-};
 
 export type AdminModel = {
   isAdminExist(
