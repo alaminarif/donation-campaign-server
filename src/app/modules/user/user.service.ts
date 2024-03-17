@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SortOrder } from 'mongoose';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
@@ -5,6 +6,8 @@ import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IUser, IUserFilters } from './user.interface';
 import { User } from './user.model';
 import { userSeachableFields } from './user.constant';
+// import ApiError from '../../../errors/ApiError';
+// import httpStatus from 'http-status';
 
 const getAllUser = async (
   filter: IUserFilters,
@@ -65,7 +68,47 @@ const getMyProfile = async (email: string): Promise<IUser | null> => {
   return result;
 };
 
-export const UserService = { getAllUser, getMyProfile };
+const updateProfile = async (
+  email: string,
+  payload: Partial<IUser>
+): Promise<IUser | null> => {
+  //
+
+  // const isExist = await User.findOne({ email: email });
+  // if (!isExist) {
+  //   throw new ApiError(httpStatus.NOT_FOUND, 'User Not found');
+  // }
+
+  const { name, ...userData } = payload;
+  const updatedUserData: Partial<IUser> = { ...userData };
+  // const updatedUserData: Partial<IUser> = userData;
+
+  if (name && Object.keys(name).length > 0) {
+    Object.keys(name).forEach(key => {
+      const nameKey = `name.${key}` as keyof Partial<IUser>;
+      (updatedUserData as any)[nameKey] = name[key as keyof typeof name];
+    });
+  }
+  const result = await User.findOneAndUpdate(
+    { email: email },
+    updatedUserData,
+    {
+      new: true,
+    }
+  );
+  return result;
+};
+
+const deleteUser = async (id: string): Promise<IUser | null> => {
+  const result = await User.findByIdAndDelete({ _id: id });
+  return result;
+};
+export const UserService = {
+  getAllUser,
+  getMyProfile,
+  updateProfile,
+  deleteUser,
+};
 
 // const andConditions = [
 //   {

@@ -24,6 +24,7 @@ const getAllUser = catchAsync(async (req: Request, res: Response) => {
     data: result?.data,
   });
 });
+
 const getMyProfile = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
   const email = req.user?.userEmail;
@@ -38,7 +39,37 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateProfile = catchAsync(async (req: Request, res: Response) => {
+  // paginationOptions
+  const email = req.user?.userEmail;
+  const updatedData = req.body;
+
+  const result = await UserService.updateProfile(email, updatedData);
+
+  sendResponse<IUser>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'User Updated successfully  ',
+    data: result,
+  });
+});
+const deleteUser = catchAsync(async (req: Request, res: Response) => {
+  // paginationOptions
+  const { id } = req.params;
+
+  const result = await UserService.deleteUser(id);
+
+  sendResponse<IUser>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'User delete successfully  ',
+    data: result,
+  });
+});
+
 export const UserController = {
   getAllUser,
   getMyProfile,
+  updateProfile,
+  deleteUser,
 };

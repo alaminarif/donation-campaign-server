@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { role } from './user.constant';
+import { role } from './admin.constant';
 
-const createUserZodSchema = z.object({
+const createAdminZodSchema = z.object({
   body: z.object({
     name: z.object({
       firstName: z.string({
@@ -47,7 +47,7 @@ const updateProfileZodSchema = z.object({
   }),
 });
 
-export const UserValidation = {
-  createUserZodSchema,
+export const AdminValidation = {
+  createAdminZodSchema,
   updateProfileZodSchema,
 };
