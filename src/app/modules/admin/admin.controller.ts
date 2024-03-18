@@ -6,6 +6,9 @@ import catchAsync from '../../../share/catchAsync';
 import { Request, Response } from 'express';
 import config from '../../../config';
 import { ILoginResponse, IRefreshTokenResponse } from '../auth/auth.interface';
+import { adminFilterableFields } from './admin.constant';
+import pick from '../../../share/pick';
+import { paginationFields } from '../../../constants/pagination';
 
 const createAdmin = catchAsync(async (req: Request, res: Response) => {
   const admin = req.body;
@@ -24,7 +27,7 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
 
 const loginAdmin = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
-  console.log('user', req.user);
+  console.log('Admin', req.user);
   const result = await AdminService.loginAdmin(loginData);
 
   const { refreshToken, ...others } = result;
@@ -39,7 +42,7 @@ const loginAdmin = catchAsync(async (req: Request, res: Response) => {
   sendResponse<ILoginResponse>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'User loggedin successfully !',
+    message: 'Admin loggedin successfully !',
     data: others,
   });
 });
@@ -59,7 +62,81 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IRefreshTokenResponse>(res, {
     statusCode: 200,
     success: true,
-    message: 'User lohggedin successfully !',
+    message: 'Admin lohggedin successfully !',
+    data: result,
+  });
+});
+
+const changePassword = catchAsync(async (req: Request, res: Response) => {
+  const Admin = req.user;
+  console.log('Admin : ', Admin);
+  const { ...passwordData } = req.body;
+  const result = await AdminService.changePassword(Admin, passwordData);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'changePassword successfully  ',
+    data: result,
+  });
+});
+
+const getAllAdmin = catchAsync(async (req: Request, res: Response) => {
+  // paginationOptions
+
+  const filters = pick(req.query, adminFilterableFields);
+  const paginationOptions = pick(req.query, paginationFields);
+
+  const result = await AdminService.getAllAdmin(filters, paginationOptions);
+
+  sendResponse<IAdmin[]>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Admin retrive successfully  ',
+    meta: result?.meta,
+    data: result?.data,
+  });
+});
+
+const getMyProfile = catchAsync(async (req: Request, res: Response) => {
+  // paginationOptions
+  const email = req.user?.adminEmail;
+  console.log(' : ', email);
+
+  const result = await AdminService.getMyProfile(email);
+
+  sendResponse<IAdmin>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Admin retrive successfully  ',
+    data: result,
+  });
+});
+
+const updateProfile = catchAsync(async (req: Request, res: Response) => {
+  // paginationOptions
+  const email = req.user?.adminEmail;
+  const updatedData = req.body;
+
+  const result = await AdminService.updateProfile(email, updatedData);
+
+  sendResponse<IAdmin>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Admin Updated successfully  ',
+    data: result,
+  });
+});
+const deleteAdmin = catchAsync(async (req: Request, res: Response) => {
+  // paginationOptions
+  const { id } = req.params;
+
+  const result = await AdminService.deleteAdmin(id);
+
+  sendResponse<IAdmin>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Admin delete successfully  ',
     data: result,
   });
 });
@@ -67,4 +144,9 @@ export const AdminController = {
   createAdmin,
   loginAdmin,
   refreshToken,
+  changePassword,
+  getAllAdmin,
+  getMyProfile,
+  updateProfile,
+  deleteAdmin,
 };

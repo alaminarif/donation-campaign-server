@@ -48,7 +48,7 @@ const loginUser = async (payload: ILogin): Promise<ILoginResponse> => {
   );
   const refreshToken = jwtHelpers.createToken(
     { userEmail, role },
-    config.jwt.secret as Secret,
+    config.jwt.refresh_secret as Secret,
     config.jwt.refresh_expires_in as string
   );
 

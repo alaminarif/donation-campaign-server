@@ -3,8 +3,8 @@ import { AdminValidation } from './admin.validation';
 import validateRequest from '../../middlewares/validateRequest';
 import { AdminController } from './admin.controller';
 import { AuthValidation } from '../auth/auth.validation';
-// import auth from '../../middlewares/auth';
-// import { ENUM_USER_ROLE } from '../../../enums/user';
+import auth from '../../middlewares/auth';
+import { ENUM_USER_ROLE } from '../../../enums/user';
 const router = express.Router();
 
 router.post(
@@ -27,4 +27,28 @@ router.post(
   // auth(ENUM_USER_ROLE.ADMIN),
   AdminController.refreshToken
 );
+
+router.post(
+  '/change-password',
+  validateRequest(AuthValidation.changePasswordZodSchema),
+  auth(ENUM_USER_ROLE.ADMIN),
+  AdminController.changePassword
+);
+
+router.get('/', AdminController.getAllAdmin);
+router.get(
+  '/my-profile',
+  auth(ENUM_USER_ROLE.ADMIN),
+  AdminController.getMyProfile
+);
+router.patch(
+  '/my-profile',
+  validateRequest(AdminValidation.updateProfileZodSchema),
+  auth(ENUM_USER_ROLE.ADMIN),
+  AdminController.updateProfile
+);
+
+router.delete('/:id', AdminController.deleteAdmin);
+
+router.patch('/my-profile', AdminController.updateProfile);
 export const AdminRoutes = router;

@@ -129,6 +129,16 @@
             "date": 1710669689385,
             "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\successes\\uni-2024-17-03-16-success.log",
             "hash": "d922d827191be71edeff5ab4faf52b5eead533716d9d5c1731978b38f5cf46ca"
+        },
+        {
+            "date": 1710735823273,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\successes\\uni-2024-18-03-10-success.log",
+            "hash": "fade804cd3aca909ae98efb87de10df76630e5a2256bf3feec04977a021129aa"
+        },
+        {
+            "date": 1710738519341,
+            "name": "D:\\Workspace\\Projects\\resume\\donation-campaign\\donation-campaign-server\\logs\\winston\\successes\\uni-2024-18-03-11-success.log",
+            "hash": "b3274fd15e2f6c88f75d26cebf05ae629de0410100c38ec542558cd188ad603a"
         }
     ],
     "hashType": "sha256"
