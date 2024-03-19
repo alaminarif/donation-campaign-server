@@ -1,6 +1,6 @@
 export const role = ['user', 'admin'] as const;
 
-export const adminSeachableFields = [
+export const adminSearchableFields = [
   'name.firstName',
   'name.lastName',
   'phoneNumber',

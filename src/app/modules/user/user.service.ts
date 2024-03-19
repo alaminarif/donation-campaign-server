@@ -5,7 +5,7 @@ import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IUser, IUserFilters } from './user.interface';
 import { User } from './user.model';
-import { userSeachableFields } from './user.constant';
+import { userSearchableFields } from './user.constant';
 // import ApiError from '../../../errors/ApiError';
 // import httpStatus from 'http-status';
 
@@ -20,7 +20,7 @@ const getAllUser = async (
 
   if (searchTerm) {
     andConditions.push({
-      $or: userSeachableFields.map(field => ({
+      $or: userSearchableFields.map(field => ({
         [field]: {
           $regex: searchTerm,
           $options: 'i',

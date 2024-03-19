@@ -1,0 +1,15 @@
+Tue Mar 19 2024  12:35:39 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ yor are not authorized
+Tue Mar 19 2024  12:36:30 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ jwt expired
+Tue Mar 19 2024  12:36:39 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "cookies",
+      "refreshToken"
+    ],
+    "message": "Refresh Token is required"
+  }
+]
+Tue Mar 19 2024  12:36:55 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ User does not exist

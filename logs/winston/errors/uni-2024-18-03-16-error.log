@@ -1,0 +1,136 @@
+Mon Mar 18 2024  16:23:38 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "name"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "description"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "undefined",
+    "path": [
+      "targetAmount"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "date",
+    "received": "undefined",
+    "path": [
+      "startDate"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "date",
+    "received": "undefined",
+    "path": [
+      "endDate"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "undefined",
+    "path": [
+      "currentAmount"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "location"
+    ],
+    "message": "Required"
+  }
+]
+Mon Mar 18 2024  16:25:19 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "date",
+    "received": "string",
+    "path": [
+      "body",
+      "startDate"
+    ],
+    "message": "Expected date, received string"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "date",
+    "received": "string",
+    "path": [
+      "body",
+      "endDate"
+    ],
+    "message": "Expected date, received string"
+  }
+]
+Mon Mar 18 2024  16:35:14 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "date",
+    "received": "string",
+    "path": [
+      "body",
+      "endDate"
+    ],
+    "message": "Expected date, received string"
+  }
+]
+Mon Mar 18 2024  16:43:1 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "date",
+    "received": "object",
+    "path": [
+      "body",
+      "endDate"
+    ],
+    "message": "Expected date, received object"
+  }
+]
+Mon Mar 18 2024  16:45:43 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "date",
+    "received": "object",
+    "path": [
+      "body",
+      "endDate"
+    ],
+    "message": "Expected date, received object"
+  }
+]
+Mon Mar 18 2024  16:51:51 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "date",
+    "received": "string",
+    "path": [
+      "body",
+      "startDate"
+    ],
+    "message": "Expected date, received string"
+  }
+]
+Mon Mar 18 2024  16:52:22 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Expected ',' or '}' after property value in JSON at position 127

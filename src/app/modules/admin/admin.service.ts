@@ -14,7 +14,7 @@ import { JwtPayload, Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IGenericResponse } from '../../../interfaces/common';
-import { adminSeachableFields } from './admin.constant';
+import { adminSearchableFields } from './admin.constant';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { SortOrder } from 'mongoose';
 
@@ -125,7 +125,7 @@ const getAllAdmin = async (
 
   if (searchTerm) {
     andConditions.push({
-      $or: adminSeachableFields.map(field => ({
+      $or: adminSearchableFields.map(field => ({
         [field]: {
           $regex: searchTerm,
           $options: 'i',

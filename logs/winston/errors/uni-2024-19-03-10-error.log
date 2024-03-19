@@ -1,0 +1,74 @@
+Tue Mar 19 2024  10:17:35 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "date",
+    "received": "object",
+    "path": [
+      "body",
+      "startDate"
+    ],
+    "message": "Expected date, received object"
+  }
+]
+Tue Mar 19 2024  10:20:23 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "date",
+    "received": "string",
+    "path": [
+      "body",
+      "endDate"
+    ],
+    "message": "Expected date, received string"
+  }
+]
+Tue Mar 19 2024  10:23:32 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "date",
+    "received": "string",
+    "path": [
+      "body",
+      "endDate"
+    ],
+    "message": "Expected date, received string"
+  }
+]
+Tue Mar 19 2024  10:32:57 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "date",
+    "received": "string",
+    "path": [
+      "body",
+      "startDate"
+    ],
+    "message": "Expected date, received string"
+  }
+]
+Tue Mar 19 2024  10:36:34 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "date",
+    "received": "string",
+    "path": [
+      "body",
+      "startDate"
+    ],
+    "message": "Expected date, received string"
+  }
+]
+Tue Mar 19 2024  10:37:53 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Campaign validation failed: endDate: Cast to date failed for value "ISODate('2022-12-22T06:48:06.844Z')" (type string) at path "endDate"
+Tue Mar 19 2024  10:38:14 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Campaign validation failed: startDate: Cast to date failed for value "jklsdfalk" (type string) at path "startDate"
+Tue Mar 19 2024  10:46:47 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "body",
+      "name"
+    ],
+    "message": "Required"
+  }
+]
