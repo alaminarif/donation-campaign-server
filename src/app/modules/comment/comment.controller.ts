@@ -19,6 +19,7 @@ const createComment = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 const getAllComment = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
 
@@ -39,7 +40,10 @@ const getAllComment = catchAsync(async (req: Request, res: Response) => {
 const getMyComment = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
   const email = req.user?.userEmail;
+  // const email = req.query.email;
+
   console.log(email);
+
   const result = await CommentService.getMyComment(email);
 
   sendResponse<IComment>(res, {
@@ -52,8 +56,10 @@ const getMyComment = catchAsync(async (req: Request, res: Response) => {
 
 const updateComment = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
-  const email = req.user?.userEmail;
+  // const email = req.user?.userEmail;
   const updatedData = req.body;
+  const email = req.params._id;
+  console.log(email);
 
   const result = await CommentService.updateComment(email, updatedData);
 

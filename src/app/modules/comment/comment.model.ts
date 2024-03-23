@@ -8,6 +8,9 @@ const CommentSchema: Schema = new Schema<IComment, CommentModel>(
       ref: 'User',
       required: true,
     },
+    email: {
+      userEmail: String,
+    },
     content: {
       type: String,
       required: true,

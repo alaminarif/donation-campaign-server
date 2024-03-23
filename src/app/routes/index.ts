@@ -6,6 +6,9 @@ import { DonationCategoryRoutes } from '../modules/donationCategory/donationCate
 import { DonationRoutes } from '../modules/donation/donation.route';
 import { CampaignRoutes } from '../modules/campaign/campaign.route';
 import { CommentRoutes } from '../modules/comment/comment.route';
+import { BlogRoutes } from '../modules/blog/blog.route';
+import { PaymentRoutes } from '../modules/payment/payment.route';
+import { RatingRoutes } from '../modules/rating/rating.route';
 
 const router = express.Router();
 
@@ -33,6 +36,18 @@ const moduleRoutes = [
   {
     path: '/campaigns',
     route: CampaignRoutes,
+  },
+  {
+    path: '/blogs',
+    route: BlogRoutes,
+  },
+  {
+    path: '/payments',
+    route: PaymentRoutes,
+  },
+  {
+    path: '/ratings',
+    route: RatingRoutes,
   },
   {
     path: '/comments',

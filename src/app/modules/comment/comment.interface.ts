@@ -3,6 +3,9 @@ import { IUser } from '../user/user.interface';
 
 export type IComment = {
   user: Types.ObjectId | IUser;
+  email: {
+    userEmail: string;
+  };
   content: string;
   // createdAt: Date;
   // updatedAt: Date;

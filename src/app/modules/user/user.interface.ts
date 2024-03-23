@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 export type Role = 'admin' | 'user';
 
 type name = {
@@ -7,6 +7,7 @@ type name = {
   lastName: string;
 };
 export type IUser = {
+  // _id?: Types.ObjectId;
   name: name;
   email: string;
   password: string;

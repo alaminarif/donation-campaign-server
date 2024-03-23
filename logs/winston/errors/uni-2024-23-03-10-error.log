@@ -1,0 +1,16 @@
+Sat Mar 23 2024  10:4:56 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "object",
+    "path": [
+      "body",
+      "email"
+    ],
+    "message": "Expected string, received object"
+  }
+]
+Sat Mar 23 2024  10:5:48 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Cast to ObjectId failed for value "{ email: 'Lamont96@gmail.com' }" (type Object) at path "user" for model "Comment"
+Sat Mar 23 2024  10:5:57 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Cast to ObjectId failed for value "{ email: 'Lamont96@gmail.com' }" (type Object) at path "user" for model "Comment"
+Sat Mar 23 2024  10:21:34 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Cast to ObjectId failed for value "{ email: 'Lamont96@gmail.com' }" (type Object) at path "user" for model "Comment"
+Sat Mar 23 2024  10:22:27 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ Cast to ObjectId failed for value "{ email: 'Lamont96@gmail.com' }" (type Object) at path "user" for model "Comment"

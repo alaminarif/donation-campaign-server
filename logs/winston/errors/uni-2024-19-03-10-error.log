@@ -72,3 +72,15 @@ Tue Mar 19 2024  10:46:47 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~
     "message": "Required"
   }
 ]
+Tue Mar 19 2024  10:48:5 [right meow!] error: 🐱‍🏍 globalErrorHandler ~~ [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "body",
+      "name"
+    ],
+    "message": "Name is required"
+  }
+]

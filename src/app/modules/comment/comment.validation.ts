@@ -8,6 +8,9 @@ const createCommentZodSchema = z.object({
     content: z.string({
       required_error: 'content is required',
     }),
+    email: z.string({
+      required_error: 'email is required',
+    }),
   }),
 });
 
@@ -16,6 +19,7 @@ const updateCommentZodSchema = z.object({
     .object({
       user: z.string().optional(),
       content: z.string().optional(),
+      email: z.string().optional(),
     })
     .optional(),
 });

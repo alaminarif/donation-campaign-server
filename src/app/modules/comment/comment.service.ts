@@ -67,9 +67,20 @@ const getAllComment = async (
   };
 };
 
-const getMyComment = async (email: string): Promise<IComment | null> => {
-  console.log('email :', email);
-  const result = await Comment.findOne({ email: email }).populate('user');
+const getMyComment = async (email: string) => {
+  //
+  // const isExist = await Comment.findOne({ email: email });
+  // console.log('isExist : ', isExist);
+
+  // if (!isExist) {
+  //   throw new ApiError(httpStatus.NOT_FOUND, 'user Not found');
+  // }
+
+  const query = { 'user.email': email };
+  console.log('query', query);
+
+  const result = await Comment.findOne(query);
+  console.log('result : ', result);
   return result;
 };
 
@@ -79,14 +90,20 @@ const updateComment = async (
 ): Promise<IComment | null> => {
   //
 
-  const isExist = await Comment.findOne({ email: email });
+  const isExist = await Comment.findOne({ email });
+  console.log('isExist : ', isExist);
+
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Comment Not found');
   }
 
-  const result = await Comment.findOneAndUpdate({ email: email }, payload, {
-    new: true,
-  }).populate('user');
+  const result = await Comment.findOneAndUpdate(
+    { 'user.email': email },
+    payload,
+    {
+      new: true,
+    }
+  ).populate('user');
   return result;
 };
 

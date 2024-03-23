@@ -8,8 +8,8 @@ const router = express.Router();
 
 router.post(
   '/create-Comment',
-  validateRequest(CommentValidation.createCommentZodSchema),
-  // auth(ENUM_USER_ROLE.USER),
+  // validateRequest(CommentValidation.createCommentZodSchema),
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
   CommentController.createComment
 );
 
