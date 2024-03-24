@@ -5,7 +5,7 @@ import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IGenericResponse } from '../../../interfaces/common';
 import { ICampaign, ICampaignFilters } from './campaign.interface';
 import { Campaign } from './campaign.model';
-import { CampaignSearchableFields } from './campaign.constant';
+import { campaignSearchableFields } from './campaign.constant';
 
 const createCampaign = async (
   payload: ICampaign
@@ -25,7 +25,7 @@ const getAllCampaign = async (
 
   if (searchTerm) {
     andConditions.push({
-      $or: CampaignSearchableFields.map(field => ({
+      $or: campaignSearchableFields.map(field => ({
         [field]: {
           $regex: searchTerm,
           $options: 'i',

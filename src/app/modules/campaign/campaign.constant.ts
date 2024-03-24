@@ -1,2 +1,2 @@
-export const CampaignSearchableFields = ['location', 'category'];
-export const CampaignFilterableFields = ['searchTerm', 'category'];
+export const campaignSearchableFields = ['location', 'category'];
+export const campaignFilterableFields = ['searchTerm', 'category'];

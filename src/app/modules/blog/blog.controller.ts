@@ -42,10 +42,24 @@ const getAllBlog = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getSingleBlog = catchAsync(async (req: Request, res: Response) => {
-  // paginationOptions
-  const { id } = req.params;
+  //
+  const id = req.params._id;
 
-  const result = await BlogService.getSingleBlog(id);
+  const result = await BlogService.getMyBlog(id);
+
+  sendResponse<IBlog>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Blog rtive successfully  ',
+    data: result,
+  });
+});
+
+const getMyBlog = catchAsync(async (req: Request, res: Response) => {
+  //
+  const id = req.user?._id;
+
+  const result = await BlogService.getMyBlog(id);
 
   sendResponse<IBlog>(res, {
     success: true,
@@ -56,8 +70,8 @@ const getSingleBlog = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateBlog = catchAsync(async (req: Request, res: Response) => {
-  // paginationOptions
-  const { id } = req.params;
+  //
+  const id = req.user?._id;
   const updatedData = req.body;
 
   const result = await BlogService.updateBlog(id, updatedData);
@@ -69,6 +83,7 @@ const updateBlog = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 const deleteBlog = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
   const { id } = req.params;
@@ -86,6 +101,7 @@ export const BlogController = {
   createBlog,
   getAllBlog,
   getSingleBlog,
+  getMyBlog,
   updateBlog,
   deleteBlog,
 };

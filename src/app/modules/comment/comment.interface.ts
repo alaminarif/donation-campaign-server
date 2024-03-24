@@ -3,12 +3,7 @@ import { IUser } from '../user/user.interface';
 
 export type IComment = {
   user: Types.ObjectId | IUser;
-  email: {
-    userEmail: string;
-  };
   content: string;
-  // createdAt: Date;
-  // updatedAt: Date;
 };
 
 export type CommentModel = Model<IComment, Record<string, unknown>>;
@@ -16,3 +11,7 @@ export type CommentModel = Model<IComment, Record<string, unknown>>;
 export type ICommentFilters = {
   searchTerm?: string;
 };
+
+// email: {
+//     userEmail: string;
+//   };

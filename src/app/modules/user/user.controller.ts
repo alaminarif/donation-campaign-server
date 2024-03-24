@@ -29,6 +29,8 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
   const email = req.user?.userEmail;
 
+  console.log(req.user);
+
   const result = await UserService.getMyProfile(email);
 
   sendResponse<IUser>(res, {

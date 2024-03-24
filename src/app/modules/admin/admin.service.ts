@@ -34,15 +34,15 @@ const loginAdmin = async (payload: ILogin): Promise<ILoginResponse> => {
     throw new ApiError(httpStatus.NOT_FOUND, 'admin does not exist');
   }
 
-  const { email: adminEmail, role } = isAdminExist;
+  const { email: adminEmail, role, _id } = isAdminExist;
 
   const accessToken = jwtHelpers.createToken(
-    { adminEmail, role },
+    { _id, adminEmail, role },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string
   );
   const refreshToken = jwtHelpers.createToken(
-    { adminEmail, role },
+    { _id, adminEmail, role },
     config.jwt.refresh_secret as Secret,
     config.jwt.refresh_expires_in as string
   );

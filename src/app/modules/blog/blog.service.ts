@@ -6,9 +6,11 @@ import { IGenericResponse } from '../../../interfaces/common';
 import { IBlog, IBlogFilters } from './blog.interface';
 import { Blog } from './blog.model';
 import { blogSearchableFields } from './blog.constant';
+import ApiError from '../../../errors/ApiError';
+import httpStatus from 'http-status';
 
 const createBlog = async (payload: IBlog): Promise<IBlog | null> => {
-  const result = (await Blog.create(payload)).populate('comment');
+  const result = (await Blog.create(payload)).populate('Blog');
   return result;
 };
 
@@ -52,7 +54,7 @@ const getAllBlog = async (
     andConditions.length > 0 ? { $and: andConditions } : {};
 
   const result = await Blog.find(whareConditions)
-    .populate('comment')
+    .populate('Blog')
     .skip(skip)
     .limit(limit)
     .sort(sortConditions);
@@ -69,28 +71,63 @@ const getAllBlog = async (
 };
 
 const getSingleBlog = async (id: string): Promise<IBlog | null> => {
-  const result = await Blog.findById({ _id: id }).populate('comment');
+  //
+  const query = { id: id };
+
+  const isExist = await Blog.findOne(query);
+
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user Not found');
+  }
+
+  const result = await Blog.findOne(query).populate('user');
+
+  return result;
+};
+
+const getMyBlog = async (id: string): Promise<IBlog | null> => {
+  //
+  const query = { user: id };
+
+  const isExist = await Blog.findOne(query);
+
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user Not found');
+  }
+
+  const result = await Blog.findOne(query).populate('user');
+
   return result;
 };
 
 const updateBlog = async (
   id: string,
-  paylaoad: Partial<IBlog>
+  payload: Partial<IBlog>
 ): Promise<IBlog | null> => {
-  const result = await Blog.findByIdAndUpdate({ _id: id }, paylaoad, {
+  //
+  const query = { user: id };
+  const isExist = await Blog.findOne(query);
+
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Blog Not found');
+  }
+
+  const result = await Blog.findOneAndUpdate(query, payload, {
     new: true,
-  }).populate('comment');
+  }).populate('user');
   return result;
 };
 
 const deleteBlog = async (id: string): Promise<IBlog | null> => {
-  const result = await Blog.findByIdAndDelete({ _id: id }).populate('comment');
+  const result = await Blog.findByIdAndDelete({ _id: id }).populate('Blog');
   return result;
 };
+
 export const BlogService = {
   createBlog,
   getAllBlog,
   getSingleBlog,
+  getMyBlog,
   updateBlog,
   deleteBlog,
 };

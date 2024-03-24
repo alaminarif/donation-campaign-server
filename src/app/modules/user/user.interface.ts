@@ -7,7 +7,7 @@ type name = {
   lastName: string;
 };
 export type IUser = {
-  // _id?: Types.ObjectId;
+  _id?: Types.ObjectId;
   name: name;
   email: string;
   password: string;
@@ -20,7 +20,7 @@ export type IUser = {
 export type UserModel = {
   isUserExist(
     email: string
-  ): Promise<Pick<IUser, 'email' | 'password' | 'role'>>;
+  ): Promise<Pick<IUser, '_id' | 'email' | 'password' | 'role'>>;
   isPasswordMatched(
     givenPassword: string,
     savedPassword: string

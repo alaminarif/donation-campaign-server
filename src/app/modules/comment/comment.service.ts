@@ -12,6 +12,7 @@ const createComment = async (payload: IComment): Promise<IComment | null> => {
   const result = (await Comment.create(payload)).populate('user');
   return result;
 };
+
 const getAllComment = async (
   filter: ICommentFilters,
   paginationOptions: IPaginationOptions
@@ -67,43 +68,37 @@ const getAllComment = async (
   };
 };
 
-const getMyComment = async (email: string) => {
+const getMyComment = async (id: string): Promise<IComment | null> => {
   //
-  // const isExist = await Comment.findOne({ email: email });
-  // console.log('isExist : ', isExist);
+  const query = { user: id };
 
-  // if (!isExist) {
-  //   throw new ApiError(httpStatus.NOT_FOUND, 'user Not found');
-  // }
+  const isExist = await Comment.findOne(query);
 
-  const query = { 'user.email': email };
-  console.log('query', query);
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user Not found');
+  }
 
-  const result = await Comment.findOne(query);
-  console.log('result : ', result);
+  const result = await Comment.findOne(query).populate('user');
+
   return result;
 };
 
 const updateComment = async (
-  email: string,
+  id: string,
   payload: Partial<IComment>
 ): Promise<IComment | null> => {
   //
-
-  const isExist = await Comment.findOne({ email });
+  const query = { user: id };
+  const isExist = await Comment.findOne(query);
   console.log('isExist : ', isExist);
 
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Comment Not found');
   }
 
-  const result = await Comment.findOneAndUpdate(
-    { 'user.email': email },
-    payload,
-    {
-      new: true,
-    }
-  ).populate('user');
+  const result = await Comment.findOneAndUpdate(query, payload, {
+    new: true,
+  }).populate('user');
   return result;
 };
 

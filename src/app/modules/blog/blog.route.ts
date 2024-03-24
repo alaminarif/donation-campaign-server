@@ -18,6 +18,7 @@ router.patch(
   validateRequest(BlogValidation.updatedBlogZodSchema),
   BlogController.updateBlog
 );
+router.get('/my-blog', BlogController.getMyBlog);
 router.get('/:id', BlogController.getSingleBlog);
 router.delete('/:id', BlogController.deleteBlog);
 

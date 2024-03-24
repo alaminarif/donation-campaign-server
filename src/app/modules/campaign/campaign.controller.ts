@@ -9,7 +9,7 @@ import { paginationFields } from '../../../constants/pagination';
 import pick from '../../../share/pick';
 import { CampaignService } from './campaign.service';
 import { ICampaign } from './campaign.interface';
-import { CampaignFilterableFields } from './campaign.constant';
+import { campaignFilterableFields } from './campaign.constant';
 
 const createCampaign = catchAsync(async (req: Request, res: Response) => {
   const user = req.body;
@@ -27,7 +27,7 @@ const createCampaign = catchAsync(async (req: Request, res: Response) => {
 const getAllCampaign = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
 
-  const filters = pick(req.query, CampaignFilterableFields);
+  const filters = pick(req.query, campaignFilterableFields);
   const paginationOptions = pick(req.query, paginationFields);
 
   const result = await CampaignService.getAllCampaign(
@@ -72,6 +72,7 @@ const updateCampaign = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 const deleteCampaign = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
   const { id } = req.params;
@@ -85,6 +86,7 @@ const deleteCampaign = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 export const CampaignController = {
   createCampaign,
   getAllCampaign,
