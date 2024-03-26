@@ -71,8 +71,9 @@ const getMyBlog = catchAsync(async (req: Request, res: Response) => {
 
 const updateBlog = catchAsync(async (req: Request, res: Response) => {
   //
-  const id = req.user?._id;
+  const id = req.params.id;
   const updatedData = req.body;
+  console.log(id);
 
   const result = await BlogService.updateBlog(id, updatedData);
 

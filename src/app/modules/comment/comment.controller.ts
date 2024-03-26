@@ -3,7 +3,7 @@ import { paginationFields } from '../../../constants/pagination';
 import catchAsync from '../../../share/catchAsync';
 import pick from '../../../share/pick';
 import sendResponse from '../../../share/sendResponse';
-import { commentFilterableFields } from './comment.constant';
+// import { commentFilterableFields } from './comment.constant';
 import { IComment } from './comment.interface';
 import { CommentService } from './comment.service';
 import { Request, Response } from 'express';
@@ -23,10 +23,9 @@ const createComment = catchAsync(async (req: Request, res: Response) => {
 const getAllComment = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
 
-  const filters = pick(req.query, commentFilterableFields);
   const paginationOptions = pick(req.query, paginationFields);
 
-  const result = await CommentService.getAllComment(filters, paginationOptions);
+  const result = await CommentService.getAllComment(paginationOptions);
 
   sendResponse<IComment[]>(res, {
     success: true,

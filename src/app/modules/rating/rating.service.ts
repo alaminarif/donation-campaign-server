@@ -3,9 +3,10 @@ import { SortOrder } from 'mongoose';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IGenericResponse } from '../../../interfaces/common';
-import { IRating, IRatingFilters } from './rating.interface';
+import { IRating } from './rating.interface';
 import { Rating } from './rating.model';
-import { ratingSearchableFields } from './rating.constant';
+import httpStatus from 'http-status';
+import ApiError from '../../../errors/ApiError';
 
 const createRating = async (payload: IRating): Promise<IRating | null> => {
   const result = await Rating.create(payload);
@@ -13,32 +14,10 @@ const createRating = async (payload: IRating): Promise<IRating | null> => {
 };
 
 const getAllRating = async (
-  filter: IRatingFilters,
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<IRating[]> | null> => {
   //
 
-  const { searchTerm, ...filterData } = filter;
-  const andConditions = [];
-
-  if (searchTerm) {
-    andConditions.push({
-      $or: ratingSearchableFields.map(field => ({
-        [field]: {
-          $regex: searchTerm,
-          $options: 'i',
-        },
-      })),
-    });
-  }
-
-  if (Object.keys(filterData).length) {
-    andConditions.push({
-      $and: Object.entries(filterData).map(([field, value]) => ({
-        [field]: value,
-      })),
-    });
-  }
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
@@ -48,16 +27,13 @@ const getAllRating = async (
     sortConditions[sortBy] = sortOrder;
   }
 
-  const whareConditions =
-    andConditions.length > 0 ? { $and: andConditions } : {};
-
-  const result = await Rating.find(whareConditions)
+  const result = await Rating.find({})
     .populate('user')
     .skip(skip)
     .limit(limit)
     .sort(sortConditions);
 
-  const total = await Rating.countDocuments(whareConditions);
+  const total = await Rating.countDocuments();
   return {
     meta: {
       page,
@@ -77,7 +53,14 @@ const updateRating = async (
   id: string,
   paylaoad: Partial<IRating>
 ): Promise<IRating | null> => {
-  const result = await Rating.findByIdAndUpdate({ _id: id }, paylaoad, {
+  const query = { user: id };
+  const isExist = await Rating.findOne(query);
+  // console.log('isExist : ', isExist);
+
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Comment Not found');
+  }
+  const result = await Rating.findByIdAndUpdate(query, paylaoad, {
     new: true,
   });
   return result;
@@ -87,6 +70,7 @@ const deleteRating = async (id: string): Promise<IRating | null> => {
   const result = await Rating.findByIdAndDelete({ _id: id });
   return result;
 };
+
 export const RatingService = {
   createRating,
   getAllRating,

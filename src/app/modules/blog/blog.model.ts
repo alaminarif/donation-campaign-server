@@ -22,7 +22,12 @@ const BlogSchema = new Schema<IBlog>({
     type: Boolean,
     required: true,
   },
-  author: {
+  category: {
+    type: String,
+    required: true,
+  },
+
+  role: {
     type: String,
     required: true,
   },

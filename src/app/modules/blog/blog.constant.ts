@@ -1,2 +1,2 @@
-export const blogSearchableFields = ['location', 'category'];
+export const blogSearchableFields = ['title', 'category'];
 export const blogFilterableFields = ['searchTerm', 'category'];

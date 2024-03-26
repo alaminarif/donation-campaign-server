@@ -7,7 +7,8 @@ export type IBlog = {
   description: string;
   date: Date;
   helpPeople: boolean;
-  author: string;
+  role: string;
+  category: string;
   comment: Types.ObjectId | IComment;
 };
 

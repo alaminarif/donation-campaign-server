@@ -58,7 +58,7 @@ const getSingleDonation = catchAsync(async (req: Request, res: Response) => {
 
 const updateDonation = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
-  const { id } = req.params;
+  const id = req.user?._id;
   const updatedData = req.body;
 
   const result = await DonationService.updateDonation(id, updatedData);
@@ -70,6 +70,7 @@ const updateDonation = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 const deleteDonation = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
   const { id } = req.params;
@@ -83,6 +84,7 @@ const deleteDonation = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 export const DonationController = {
   createDonation,
   getAllDonation,

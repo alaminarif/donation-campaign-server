@@ -19,12 +19,15 @@ router.get('/', RatingController.getAllRating);
 router.patch(
   '/:id',
   // validateRequest(RatingValidation.update),
+  auth(ENUM_USER_ROLE.USER),
   RatingController.updateRating
 );
-router.get('/:id', RatingController.getSingleRating);
+
+router.get('/:id', auth(ENUM_USER_ROLE.USER), RatingController.getSingleRating);
+
 router.delete(
   '/:id',
-  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN),
   RatingController.deleteRating
 );
 

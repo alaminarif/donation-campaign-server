@@ -6,6 +6,8 @@ import { IGenericResponse } from '../../../interfaces/common';
 import { DonationSearchableFields } from './donation.constant';
 import { IDonation, IDonationFilters } from './donation.interface';
 import { Donation } from './donation.model';
+import ApiError from '../../../errors/ApiError';
+import httpStatus from 'http-status';
 
 const createDonation = async (
   payload: IDonation
@@ -78,9 +80,18 @@ const updateDonation = async (
   id: string,
   paylaoad: Partial<IDonation>
 ): Promise<IDonation | null> => {
-  const result = await Donation.findByIdAndUpdate({ _id: id }, paylaoad, {
+  //
+  const query = { user: id };
+  const isExist = await Donation.findOne(query);
+  // console.log('isExist : ', isExist);
+
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user Not found');
+  }
+  const result = await Donation.findByIdAndUpdate(query, paylaoad, {
     new: true,
   }).populate('user');
+
   return result;
 };
 

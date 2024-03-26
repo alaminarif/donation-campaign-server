@@ -20,7 +20,11 @@ const createBlogZodSchema = z.object({
     helpPeople: z.boolean({
       required_error: ' help People is required',
     }),
-    author: z.string({
+    role: z.string({
+      required_error: 'Author is required',
+    }),
+
+    category: z.string({
       required_error: 'Author is required',
     }),
     comment: z.string({
@@ -44,7 +48,8 @@ const updatedBlogZodSchema = z.object({
         { message: 'Invalid date format for startDate' }
       ),
     helpPeople: z.boolean().optional(),
-    author: z.string().optional(),
+    role: z.string().optional(),
+    category: z.string().optional(),
     comment: z.string().optional(),
   }),
 });

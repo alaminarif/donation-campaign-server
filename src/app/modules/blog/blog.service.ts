@@ -10,7 +10,7 @@ import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
 
 const createBlog = async (payload: IBlog): Promise<IBlog | null> => {
-  const result = (await Blog.create(payload)).populate('Blog');
+  const result = (await Blog.create(payload)).populate('comment');
   return result;
 };
 
@@ -54,7 +54,7 @@ const getAllBlog = async (
     andConditions.length > 0 ? { $and: andConditions } : {};
 
   const result = await Blog.find(whareConditions)
-    .populate('Blog')
+    .populate('comment')
     .skip(skip)
     .limit(limit)
     .sort(sortConditions);
@@ -80,7 +80,7 @@ const getSingleBlog = async (id: string): Promise<IBlog | null> => {
     throw new ApiError(httpStatus.NOT_FOUND, 'user Not found');
   }
 
-  const result = await Blog.findOne(query).populate('user');
+  const result = await Blog.findOne(query).populate('comment');
 
   return result;
 };
@@ -105,7 +105,7 @@ const updateBlog = async (
   payload: Partial<IBlog>
 ): Promise<IBlog | null> => {
   //
-  const query = { user: id };
+  const query = { _id: id };
   const isExist = await Blog.findOne(query);
 
   if (!isExist) {
@@ -114,12 +114,12 @@ const updateBlog = async (
 
   const result = await Blog.findOneAndUpdate(query, payload, {
     new: true,
-  }).populate('user');
+  }).populate('comment');
   return result;
 };
 
 const deleteBlog = async (id: string): Promise<IBlog | null> => {
-  const result = await Blog.findByIdAndDelete({ _id: id }).populate('Blog');
+  const result = await Blog.findByIdAndDelete({ _id: id }).populate('comment');
   return result;
 };
 

@@ -2,8 +2,7 @@ import { SortOrder } from 'mongoose';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
-import { commentSearchableFields } from './comment.constant';
-import { IComment, ICommentFilters } from './comment.interface';
+import { IComment } from './comment.interface';
 import { Comment } from './comment.model';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
@@ -14,32 +13,10 @@ const createComment = async (payload: IComment): Promise<IComment | null> => {
 };
 
 const getAllComment = async (
-  filter: ICommentFilters,
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<IComment[]> | null> => {
   //
 
-  const { searchTerm, ...filterData } = filter;
-  const andConditions = [];
-
-  if (searchTerm) {
-    andConditions.push({
-      $or: commentSearchableFields.map(field => ({
-        [field]: {
-          $regex: searchTerm,
-          $options: 'i',
-        },
-      })),
-    });
-  }
-
-  if (Object.keys(filterData).length) {
-    andConditions.push({
-      $and: Object.entries(filterData).map(([field, value]) => ({
-        [field]: value,
-      })),
-    });
-  }
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
@@ -49,15 +26,13 @@ const getAllComment = async (
     sortConditions[sortBy] = sortOrder;
   }
 
-  const whareConditions =
-    andConditions.length > 0 ? { $and: andConditions } : {};
-  const result = await Comment.find(whareConditions)
+  const result = await Comment.find({})
     .populate('user')
     .skip(skip)
     .limit(limit)
     .sort(sortConditions);
 
-  const total = await Comment.countDocuments(whareConditions);
+  const total = await Comment.countDocuments();
   return {
     meta: {
       page,
@@ -90,7 +65,7 @@ const updateComment = async (
   //
   const query = { user: id };
   const isExist = await Comment.findOne(query);
-  console.log('isExist : ', isExist);
+  // console.log('isExist : ', isExist);
 
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Comment Not found');

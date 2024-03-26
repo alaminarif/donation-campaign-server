@@ -9,7 +9,6 @@ import { paginationFields } from '../../../constants/pagination';
 import pick from '../../../share/pick';
 import { RatingService } from './rating.service';
 import { IRating } from './rating.interface';
-import { ratingFilterableFields } from './rating.constant';
 
 const createRating = catchAsync(async (req: Request, res: Response) => {
   const user = req.body;
@@ -27,10 +26,9 @@ const createRating = catchAsync(async (req: Request, res: Response) => {
 const getAllRating = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
 
-  const filters = pick(req.query, ratingFilterableFields);
   const paginationOptions = pick(req.query, paginationFields);
 
-  const result = await RatingService.getAllRating(filters, paginationOptions);
+  const result = await RatingService.getAllRating(paginationOptions);
 
   sendResponse<IRating[]>(res, {
     success: true,
@@ -57,7 +55,8 @@ const getSingleRating = catchAsync(async (req: Request, res: Response) => {
 
 const updateRating = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
-  const { id } = req.params;
+  const id = req.user?._id;
+
   const updatedData = req.body;
 
   const result = await RatingService.updateRating(id, updatedData);
@@ -69,6 +68,7 @@ const updateRating = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 const deleteRating = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
   const { id } = req.params;
@@ -82,6 +82,7 @@ const deleteRating = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 export const RatingController = {
   createRating,
   getAllRating,

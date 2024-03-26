@@ -6,6 +6,8 @@ import { IGenericResponse } from '../../../interfaces/common';
 import { ICampaign, ICampaignFilters } from './campaign.interface';
 import { Campaign } from './campaign.model';
 import { campaignSearchableFields } from './campaign.constant';
+import httpStatus from 'http-status';
+import ApiError from '../../../errors/ApiError';
 
 const createCampaign = async (
   payload: ICampaign
@@ -77,9 +79,18 @@ const updateCampaign = async (
   id: string,
   paylaoad: Partial<ICampaign>
 ): Promise<ICampaign | null> => {
-  const result = await Campaign.findByIdAndUpdate({ _id: id }, paylaoad, {
+  //
+  const query = { _id: id };
+  const isExist = await Campaign.findOne(query);
+
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Campaign does't exist ");
+  }
+
+  const result = await Campaign.findByIdAndUpdate(query, paylaoad, {
     new: true,
   });
+
   return result;
 };
 

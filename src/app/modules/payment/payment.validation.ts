@@ -17,6 +17,16 @@ const createPaymentZodSchema = z.object({
   }),
 });
 
+const updatedPaymentZodSchema = z.object({
+  body: z.object({
+    user: z.string()?.optional(),
+    amount: z.number()?.optional(),
+    donation: z.string()?.optional(),
+    transactionId: z.string()?.optional(),
+  }),
+});
+
 export const PaymentValidation = {
   createPaymentZodSchema,
+  updatedPaymentZodSchema,
 };

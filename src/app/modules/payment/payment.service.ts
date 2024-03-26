@@ -6,6 +6,8 @@ import { IGenericResponse } from '../../../interfaces/common';
 import { IPayment, IPaymentFilters } from './payment.interface';
 import { Payment } from './payment.model';
 import { paymentSearchableFields } from './payment.constant';
+import ApiError from '../../../errors/ApiError';
+import httpStatus from 'http-status';
 
 const createPayment = async (payload: IPayment): Promise<IPayment | null> => {
   const result = await Payment.create(payload);
@@ -81,7 +83,15 @@ const updatePayment = async (
   id: string,
   paylaoad: Partial<IPayment>
 ): Promise<IPayment | null> => {
-  const result = await Payment.findByIdAndUpdate({ _id: id }, paylaoad, {
+  //
+  const query = { user: id };
+  const isExist = await Payment.findOne(query);
+  // console.log('isExist : ', isExist);
+
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, ' User Not found');
+  }
+  const result = await Payment.findByIdAndUpdate(query, paylaoad, {
     new: true,
   })
     .populate('user')
@@ -93,6 +103,7 @@ const deletePayment = async (id: string): Promise<IPayment | null> => {
   const result = await Payment.findByIdAndDelete({ _id: id });
   return result;
 };
+
 export const PaymentService = {
   createPayment,
   getAllPayment,

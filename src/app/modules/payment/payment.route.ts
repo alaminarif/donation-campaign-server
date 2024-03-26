@@ -14,13 +14,15 @@ router.post(
   PaymentController.createPayment
 );
 
-router.get('/', PaymentController.getAllPayment);
+router.get('/', auth(ENUM_USER_ROLE.ADMIN), PaymentController.getAllPayment);
 
 router.patch(
   '/:id',
-  // validateRequest(PaymentValidation.update),
+  validateRequest(PaymentValidation.updatedPaymentZodSchema),
+  auth(ENUM_USER_ROLE.ADMIN),
   PaymentController.updatePayment
 );
+
 router.get('/:id', PaymentController.getSinglePayment);
 
 router.delete(

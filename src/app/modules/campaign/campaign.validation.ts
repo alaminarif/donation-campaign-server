@@ -6,7 +6,7 @@ const createCampaignZodSchema = z.object({
       required_error: 'Name is required',
     }),
     description: z.string().min(1, { message: 'Description is required' }),
-    targetAmount: z.number().min(0, {
+    targetAmount: z.string().min(0, {
       message: 'Target amount is required and must be non-negative',
     }),
     startDate: z.string().refine(
@@ -24,13 +24,14 @@ const createCampaignZodSchema = z.object({
         },
         { message: 'Invalid date format for endDate' }
       ),
-    currentAmount: z.number().min(0, {
+    currentAmount: z.string().min(0, {
       message: 'Current amount is required and must be non-negative',
     }),
     location: z.string().min(1, { message: 'Location is required' }),
-  }),
-  donationCategories: z.array(z.string()).refine(val => val.length > 0, {
-    message: 'At least one donation category is required',
+
+    donationCategories: z.string({
+      required_error: 'donationCategories is required',
+    }),
   }),
 });
 

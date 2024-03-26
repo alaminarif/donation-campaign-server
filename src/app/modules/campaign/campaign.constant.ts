@@ -1,2 +1,12 @@
-export const campaignSearchableFields = ['location', 'category'];
-export const campaignFilterableFields = ['searchTerm', 'category'];
+export const campaignSearchableFields = [
+  'location',
+  'currentAmount',
+  'targetAmount',
+  ' name',
+];
+export const campaignFilterableFields = [
+  'searchTerm',
+  'category',
+  'currentAmount',
+  'targetAmount',
+];

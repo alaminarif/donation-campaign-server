@@ -3,10 +3,10 @@ import { Model, Types } from 'mongoose';
 export type ICampaign = {
   name: string;
   description: string;
-  targetAmount: number;
+  targetAmount: string;
   startDate: Date;
   endDate: Date;
-  currentAmount: number;
+  currentAmount: string;
   location: string;
   donationCategories: Types.ObjectId;
 };
