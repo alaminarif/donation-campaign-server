@@ -2,11 +2,11 @@ import mongoose from 'mongoose';
 import config from './config';
 import app from './app';
 import { Server } from 'http';
-import { errorLogger, logger } from './share/logger';
+// import { errorLogger, logger } from './share/logger';
 
 // Handle uncaught Exception
 process.on('uncaughtException', error => {
-  errorLogger.error(`uncaught Exception is detected: ${error}`);
+  console.log(`uncaught Exception is detected: ${error}`);
   process.exit(1);
 });
 
@@ -16,25 +16,25 @@ const bootstrap = async () => {
   try {
     await mongoose.connect(config.database_url as string);
     // eslint-disable-next-line no-console
-    logger.info(`🛢   Database is connected successfully`);
+    console.log(`🛢   Database is connected successfully`);
 
     app.listen(config.port, () => {
       // eslint-disable-next-line no-console
-      logger.info(`Application  listening on port ${config.port}`);
+      console.log(`Application  listening on port ${config.port}`);
     });
   } catch (error) {
     // eslint-disable-next-line no-console
-    errorLogger.error('failed to database: ', error);
+    console.log('failed to database: ', error);
   }
 
   // Handle Unhandle Rejection
   process.on('unhandledRejection', error => {
-    errorLogger.error(
+    console.log(
       `Unhanlde Rejection is detected, we are closing server .......`
     );
     if (server) {
       server.close(() => {
-        errorLogger.error(error);
+        console.log(error);
         process.exit(1);
       });
     } else {
@@ -48,7 +48,7 @@ bootstrap();
 // Hnadle SIGTERM
 
 process.on('SIGTERM', () => {
-  logger.info('SIGTERM is receive');
+  console.log('SIGTERM is receive');
   if (server) {
     server.close();
   }
