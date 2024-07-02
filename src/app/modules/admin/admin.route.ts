@@ -2,7 +2,7 @@ import express from 'express';
 import { AdminValidation } from './admin.validation';
 import validateRequest from '../../middlewares/validateRequest';
 import { AdminController } from './admin.controller';
-import { AuthValidation } from '../auth/auth.validation';
+// import { AuthValidation } from '../auth/auth.validation';
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 
@@ -15,26 +15,26 @@ const router = express.Router();
 //   AdminController.createAdmin
 // );
 
-router.post(
-  '/login',
-  validateRequest(AuthValidation.loginZodSchema),
-  // auth(ENUM_USER_ROLE.ADMIN),
-  AdminController.loginAdmin
-);
+// router.post(
+//   '/login',
+//   validateRequest(AuthValidation.loginZodSchema),
+//   // auth(ENUM_USER_ROLE.ADMIN),
+//   AdminController.loginAdmin
+// );
 
-router.post(
-  '/refresh-token',
-  validateRequest(AuthValidation.refreshTokenZodSchema),
-  // auth(ENUM_USER_ROLE.ADMIN),
-  AdminController.refreshToken
-);
+// router.post(
+//   '/refresh-token',
+//   validateRequest(AuthValidation.refreshTokenZodSchema),
+//   // auth(ENUM_USER_ROLE.ADMIN),
+//   AdminController.refreshToken
+// );
 
-router.post(
-  '/change-password',
-  validateRequest(AuthValidation.changePasswordZodSchema),
-  auth(ENUM_USER_ROLE.ADMIN),
-  AdminController.changePassword
-);
+// router.post(
+//   '/change-password',
+//   validateRequest(AuthValidation.changePasswordZodSchema),
+//   auth(ENUM_USER_ROLE.ADMIN),
+//   AdminController.changePassword
+// );
 
 router.get('/', AdminController.getAllAdmin);
 router.get(
@@ -49,7 +49,7 @@ router.patch(
   AdminController.updateProfile
 );
 
-router.delete('/:id', AdminController.deleteAdminFromDB);
+router.delete('/:email', AdminController.deleteAdmin);
 
 router.patch('/my-profile', AdminController.updateProfile);
 export const AdminRoutes = router;

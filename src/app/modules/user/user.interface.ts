@@ -3,12 +3,8 @@ import { Model, Schema, Types } from 'mongoose';
 import { TAdmin } from '../admin/admin.interface';
 export type Role = 'admin' | 'user';
 
-type name = {
-  firstName: string;
-  lastName: string;
-};
-export type IUser = {
-  // _id?: Types.ObjectId;
+export type TUser = {
+  _id?: Types.ObjectId;
   email: string;
   password: string;
   passwordchangedAt?: Date;
@@ -17,17 +13,17 @@ export type IUser = {
   // admin?: Types.ObjectId | TAdmin;
 };
 
-// export type UserModel = {
-//   isUserExist(
-//     email: string
-//   ): Promise<Pick<IUser, '_id' | 'email' | 'password' | 'role'>>;
-//   isPasswordMatched(
-//     givenPassword: string,
-//     savedPassword: string
-//   ): Promise<boolean>;
-// } & Model<IUser>;
+export type UserModel = {
+  isUserExist(
+    email: string
+  ): Promise<Pick<TUser, '_id' | 'email' | 'password' | 'role'>>;
+  isPasswordMatched(
+    givenPassword: string,
+    savedPassword: string
+  ): Promise<boolean>;
+} & Model<TUser>;
 
-// export type IUserFilters = {
-//   searchTerm?: string;
-// };
-export type UserModel = Model<IUser, Record<string, unknown>>;
+export type TUserFilters = {
+  searchTerm?: string;
+};
+// export type UserModel = Model<TUser, Record<string, unknown>>;

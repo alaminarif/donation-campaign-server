@@ -1,9 +1,9 @@
-export type ILogin = {
+export type TLogin = {
   email: string;
   password: string;
 };
 
-export type ILoginResponse = {
+export type TLoginResponse = {
   refreshToken?: string;
   accessToken: string;
 };

@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
-import {
-  ILogin,
-  ILoginResponse,
-  IRefreshTokenResponse,
-  IchangePassword,
-} from '../auth/auth.interface';
+// import {
+//   TLogin,
+//   TLoginResponse,
+//   IRefreshTokenResponse,
+//   IchangePassword,
+// } from '../auth/auth.interface';
 import { TAdmin, TAdminFilters } from './admin.interface';
 import { Admin } from './admin.model';
-import { jwtHelpers } from '../../../helpers/jwtHelpers';
-import { JwtPayload, Secret } from 'jsonwebtoken';
-import config from '../../../config';
+// import { jwtHelpers } from '../../../helpers/jwtHelpers';
+// import { JwtPayload, Secret } from 'jsonwebtoken';
+// import config from '../../../config';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IGenericResponse } from '../../../interfaces/common';
 import { adminSearchableFields } from './admin.constant';
@@ -21,93 +21,93 @@ import { User } from '../user/user.model';
 
 // auth part start
 
-const loginAdmin = async (payload: ILogin): Promise<ILoginResponse> => {
-  const { email } = payload;
+// const loginAdmin = async (payload: TLogin): Promise<TLoginResponse> => {
+//   const { email } = payload;
 
-  const isAdminExist = await Admin.isAdminExist(email);
+//   const isAdminExist = await Admin.isAdminExist(email);
 
-  if (!isAdminExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'admin does not exist');
-  }
+//   if (!isAdminExist) {
+//     throw new ApiError(httpStatus.NOT_FOUND, 'admin does not exist');
+//   }
 
-  const { email: adminEmail, role, _id } = isAdminExist;
+//   const { email: adminEmail, role, _id } = isAdminExist;
 
-  const accessToken = jwtHelpers.createToken(
-    { _id, adminEmail, role },
-    config.jwt.secret as Secret,
-    config.jwt.expires_in as string
-  );
-  const refreshToken = jwtHelpers.createToken(
-    { _id, adminEmail, role },
-    config.jwt.refresh_secret as Secret,
-    config.jwt.refresh_expires_in as string
-  );
+//   const accessToken = jwtHelpers.createToken(
+//     { _id, adminEmail, role },
+//     config.jwt.secret as Secret,
+//     config.jwt.expires_in as string
+//   );
+//   const refreshToken = jwtHelpers.createToken(
+//     { _id, adminEmail, role },
+//     config.jwt.refresh_secret as Secret,
+//     config.jwt.refresh_expires_in as string
+//   );
 
-  return { accessToken, refreshToken };
-};
+//   return { accessToken, refreshToken };
+// };
 
-const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
-  //verify token
-  // invalid token - synchronous
-  let verifiedToken = null;
-  try {
-    verifiedToken = jwtHelpers.verifyToken(
-      token,
-      config.jwt.refresh_secret as Secret
-    );
-  } catch (err) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
-  }
+// const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
+//   //verify token
+//   // invalid token - synchronous
+//   let verifiedToken = null;
+//   try {
+//     verifiedToken = jwtHelpers.verifyToken(
+//       token,
+//       config.jwt.refresh_secret as Secret
+//     );
+//   } catch (err) {
+//     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
+//   }
 
-  const { adminEmail } = verifiedToken;
+//   const { adminEmail } = verifiedToken;
 
-  // checking deleted Admin's refresh token
+//   // checking deleted Admin's refresh token
 
-  const isAdminExist = await Admin.isAdminExist(adminEmail);
+//   const isAdminExist = await Admin.isAdminExist(adminEmail);
 
-  if (!isAdminExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Admin does not exist');
-  }
-  //generate new token
+//   if (!isAdminExist) {
+//     throw new ApiError(httpStatus.NOT_FOUND, 'Admin does not exist');
+//   }
+//   //generate new token
 
-  const newAccessToken = jwtHelpers.createToken(
-    {
-      email: isAdminExist?.email,
-      role: isAdminExist.role,
-    },
-    config.jwt.secret as Secret,
-    config.jwt.expires_in as string
-  );
+//   const newAccessToken = jwtHelpers.createToken(
+//     {
+//       email: isAdminExist?.email,
+//       role: isAdminExist.role,
+//     },
+//     config.jwt.secret as Secret,
+//     config.jwt.expires_in as string
+//   );
 
-  return {
-    accessToken: newAccessToken,
-  };
-};
+//   return {
+//     accessToken: newAccessToken,
+//   };
+// };
 
-const changePassword = async (
-  Admin: JwtPayload | null,
-  payload: IchangePassword
-): Promise<void> => {
-  const { oldPassword } = payload;
+// const changePassword = async (
+//   Admin: JwtPayload | null,
+//   payload: IchangePassword
+// ): Promise<void> => {
+//   const { oldPassword } = payload;
 
-  const isAdminExist = await Admin?.findOne({
-    email: Admin?.adminEmail,
-  }).select('+password');
-  // console.log('isAdminExist', isAdminExist);
+//   const isAdminExist = await Admin?.findOne({
+//     email: Admin?.adminEmail,
+//   }).select('+password');
+//   // console.log('isAdminExist', isAdminExist);
 
-  if (!isAdminExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'admin does not exist');
-  }
+//   if (!isAdminExist) {
+//     throw new ApiError(httpStatus.NOT_FOUND, 'admin does not exist');
+//   }
 
-  if (
-    isAdminExist.password &&
-    !(await Admin?.isPasswordMatched(oldPassword, isAdminExist.password))
-  ) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'old password is incorrect');
-  }
-  // await Admin.updateOne();
-  isAdminExist.save();
-};
+//   if (
+//     isAdminExist.password &&
+//     !(await Admin?.isPasswordMatched(oldPassword, isAdminExist.password))
+//   ) {
+//     throw new ApiError(httpStatus.UNAUTHORIZED, 'old password is incorrect');
+//   }
+//   // await Admin.updateOne();
+//   isAdminExist.save();
+// };
 // auth part end
 
 const getAllAdmin = async (
@@ -200,14 +200,14 @@ const updateProfile = async (
   return result;
 };
 
-const deleteAdminFromDB = async (id: string) => {
+const deleteAdminFromDB = async (email: string) => {
   const session = await mongoose.startSession();
 
   try {
     session.startTransaction();
 
-    const deletedAdmin = await Admin.findByIdAndUpdate(
-      { _id: id },
+    const deletedAdmin = await Admin.findOneAndUpdate(
+      { email },
       { isDeleted: true },
       { new: true, session }
     );
@@ -217,7 +217,7 @@ const deleteAdminFromDB = async (id: string) => {
     }
 
     const deletedUser = await User.findOneAndUpdate(
-      { _id: id },
+      { email },
       { isDeleted: true },
       { new: true, session }
     );
@@ -234,13 +234,12 @@ const deleteAdminFromDB = async (id: string) => {
     await session.abortTransaction();
     await session.endSession();
   }
-
-  return;
 };
+
 export const AdminService = {
-  loginAdmin,
-  refreshToken,
-  changePassword,
+  // loginAdmin,
+  // refreshToken,
+  // changePassword,
   getAllAdmin,
   getMyProfile,
   updateProfile,

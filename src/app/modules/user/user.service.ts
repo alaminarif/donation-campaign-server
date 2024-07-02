@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import mongoose, { SortOrder, startSession } from 'mongoose';
+import mongoose, { SortOrder } from 'mongoose';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
-import { IUser, IUserFilters } from './user.interface';
+import { TUser, TUserFilters } from './user.interface';
 import { User } from './user.model';
 import { userSearchableFields } from './user.constant';
 import { TAdmin } from '../admin/admin.interface';
@@ -15,7 +15,7 @@ import httpStatus from 'http-status';
 
 const createAdmin = async (password: string, adminData: TAdmin) => {
   //
-  const userData: Partial<IUser> = {};
+  const userData: Partial<TUser> = {};
 
   userData.role = 'admin';
   userData.password = password;
@@ -50,9 +50,9 @@ const createAdmin = async (password: string, adminData: TAdmin) => {
 };
 
 const getAllUser = async (
-  filter: IUserFilters,
+  filter: TUserFilters,
   paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<IUser[]> | null> => {
+): Promise<IGenericResponse<TUser[]> | null> => {
   //
 
   const { searchTerm, ...filterData } = filter;
@@ -103,43 +103,43 @@ const getAllUser = async (
   };
 };
 
-const getMyProfile = async (email: string): Promise<IUser | null> => {
+const getMyProfile = async (email: string): Promise<TUser | null> => {
   const result = await User.findOne({ email: email });
   return result;
 };
 
-const updateProfile = async (
-  email: string,
-  payload: Partial<IUser>
-): Promise<IUser | null> => {
-  //
+// const updateProfile = async (
+//   email: string,
+//   payload: Partial<TUser>
+// ): Promise<TUser | null> => {
+//   //
 
-  // const isExist = await User.findOne({ email: email });
-  // if (!isExist) {
-  //   throw new ApiError(httpStatus.NOT_FOUND, 'User Not found');
-  // }
+//   // const isExist = await User.findOne({ email: email });
+//   // if (!isExist) {
+//   //   throw new ApiError(httpStatus.NOT_FOUND, 'User Not found');
+//   // }
 
-  const { name, ...userData } = payload;
-  const updatedUserData: Partial<IUser> = { ...userData };
-  // const updatedUserData: Partial<IUser> = userData;
+//   const { name, ...userData } = payload;
+//   const updatedUserData: Partial<TUser> = { ...userData };
+//   // const updatedUserData: Partial<TUser> = userData;
 
-  if (name && Object.keys(name).length > 0) {
-    Object.keys(name).forEach(key => {
-      const nameKey = `name.${key}` as keyof Partial<IUser>;
-      (updatedUserData as any)[nameKey] = name[key as keyof typeof name];
-    });
-  }
-  const result = await User.findOneAndUpdate(
-    { email: email },
-    updatedUserData,
-    {
-      new: true,
-    }
-  );
-  return result;
-};
+//   if (name && Object.keys(name).length > 0) {
+//     Object.keys(name).forEach(key => {
+//       const nameKey = `name.${key}` as keyof Partial<TUser>;
+//       (updatedUserData as any)[nameKey] = name[key as keyof typeof name];
+//     });
+//   }
+//   const result = await User.findOneAndUpdate(
+//     { email: email },
+//     updatedUserData,
+//     {
+//       new: true,
+//     }
+//   );
+//   return result;
+// };
 
-const deleteUser = async (id: string): Promise<IUser | null> => {
+const deleteUser = async (id: string): Promise<TUser | null> => {
   const result = await User.findByIdAndDelete({ _id: id });
   return result;
 };
@@ -148,7 +148,7 @@ export const UserService = {
   createAdmin,
   getAllUser,
   getMyProfile,
-  updateProfile,
+  // updateProfile,
   deleteUser,
 };
 

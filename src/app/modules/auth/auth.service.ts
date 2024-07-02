@@ -1,11 +1,11 @@
 import httpStatus from 'http-status';
 import bcrypt from 'bcrypt';
 import ApiError from '../../../errors/ApiError';
-import { IUser } from '../user/user.interface';
+// import { TUser } from '../user/user.interface';
 import { User } from './../user/user.model';
 import {
-  ILogin,
-  ILoginResponse,
+  TLogin,
+  TLoginResponse,
   IRefreshTokenResponse,
   IchangePassword,
 } from './auth.interface';
@@ -13,16 +13,14 @@ import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import config from '../../../config';
 import { JwtPayload, Secret } from 'jsonwebtoken';
 
-const createUser = async (payload: IUser): Promise<IUser | null> => {
-  payload.role = 'user';
-  const result = await User.create(payload);
-  return result;
-};
-
-const loginUser = async (payload: ILogin): Promise<ILoginResponse> => {
+const loginUser = async (payload: TLogin): Promise<TLoginResponse> => {
   const { email, password } = payload;
 
   const isUserExist = await User.isUserExist(email);
+
+  // const isUserExist = await User.findOne({ email });
+
+  console.log(isUserExist);
 
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
@@ -32,6 +30,8 @@ const loginUser = async (payload: ILogin): Promise<ILoginResponse> => {
   //   password,
   //   isUserExist?.password
   // );
+
+  // const isDeleted = isUserExist?.
 
   if (
     isUserExist.password &&
@@ -157,7 +157,6 @@ const changePassword = async (
   await User.updateOne(query, updatedData);
 };
 export const AuthService = {
-  createUser,
   loginUser,
   refreshToken,
   changePassword,

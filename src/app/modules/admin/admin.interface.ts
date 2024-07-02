@@ -49,7 +49,7 @@ export type TAdmin = {
 
 // //
 
-// export type TAdminFilters = {
-//   searchTerm?: string;
-// };
+export type TAdminFilters = {
+  searchTerm?: string;
+};
 export type AdminModel = Model<TAdmin, Record<string, unknown>>;

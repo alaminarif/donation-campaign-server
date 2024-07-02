@@ -1,25 +1,10 @@
 import httpStatus from 'http-status';
 import catchAsync from '../../../share/catchAsync';
 import sendResponse from '../../../share/sendResponse';
-import { IUser } from '../user/user.interface';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
-import { ILoginResponse, IRefreshTokenResponse } from './auth.interface';
+import { TLoginResponse, IRefreshTokenResponse } from './auth.interface';
 import config from '../../../config';
-
-const createUser = catchAsync(async (req: Request, res: Response) => {
-  const user = req.body;
-  // const us = req.headers.authorization;
-
-  const result = await AuthService.createUser(user);
-
-  sendResponse<IUser>(res, {
-    success: true,
-    statusCode: httpStatus.OK,
-    message: 'user created successfully  ',
-    data: result,
-  });
-});
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
@@ -34,7 +19,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   };
   res.cookie('refreshToken', refreshToken, cookieOptions);
 
-  sendResponse<ILoginResponse>(res, {
+  sendResponse<TLoginResponse>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User loggedin successfully !',
@@ -75,7 +60,6 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const AuthController = {
-  createUser,
   loginUser,
   refreshToken,
   changePassword,

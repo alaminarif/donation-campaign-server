@@ -1,8 +1,8 @@
 import mongoose, { Model } from 'mongoose';
-import { IUser } from '../user/user.interface';
+import { TUser } from '../user/user.interface';
 
 export type IRating = {
-  user: mongoose.Types.ObjectId | IUser;
+  user: mongoose.Types.ObjectId | TUser;
   value: number;
 };
 

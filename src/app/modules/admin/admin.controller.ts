@@ -4,68 +4,68 @@ import { AdminService } from './admin.service';
 import sendResponse from '../../../share/sendResponse';
 import catchAsync from '../../../share/catchAsync';
 import { Request, Response } from 'express';
-import config from '../../../config';
-import { ILoginResponse, IRefreshTokenResponse } from '../auth/auth.interface';
+// import config from '../../../config';
+// import { TLoginResponse, IRefreshTokenResponse } from '../auth/auth.interface';
 import { adminFilterableFields } from './admin.constant';
 import pick from '../../../share/pick';
 import { paginationFields } from '../../../constants/pagination';
 
-const loginAdmin = catchAsync(async (req: Request, res: Response) => {
-  const { ...loginData } = req.body;
-  console.log('Admin', req.user);
-  const result = await AdminService.loginAdmin(loginData);
+// const loginAdmin = catchAsync(async (req: Request, res: Response) => {
+//   const { ...loginData } = req.body;
+//   console.log('Admin', req.user);
+//   const result = await AdminService.loginAdmin(loginData);
 
-  const { refreshToken, ...others } = result;
-  console.log('res', refreshToken);
+//   const { refreshToken, ...others } = result;
+//   console.log('res', refreshToken);
 
-  const cookieOptions = {
-    secure: config.env === 'production',
-    httpOnly: true,
-  };
+//   const cookieOptions = {
+//     secure: config.env === 'production',
+//     httpOnly: true,
+//   };
 
-  res.cookie('refreshToken', refreshToken, cookieOptions);
+//   res.cookie('refreshToken', refreshToken, cookieOptions);
 
-  sendResponse<ILoginResponse>(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Admin loggedin successfully !',
-    data: others,
-  });
-});
+//   sendResponse<TLoginResponse>(res, {
+//     statusCode: httpStatus.OK,
+//     success: true,
+//     message: 'Admin loggedin successfully !',
+//     data: others,
+//   });
+// });
 
-const refreshToken = catchAsync(async (req: Request, res: Response) => {
-  const { refreshToken } = req.cookies;
+// const refreshToken = catchAsync(async (req: Request, res: Response) => {
+//   const { refreshToken } = req.cookies;
 
-  const result = await AdminService.refreshToken(refreshToken);
+//   const result = await AdminService.refreshToken(refreshToken);
 
-  const cookieOptions = {
-    secure: config.env === 'production',
-    httpOnly: true,
-  };
+//   const cookieOptions = {
+//     secure: config.env === 'production',
+//     httpOnly: true,
+//   };
 
-  res.cookie('refreshToken', refreshToken, cookieOptions);
+//   res.cookie('refreshToken', refreshToken, cookieOptions);
 
-  sendResponse<IRefreshTokenResponse>(res, {
-    statusCode: 200,
-    success: true,
-    message: 'Admin lohggedin successfully !',
-    data: result,
-  });
-});
+//   sendResponse<IRefreshTokenResponse>(res, {
+//     statusCode: 200,
+//     success: true,
+//     message: 'Admin lohggedin successfully !',
+//     data: result,
+//   });
+// });
 
-const changePassword = catchAsync(async (req: Request, res: Response) => {
-  const Admin = req.user;
-  console.log('Admin : ', Admin);
-  const { ...passwordData } = req.body;
-  const result = await AdminService.changePassword(Admin, passwordData);
+// const changePassword = catchAsync(async (req: Request, res: Response) => {
+//   const Admin = req.user;
+//   console.log('Admin : ', Admin);
+//   const { ...passwordData } = req.body;
+//   const result = await AdminService.changePassword(Admin, passwordData);
 
-  sendResponse(res, {
-    success: true,
-    statusCode: httpStatus.OK,
-    message: 'changePassword successfully  ',
-    data: result,
-  });
-});
+//   sendResponse(res, {
+//     success: true,
+//     statusCode: httpStatus.OK,
+//     message: 'changePassword successfully  ',
+//     data: result,
+//   });
+// });
 
 const getAllAdmin = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
@@ -114,11 +114,11 @@ const updateProfile = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const deleteAdminFromDB = catchAsync(async (req: Request, res: Response) => {
+const deleteAdmin = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
-  const { id } = req.params;
+  const { email } = req.params;
 
-  const result = await AdminService.deleteAdminFromDB(id);
+  const result = await AdminService.deleteAdminFromDB(email);
 
   sendResponse(res, {
     success: true,
@@ -128,11 +128,11 @@ const deleteAdminFromDB = catchAsync(async (req: Request, res: Response) => {
   });
 });
 export const AdminController = {
-  loginAdmin,
-  refreshToken,
-  changePassword,
+  // loginAdmin,
+  // refreshToken,
+  // changePassword,
   getAllAdmin,
   getMyProfile,
   updateProfile,
-  deleteAdminFromDB,
+  deleteAdmin,
 };

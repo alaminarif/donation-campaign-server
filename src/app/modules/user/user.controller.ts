@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import catchAsync from '../../../share/catchAsync';
 import { UserService } from './user.service';
 import httpStatus from 'http-status';
-import { IUser } from './user.interface';
+import { TUser } from './user.interface';
 import sendResponse from '../../../share/sendResponse';
 import pick from '../../../share/pick';
 import { paginationFields } from '../../../constants/pagination';
@@ -10,7 +10,7 @@ import { userFilterableFields } from './user.constant';
 
 const createAdmin = catchAsync(async (req: Request, res: Response) => {
   const { password, admin: adminData } = req.body;
-  console.log(password);
+
   // const us = req.headers.authorization;
   // console.log('us', us, req.user);
 
@@ -32,7 +32,7 @@ const getAllUser = catchAsync(async (req: Request, res: Response) => {
 
   const result = await UserService.getAllUser(filters, paginationOptions);
 
-  sendResponse<IUser[]>(res, {
+  sendResponse<TUser[]>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'User retrive successfully  ',
@@ -49,7 +49,7 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
 
   const result = await UserService.getMyProfile(email);
 
-  sendResponse<IUser>(res, {
+  sendResponse<TUser>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'User retrive successfully  ',
@@ -57,20 +57,20 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateProfile = catchAsync(async (req: Request, res: Response) => {
-  // paginationOptions
-  const email = req.user?.userEmail;
-  const updatedData = req.body;
+// const updateProfile = catchAsync(async (req: Request, res: Response) => {
+//   // paginationOptions
+//   const email = req.user?.userEmail;
+//   const updatedData = req.body;
 
-  const result = await UserService.updateProfile(email, updatedData);
+//   const result = await UserService.updateProfile(email, updatedData);
 
-  sendResponse<IUser>(res, {
-    success: true,
-    statusCode: httpStatus.OK,
-    message: 'User Updated successfully  ',
-    data: result,
-  });
-});
+//   sendResponse<TUser>(res, {
+//     success: true,
+//     statusCode: httpStatus.OK,
+//     message: 'User Updated successfully  ',
+//     data: result,
+//   });
+// });
 
 const deleteUser = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
@@ -78,7 +78,7 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
 
   const result = await UserService.deleteUser(id);
 
-  sendResponse<IUser>(res, {
+  sendResponse<TUser>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'User delete successfully  ',
@@ -90,6 +90,6 @@ export const UserController = {
   createAdmin,
   getAllUser,
   getMyProfile,
-  updateProfile,
+  // updateProfile,
   deleteUser,
 };
