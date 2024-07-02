@@ -8,6 +8,22 @@ import pick from '../../../share/pick';
 import { paginationFields } from '../../../constants/pagination';
 import { userFilterableFields } from './user.constant';
 
+const createAdmin = catchAsync(async (req: Request, res: Response) => {
+  const { password, admin: adminData } = req.body;
+  console.log(password);
+  // const us = req.headers.authorization;
+  // console.log('us', us, req.user);
+
+  const result = await UserService.createAdmin(password, adminData);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'admin created successfully  ',
+    data: result,
+  });
+});
+
 const getAllUser = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
 
@@ -55,6 +71,7 @@ const updateProfile = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 const deleteUser = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
   const { id } = req.params;
@@ -70,6 +87,7 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const UserController = {
+  createAdmin,
   getAllUser,
   getMyProfile,
   updateProfile,

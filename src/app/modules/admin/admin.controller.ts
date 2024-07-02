@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import { IAdmin } from './admin.interface';
+import { TAdmin } from './admin.interface';
 import { AdminService } from './admin.service';
 import sendResponse from '../../../share/sendResponse';
 import catchAsync from '../../../share/catchAsync';
@@ -9,21 +9,6 @@ import { ILoginResponse, IRefreshTokenResponse } from '../auth/auth.interface';
 import { adminFilterableFields } from './admin.constant';
 import pick from '../../../share/pick';
 import { paginationFields } from '../../../constants/pagination';
-
-const createAdmin = catchAsync(async (req: Request, res: Response) => {
-  const admin = req.body;
-  // const us = req.headers.authorization;
-  // console.log('us', us, req.user);
-
-  const result = await AdminService.createAdmin(admin);
-
-  sendResponse<IAdmin>(res, {
-    success: true,
-    statusCode: httpStatus.OK,
-    message: 'admin created successfully  ',
-    data: result,
-  });
-});
 
 const loginAdmin = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
@@ -37,6 +22,7 @@ const loginAdmin = catchAsync(async (req: Request, res: Response) => {
     secure: config.env === 'production',
     httpOnly: true,
   };
+
   res.cookie('refreshToken', refreshToken, cookieOptions);
 
   sendResponse<ILoginResponse>(res, {
@@ -89,7 +75,7 @@ const getAllAdmin = catchAsync(async (req: Request, res: Response) => {
 
   const result = await AdminService.getAllAdmin(filters, paginationOptions);
 
-  sendResponse<IAdmin[]>(res, {
+  sendResponse<TAdmin[]>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'Admin retrive successfully  ',
@@ -105,7 +91,7 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
 
   const result = await AdminService.getMyProfile(email);
 
-  sendResponse<IAdmin>(res, {
+  sendResponse<TAdmin>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'Admin retrive successfully  ',
@@ -120,20 +106,21 @@ const updateProfile = catchAsync(async (req: Request, res: Response) => {
 
   const result = await AdminService.updateProfile(email, updatedData);
 
-  sendResponse<IAdmin>(res, {
+  sendResponse<TAdmin>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'Admin Updated successfully  ',
     data: result,
   });
 });
-const deleteAdmin = catchAsync(async (req: Request, res: Response) => {
+
+const deleteAdminFromDB = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
   const { id } = req.params;
 
-  const result = await AdminService.deleteAdmin(id);
+  const result = await AdminService.deleteAdminFromDB(id);
 
-  sendResponse<IAdmin>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'Admin delete successfully  ',
@@ -141,12 +128,11 @@ const deleteAdmin = catchAsync(async (req: Request, res: Response) => {
   });
 });
 export const AdminController = {
-  createAdmin,
   loginAdmin,
   refreshToken,
   changePassword,
   getAllAdmin,
   getMyProfile,
   updateProfile,
-  deleteAdmin,
+  deleteAdminFromDB,
 };

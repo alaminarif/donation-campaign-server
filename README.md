@@ -1,6 +1,6 @@
 # Donation Campaign
 
-## Live Link [https://irepair-backend-nine.vercel.app/api/v1/](https://irepair-backend-nine.vercel.app/api/v1/)
+## Live Link [https://donation-campaign-server.onrender.com/api/v1](https://donation-campaign-server.onrender.com/api/v1)
 
 ### **Technology Stack**
 
@@ -128,7 +128,7 @@ Admin
 
   ```json
   {
-    "password": "amiadminbujheshunekothakoiyo",
+    "password": "amTAdminbujheshunekothakoiyo",
     "role": "admin",
     "name": {
       "firstName": "Mr. Admin",
@@ -175,7 +175,7 @@ Admin
 
     ```json
     {
-      "password": "amiadminbujheshunekothakoiyo",
+      "password": "amTAdminbujheshunekothakoiyo",
       "role": "admin",
       "name": {
         "firstName": "Mr. Admin",

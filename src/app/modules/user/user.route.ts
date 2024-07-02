@@ -6,7 +6,16 @@ import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import validateRequest from '../../middlewares/validateRequest';
 import { UserValidation } from './user.validation';
+import { AdminValidation } from '../admin/admin.validation';
+
 const router = express.Router();
+
+router.post(
+  '/create-admin',
+  validateRequest(AdminValidation.createAdminValidationSchema),
+  // auth(ENUM_USER_ROLE.ADMIN),
+  UserController.createAdmin
+);
 
 router.get('/', UserController.getAllUser);
 router.get(

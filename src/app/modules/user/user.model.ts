@@ -6,20 +6,9 @@ import config from '../../../config';
 
 const UserSchema = new Schema<IUser, UserModel>(
   {
-    name: {
-      firstName: {
-        type: String,
-        required: true,
-      },
-      lastName: {
-        type: String,
-        required: true,
-      },
-    },
     email: {
       type: String,
       required: true,
-      unique: true,
     },
     password: {
       type: String,
@@ -33,15 +22,15 @@ const UserSchema = new Schema<IUser, UserModel>(
       type: String,
       enum: role,
     },
-    phoneNumber: {
-      type: String,
-      required: true,
-      unique: true,
+    isDeleted: {
+      type: Boolean,
+      default: false,
     },
-    address: {
-      type: String,
-      required: true,
-    },
+
+    // admin: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'Admin',
+    // },
   },
   {
     timestamps: true,
@@ -49,27 +38,32 @@ const UserSchema = new Schema<IUser, UserModel>(
   }
 );
 
-UserSchema.statics.isUserExist = async function (
-  email: string
-): Promise<Pick<IUser, '_id' | 'email' | 'password' | 'role'> | null> {
-  return await User.findOne(
-    { email },
-    { _id: 1, email: 1, password: 1, role: 1 }
-  );
-};
+// UserSchema.statics.isUserExist = async function (
+//   email: string
+// ): Promise<Pick<IUser, '_id' | 'email' | 'password' | 'role'> | null> {
+//   return await User.findOne(
+//     { email },
+//     { _id: 1, email: 1, password: 1, role: 1 }
+//   );
+// };
 
-UserSchema.statics.isPasswordMatched = async function (
-  givenPassword: string,
-  savedPassword: string
-): Promise<boolean> {
-  return await bcrypt.compare(givenPassword, savedPassword);
-};
+// UserSchema.statics.isPasswordMatched = async function (
+//   givenPassword: string,
+//   savedPassword: string
+// ): Promise<boolean> {
+//   return await bcrypt.compare(givenPassword, savedPassword);
+// };
 
 UserSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(
     this.password,
     Number(config.bcrypt_salt_rounds)
   );
+  next();
+});
+
+UserSchema.post('save', function (doc, next) {
+  doc.password = '';
   next();
 });
 export const User = model<IUser, UserModel>('User', UserSchema);

@@ -7,7 +7,7 @@ import {
   IRefreshTokenResponse,
   IchangePassword,
 } from '../auth/auth.interface';
-import { IAdmin, IAdminFilters } from './admin.interface';
+import { TAdmin, TAdminFilters } from './admin.interface';
 import { Admin } from './admin.model';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import { JwtPayload, Secret } from 'jsonwebtoken';
@@ -16,14 +16,10 @@ import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IGenericResponse } from '../../../interfaces/common';
 import { adminSearchableFields } from './admin.constant';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
-import { SortOrder } from 'mongoose';
+import mongoose, { SortOrder } from 'mongoose';
+import { User } from '../user/user.model';
 
 // auth part start
-const createAdmin = async (payload: IAdmin): Promise<IAdmin | null> => {
-  payload.role = 'admin';
-  const result = await Admin.create(payload);
-  return result;
-};
 
 const loginAdmin = async (payload: ILogin): Promise<ILoginResponse> => {
   const { email } = payload;
@@ -115,9 +111,9 @@ const changePassword = async (
 // auth part end
 
 const getAllAdmin = async (
-  filter: IAdminFilters,
+  filter: TAdminFilters,
   paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<IAdmin[]> | null> => {
+): Promise<IGenericResponse<TAdmin[]> | null> => {
   //
 
   const { searchTerm, ...filterData } = filter;
@@ -168,15 +164,15 @@ const getAllAdmin = async (
   };
 };
 
-const getMyProfile = async (email: string): Promise<IAdmin | null> => {
+const getMyProfile = async (email: string): Promise<TAdmin | null> => {
   const result = await Admin.findOne({ email: email });
   return result;
 };
 
 const updateProfile = async (
   email: string,
-  payload: Partial<IAdmin>
-): Promise<IAdmin | null> => {
+  payload: Partial<TAdmin>
+): Promise<TAdmin | null> => {
   //
 
   // const isExist = await Admin.findOne({ email: email });
@@ -185,12 +181,12 @@ const updateProfile = async (
   // }
 
   const { name, ...AdminData } = payload;
-  const updatedAdminData: Partial<IAdmin> = { ...AdminData };
-  // const updatedAdminData: Partial<IAdmin> = AdminData;
+  const updatedAdminData: Partial<TAdmin> = { ...AdminData };
+  // const updatedAdminData: Partial<TAdmin> = AdminData;
 
   if (name && Object.keys(name).length > 0) {
     Object.keys(name).forEach(key => {
-      const nameKey = `name.${key}` as keyof Partial<IAdmin>;
+      const nameKey = `name.${key}` as keyof Partial<TAdmin>;
       (updatedAdminData as any)[nameKey] = name[key as keyof typeof name];
     });
   }
@@ -204,17 +200,49 @@ const updateProfile = async (
   return result;
 };
 
-const deleteAdmin = async (id: string): Promise<IAdmin | null> => {
-  const result = await Admin.findByIdAndDelete({ _id: id });
-  return result;
+const deleteAdminFromDB = async (id: string) => {
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    const deletedAdmin = await Admin.findByIdAndUpdate(
+      { _id: id },
+      { isDeleted: true },
+      { new: true, session }
+    );
+
+    if (!deletedAdmin) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'failed to delete Admin');
+    }
+
+    const deletedUser = await User.findOneAndUpdate(
+      { _id: id },
+      { isDeleted: true },
+      { new: true, session }
+    );
+
+    if (!deletedUser) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'failed to delete User');
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+
+    return deletedAdmin;
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+  }
+
+  return;
 };
 export const AdminService = {
-  createAdmin,
   loginAdmin,
   refreshToken,
   changePassword,
   getAllAdmin,
   getMyProfile,
   updateProfile,
-  deleteAdmin,
+  deleteAdminFromDB,
 };

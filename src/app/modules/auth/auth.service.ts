@@ -54,6 +54,7 @@ const loginUser = async (payload: ILogin): Promise<ILoginResponse> => {
 
   return { accessToken, refreshToken };
 };
+
 // const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 //   let verifiedToken = null;
 //   try {

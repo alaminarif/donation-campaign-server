@@ -1,32 +1,26 @@
 import { z } from 'zod';
-import { role } from './admin.constant';
+import { BloodGroup, Gender } from './admin.constant';
 
-const createAdminZodSchema = z.object({
+const createUserNameValidationSchema = z.object({
+  firstName: z.string().min(1).max(20),
+  lastName: z.string().max(20),
+});
+
+export const createAdminValidationSchema = z.object({
   body: z.object({
-    name: z.object({
-      firstName: z.string({
-        required_error: 'First name is required',
-      }),
-      lastName: z.string({
-        required_error: 'Last name is required',
-      }),
-    }),
-    email: z.string({
-      required_error: 'email is required',
-    }),
-    password: z.string({
-      required_error: 'password is required',
-    }),
-    role: z
-      .enum(role, {
-        required_error: 'role is required',
-      })
-      .optional(),
-    phoneNumber: z.string({
-      required_error: 'phone number is required',
-    }),
-    address: z.string({
-      required_error: 'address is required',
+    password: z.string().max(20),
+    admin: z.object({
+      designation: z.string(),
+      name: createUserNameValidationSchema,
+      email: z.string().email(),
+      contactNo: z.string(),
+      gender: z.enum([...Gender] as [string, ...string[]]),
+      dateOfBirth: z.string().optional(),
+      emergencyContactNo: z.string(),
+      bloogGroup: z.enum([...BloodGroup] as [string, ...string[]]),
+      presentAddress: z.string(),
+      permanentAddress: z.string(),
+      profileImg: z.string(),
     }),
   }),
 });
@@ -41,13 +35,12 @@ const updateProfileZodSchema = z.object({
       .optional(),
     email: z.string().optional(),
     password: z.string().optional(),
-    role: z.enum(role).optional(),
     phoneNumber: z.string().optional(),
     address: z.string().optional(),
   }),
 });
 
 export const AdminValidation = {
-  createAdminZodSchema,
+  createAdminValidationSchema,
   updateProfileZodSchema,
 };

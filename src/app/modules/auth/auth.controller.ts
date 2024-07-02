@@ -9,8 +9,7 @@ import config from '../../../config';
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const user = req.body;
-  const us = req.headers.authorization;
-  console.log('us', us, req.user);
+  // const us = req.headers.authorization;
 
   const result = await AuthService.createUser(user);
 
@@ -60,6 +59,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
     data: reslut,
   });
 });
+
 const changePassword = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
   console.log('user : ', user);

@@ -5,14 +5,15 @@ import { AdminController } from './admin.controller';
 import { AuthValidation } from '../auth/auth.validation';
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
+
 const router = express.Router();
 
-router.post(
-  '/create-admin',
-  validateRequest(AdminValidation.createAdminZodSchema),
-  // auth(ENUM_USER_ROLE.ADMIN),
-  AdminController.createAdmin
-);
+// router.post(
+//   '/create-admin',
+//   validateRequest(AdminValidation.createAdminZodSchema),
+//   // auth(ENUM_USER_ROLE.ADMIN),
+//   AdminController.createAdmin
+// );
 
 router.post(
   '/login',
@@ -48,7 +49,7 @@ router.patch(
   AdminController.updateProfile
 );
 
-router.delete('/:id', AdminController.deleteAdmin);
+router.delete('/:id', AdminController.deleteAdminFromDB);
 
 router.patch('/my-profile', AdminController.updateProfile);
 export const AdminRoutes = router;

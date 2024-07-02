@@ -1,13 +1,53 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { SortOrder } from 'mongoose';
+import mongoose, { SortOrder, startSession } from 'mongoose';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IUser, IUserFilters } from './user.interface';
 import { User } from './user.model';
 import { userSearchableFields } from './user.constant';
+import { TAdmin } from '../admin/admin.interface';
+import { Admin } from '../admin/admin.model';
+import ApiError from '../../../errors/ApiError';
+import httpStatus from 'http-status';
 // import ApiError from '../../../errors/ApiError';
 // import httpStatus from 'http-status';
+
+const createAdmin = async (password: string, adminData: TAdmin) => {
+  //
+  const userData: Partial<IUser> = {};
+
+  userData.role = 'admin';
+  userData.password = password;
+  userData.email = adminData.email;
+
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+
+    const newUser = await User.create([userData], { session });
+
+    if (!newUser.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create user');
+    }
+    adminData.email = newUser[0].email;
+    adminData.user = newUser[0]._id;
+
+    const newAdmin = await Admin.create([adminData], { session });
+
+    if (!newAdmin.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create admin');
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+
+    return newAdmin;
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+  }
+};
 
 const getAllUser = async (
   filter: IUserFilters,
@@ -105,6 +145,7 @@ const deleteUser = async (id: string): Promise<IUser | null> => {
 };
 
 export const UserService = {
+  createAdmin,
   getAllUser,
   getMyProfile,
   updateProfile,
