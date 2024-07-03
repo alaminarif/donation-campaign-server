@@ -40,10 +40,13 @@ const UserSchema = new Schema<TUser, UserModel>(
 
 UserSchema.statics.isUserExist = async function (
   email: string
-): Promise<Pick<TUser, '_id' | 'email' | 'password' | 'role'> | null> {
+): Promise<Pick<
+  TUser,
+  '_id' | 'email' | 'password' | 'role' | 'isDeleted'
+> | null> {
   return await User.findOne(
     { email },
-    { _id: 1, email: 1, password: 1, role: 1 }
+    { _id: 1, email: 1, password: 1, role: 1, isDeleted: 1 }
   );
 };
 
@@ -52,6 +55,14 @@ UserSchema.statics.isPasswordMatched = async function (
   savedPassword: string
 ): Promise<boolean> {
   return await bcrypt.compare(givenPassword, savedPassword);
+};
+
+UserSchema.statics.isJWTIssuedDeforedPasswordChanged = async function (
+  passwordChangeTimestamp: Date,
+  jwtIssuedTimestamp: number
+) {
+  const passwordChangeTime = new Date(passwordChangeTimestamp).getTime() / 1000;
+  return passwordChangeTime > jwtIssuedTimestamp;
 };
 
 UserSchema.pre('save', async function (next) {
@@ -66,4 +77,5 @@ UserSchema.post('save', function (doc, next) {
   doc.password = '';
   next();
 });
+
 export const User = model<TUser, UserModel>('User', UserSchema);

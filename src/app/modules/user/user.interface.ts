@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Model, Schema, Types } from 'mongoose';
-import { TAdmin } from '../admin/admin.interface';
+import { Model, Types } from 'mongoose';
 export type Role = 'admin' | 'user';
 
 export type TUser = {
@@ -16,11 +15,16 @@ export type TUser = {
 export type UserModel = {
   isUserExist(
     email: string
-  ): Promise<Pick<TUser, '_id' | 'email' | 'password' | 'role'>>;
+  ): Promise<Pick<TUser, '_id' | 'email' | 'password' | 'role' | 'isDeleted'>>;
   isPasswordMatched(
     givenPassword: string,
     savedPassword: string
   ): Promise<boolean>;
+
+  isJWTIssuedDeforedPasswordChanged(
+    passwordChangeTimestamp: Date,
+    jwtIssuedTimestamp: number
+  ): boolean;
 } & Model<TUser>;
 
 export type TUserFilters = {

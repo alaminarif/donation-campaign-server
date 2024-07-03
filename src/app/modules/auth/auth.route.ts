@@ -31,4 +31,18 @@ router.post(
   AuthController.changePassword
 );
 
+router.post(
+  '/forget-password',
+  validateRequest(AuthValidation.forgetPasswordValidationSchema),
+  // auth(ENUM_USER_ROLE.USER),
+  AuthController.forgetPassword
+);
+
+router.post(
+  '/reset-password',
+  validateRequest(AuthValidation.resetPasswordValidationSchema),
+  // auth(ENUM_USER_ROLE.USER),
+  AuthController.resetPassword
+);
+
 export const AuthRoutes = router;

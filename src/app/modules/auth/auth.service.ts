@@ -12,6 +12,7 @@ import {
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import config from '../../../config';
 import { JwtPayload, Secret } from 'jsonwebtoken';
+import { sendEmail } from '../../../share/sendEmail';
 
 const loginUser = async (payload: TLogin): Promise<TLoginResponse> => {
   const { email, password } = payload;
@@ -39,6 +40,7 @@ const loginUser = async (payload: TLogin): Promise<TLoginResponse> => {
   ) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
   }
+
   const { email: userEmail, role, _id } = isUserExist;
 
   const accessToken = jwtHelpers.createToken(
@@ -46,6 +48,7 @@ const loginUser = async (payload: TLogin): Promise<TLoginResponse> => {
     config.jwt.secret as Secret,
     config.jwt.expires_in as string
   );
+
   const refreshToken = jwtHelpers.createToken(
     { userEmail, role, _id },
     config.jwt.refresh_secret as Secret,
@@ -92,6 +95,7 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   //verify token
   // invalid token - synchronous
   let verifiedToken = null;
+
   try {
     verifiedToken = jwtHelpers.verifyToken(
       token,
@@ -133,6 +137,7 @@ const changePassword = async (
   const { oldPassword, newPassword } = payload;
 
   const isUserExist = await User.isUserExist(user?.userEmail);
+
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
@@ -148,7 +153,9 @@ const changePassword = async (
     newPassword,
     Number(config.bcrypt_salt_rounds)
   );
+
   const query = { email: user?.userEmail };
+
   const updatedData = {
     password: newHashPassword,
     passwordchangedAt: new Date(),
@@ -156,8 +163,43 @@ const changePassword = async (
 
   await User.updateOne(query, updatedData);
 };
+
+const forgetPassword = async (userEmail: string) => {
+  const user = await User.isUserExist(userEmail);
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'this user is not found !');
+  }
+
+  const isDeleted = user?.isDeleted;
+
+  if (isDeleted) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'this user is deleted');
+  }
+
+  const { email, role, _id } = user;
+
+  const resetToken = jwtHelpers.createToken(
+    { email, role, _id },
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string
+  );
+
+  const resetLink = `${config.reset_pass_ui_link}?email=${user.email}&token=${resetToken}`;
+
+  sendEmail(user.email, resetLink);
+
+  console.log('resetLink', resetLink);
+};
+
+const resetPassword = async () => {
+  console.log('first');
+};
+
 export const AuthService = {
   loginUser,
   refreshToken,
   changePassword,
+  forgetPassword,
+  resetPassword,
 };

@@ -118,28 +118,9 @@ AdminSchema.pre('aggregate', function (next) {
   next();
 });
 
-// AdminSchema.statics.isAdminExist = async function (
-//   email: string
-// ): Promise<Pick<TAdmin, '_id' | 'email' | 'password' | 'role'> | null> {
-//   return await Admin.findOne(
-//     { email },
-//     { _id: 1, email: 1, password: 1, role: 1 }
-//   );
-// };
+AdminSchema.statics.isUserExists = async function (email: string) {
+  const existingUser = await Admin.findOne({ email });
+  return existingUser;
+};
 
-// //
-// AdminSchema.statics.isPasswordMatched = async function (
-//   givenPassword: string,
-//   savedPassword: string
-// ): Promise<boolean> {
-//   return await bcrypt.compare(givenPassword, savedPassword);
-// };
-
-// AdminSchema.pre('save', async function (next) {
-//   this.password = await bcrypt.hash(
-//     this.password,
-//     Number(config.bcrypt_salt_rounds)
-//   );
-//   next();
-// });
 export const Admin = model<TAdmin, AdminModel>('Admin', AdminSchema);

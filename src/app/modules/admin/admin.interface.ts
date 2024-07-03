@@ -49,7 +49,11 @@ export type TAdmin = {
 
 // //
 
+export type AdminModel = {
+  isUserExists(email: string): Promise<TAdmin | null>;
+} & Model<TAdmin>;
+
 export type TAdminFilters = {
   searchTerm?: string;
 };
-export type AdminModel = Model<TAdmin, Record<string, unknown>>;
+// export type AdminModel = Model<TAdmin, Record<string, unknown>>;
