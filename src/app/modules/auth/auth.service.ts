@@ -192,8 +192,43 @@ const forgetPassword = async (userEmail: string) => {
   console.log('resetLink', resetLink);
 };
 
-const resetPassword = async () => {
-  console.log('first');
+const resetPassword = async (
+  payload: { email: string; newPassword: string },
+  token: string
+) => {
+  const user = await User.isUserExist(payload?.email);
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'this user is not found !');
+  }
+
+  const isDeleted = user?.isDeleted;
+
+  if (isDeleted) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'this user is deleted');
+  }
+
+  const decode = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
+
+  if (payload.email !== decode.email) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'you are forbidden');
+  }
+
+  const newHashPassword = await bcrypt.hash(
+    payload.newPassword,
+    Number(config.bcrypt_salt_rounds)
+  );
+
+  await User.findOneAndUpdate(
+    {
+      email: decode.email,
+      role: decode.role,
+    },
+    {
+      password: newHashPassword,
+      passwordchangedAt: new Date(),
+    }
+  );
 };
 
 export const AuthService = {
@@ -203,3 +238,5 @@ export const AuthService = {
   forgetPassword,
   resetPassword,
 };
+
+// http://localhost:3000?email=me.alamin.arif@gmail.com&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1lLmFsYW1pbi5hcmlmQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsIl9pZCI6IjY2ODRmYWY3MzZjNjgxNDVjYzdiNzRmZCIsImlhdCI6MTcyMDAwMDcxMSwiZXhwIjoxNzIwOTUxMTExfQ.LfJOYHRjYiLSHcR9Hs6r0NdNH4W3dYUweLjS6_ZvHaM
