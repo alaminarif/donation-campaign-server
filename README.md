@@ -28,16 +28,13 @@ The assignment aims to build a fully functional Donation Campaign website using 
   <details>
   <summary>
   Auth
-  </summary> 
-    
-  - **Create A User**
-     - Method:  POST
-     - Access: public
-     - path: /auth/create-user
-  -  Login 
-     - Method:  POST
-     - Access: public
-     - Path: /auth/login
+  </summary>
+
+- **Login**
+
+  - Method: POST
+  - Access: public
+  - path: /auth/login
 
 - **Refresh Token**
 
@@ -62,6 +59,23 @@ The assignment aims to build a fully functional Donation Campaign website using 
   - Method: POST
   - Access: Can be accessed only by the **`specific user`**
   - path: /auth/change-password
+  - **Request Body**
+
+  ```json
+  {}
+  ```
+
+- **Forget Password**
+
+  - Method: POST
+  - Access: Can be accessed only by the **`specific user`**
+  - path: /auth/forget-password
+
+- **Reset Password**
+
+  - Method: POST
+  - Access: Can be accessed only by the **`specific user`**
+  - path: /auth/reset-password
 
     </details>
 
@@ -69,14 +83,21 @@ The assignment aims to build a fully functional Donation Campaign website using 
   <summary>
 User
   </summary> 
-    
-   - **Get All User**
-      - Method:  GET
-      - Access: Can only be accessed by admin
-      - path: /users
-      - Query :/users/?sortBy=phoneNumber&sortOrder=asc&page=1&limit=10
-      - Search: /users/?searchTerm=290&email=arifur@gmail.com
-      - filter: users/?phoneNumber=361-616-6558
+  
+   - **Create A Admin**
+     - Method:  POST
+     - Access: Can be accessed only by the **`Super Admin`**
+
+     - path: /users/create-admin
+
+- **Get All User**
+
+  - Method: GET
+  - Access: Can only be accessed by admin
+  - path: /users
+  - Query :/users/?sortBy=phoneNumber&sortOrder=asc&page=1&limit=10
+  - Search: /users/?searchTerm=290&email=arifur@gmail.com
+  - filter: users/?phoneNumber=361-616-6558
 
 - **Get Single User**
 
@@ -118,13 +139,38 @@ User
 Admin
   </summary>
 
-- **Create A Admin**
+```{
 
-  - Method: POST
-  - Access: Can only be accessed by admin
-  - path: /admins/create-admin
 
-  - **Request body:**
+```
+
+- **Get All Admin**
+
+- Method: GET
+- Access : Can only be accessed by admin
+- path : /admins
+- Query : /donations/?sortBy=name&page=1&limit=10
+- Search: /donations/?searchTerm=290&email=arifur@gmail.com
+
+- **Get Single Admin**
+
+- Method: GET
+- Access: Can only be accessed by admin
+- path: /admins/:id
+
+- **Get My Profile**
+
+- Method: GET
+- Access: Can be accessed only by the admin of the profile
+- Path: /admis/profile
+
+- **Patch My Profile**
+
+- Method: PATCH
+- Access: Can be accessed only by the admin of the profile
+- Path: /admis/profile
+
+- **Request body :**
 
   ```json
   {
@@ -139,164 +185,118 @@ Admin
   }
   ```
 
-- **Get All Admin**
+- **Response Sample Pattern:**
 
-  - Method: GET
-  - Access : Can only be accessed by admin
-  - path : /admins
-  - Query : /donations/?sortBy=name&page=1&limit=10
-  - Search: /donations/?searchTerm=290&email=arifur@gmail.com
-
-- **Get Single Admin**
-
-  - Method: GET
-  - Access: Can only be accessed by admin
-  - path: /admins/:id
-
-- **Get My Profile**
-
-  - Method: GET
-  - Access: Can be accessed only by the admin of the profile
-  - Path: /admis/profile
-
-- **Patch My Profile**
-
-  - Method: PATCH
-  - Access: Can be accessed only by the admin of the profile
-  - Path: /admis/profile
-
-- **Login**
-
-  - Method: POST
-  - Access:
-  - Path: /admis/login
-
-  - **Request body :**
-
-    ```json
-    {
-      "password": "amTAdminbujheshunekothakoiyo",
-      "role": "admin",
-      "name": {
-        "firstName": "Mr. Admin",
-        "lastName": "Bhai"
-      },
-      "email": "arif@gmail.com",
-      "address": "Uganda"
+  ```json
+  {
+    "success": true,
+    "statusCode": 200,
+    "message": "admin logged in successfully",
+    "data": {
+      "accessToken": "eyJhbGciOiJIUzI1NiICJ9.eyJ1c2V4NzIzMTcxNCwiZXhwIjoxNjg3MzE4MTE0fQ.Q7j8vtY9r1JeDK_zR6bYInlY"
     }
-    ```
-
-  - **Response Sample Pattern:**
-
-    ```json
-    {
-      "success": true,
-      "statusCode": 200,
-      "message": "admin logged in successfully",
-      "data": {
-        "accessToken": "eyJhbGciOiJIUzI1NiICJ9.eyJ1c2V4NzIzMTcxNCwiZXhwIjoxNjg3MzE4MTE0fQ.Q7j8vtY9r1JeDK_zR6bYInlY"
-      }
-    }
-    ```
+  }
+  ```
 
 - **Delete Admin**
 
-  - Method: DELETE
-  - Access:
-  - path: /admins/:id
-  </details>
+- Method: DELETE
+- Access:
+- path: /admins/:id
+</details>
 
 <details>
-  <summary>
+<summary>
 Donation Category
-  </summary>
+</summary>
 
 - Create A Categories
 
-  - Method: POST
-  - Access: Can only be accessed by admin
-  - path: /categories/create-categories
-  - Request body:
+- Method: POST
+- Access: Can only be accessed by admin
+- path: /categories/create-categories
+- Request body:
 
-    ```json
-    {
-      "image": "url",
-      "amount": "$290",
-      "catygory": "health",
-      "name": "Clean water for children"
-    }
-    ```
+  ```json
+  {
+    "image": "url",
+    "amount": "$290",
+    "catygory": "health",
+    "name": "Clean water for children"
+  }
+  ```
 
 - **Get All Categories**
 
-  - Method **:** GET
-  - Access : public
-  - path : /categories
-  - Query : /categories/?sortBy=name&page=1&limit=10
-  - Search: /categories/?searchTerm=290&categoryName=health
+- Method **:** GET
+- Access : public
+- path : /categories
+- Query : /categories/?sortBy=name&page=1&limit=10
+- Search: /categories/?searchTerm=290&categoryName=health
 
 - **Get Single Categories**
 
-  - Method: DELETE
-  - Access: public
-  - path: /admins/:id
+- Method: DELETE
+- Access: public
+- path: /admins/:id
 
 - **Delete Categories**
-  - Method: DELETE
-  - Access: Can only be accessed by admin
-  - path: /categories/:id
-  </details>
+- Method: DELETE
+- Access: Can only be accessed by admin
+- path: /categories/:id
+</details>
 
 <!-- <details>
-  <summary>
+<summary>
 Admin
-  </summary>
+</summary>
 </details> -->
 
 <details>
-  <summary>
-Donation 
-  </summary>
+<summary>
+Donation
+</summary>
 </details>
 
 <details>
-  <summary>
-Campaign 
-  </summary>
+<summary>
+Campaign
+</summary>
 </details>
 
 <details>
-  <summary>
-Blog 
-  </summary>
+<summary>
+Blog
+</summary>
 </details>
 
 <details>
-  <summary>
+<summary>
 Contact
-  </summary>
+</summary>
 </details>
 
 <details>
-  <summary>
+<summary>
 Comment
-  </summary>
+</summary>
 </details>
 
 <details>
-  <summary>
+<summary>
 Rating
-  </summary>
+</summary>
 </details>
 
 <details>
-  <summary>
+<summary>
 Payment
-  </summary>
+</summary>
 </details>
 
 <details>
-  <summary>
+<summary>
 
-  </summary>
+</summary>
 </details>
+````

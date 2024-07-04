@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import config from './config';
 import app from './app';
 import { Server } from 'http';
+import seedSuperAdmin from './app/DB';
 // import { errorLogger, logger } from './share/logger';
 
 // Handle uncaught Exception
@@ -12,11 +13,13 @@ process.on('uncaughtException', error => {
 
 let server: Server;
 
-const bootstrap = async () => {
+const main = async () => {
   try {
     await mongoose.connect(config.database_url as string);
     // eslint-disable-next-line no-console
     console.log(`🛢   Database is connected successfully`);
+
+    seedSuperAdmin();
 
     app.listen(config.port, () => {
       // eslint-disable-next-line no-console
@@ -43,7 +46,7 @@ const bootstrap = async () => {
   });
 };
 //
-bootstrap();
+main();
 
 // Hnadle SIGTERM
 

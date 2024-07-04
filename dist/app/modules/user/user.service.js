@@ -103,7 +103,7 @@ const getAllUser = (filter, paginationOptions) =>
       data: result,
     };
   });
-const getMyProfile = email =>
+const getMe = email =>
   __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_model_1.User.findOne({ email: email });
     return result;
@@ -141,7 +141,7 @@ const deleteUser = id =>
   });
 exports.UserService = {
   getAllUser,
-  getMyProfile,
+  getMe,
   updateProfile,
   deleteUser,
 };

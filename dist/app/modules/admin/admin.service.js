@@ -212,7 +212,7 @@ const getAllAdmin = (filter, paginationOptions) =>
       data: result,
     };
   });
-const getMyProfile = email =>
+const getMe = email =>
   __awaiter(void 0, void 0, void 0, function* () {
     const result = yield admin_model_1.Admin.findOne({ email: email });
     return result;
@@ -254,7 +254,7 @@ exports.AdminService = {
   refreshToken,
   changePassword,
   getAllAdmin,
-  getMyProfile,
+  getMe,
   updateProfile,
   deleteAdminFromDB,
 };

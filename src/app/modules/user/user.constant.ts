@@ -1,4 +1,4 @@
-export const role = ['user', 'admin', 'donor'] as const;
+export const role = ['super_admin', 'admin', 'donor'] as const;
 export const USER_ROLE = {
   superAdmin: 'superAdmin',
   student: 'student',

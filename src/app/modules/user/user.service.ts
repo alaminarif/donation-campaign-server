@@ -10,8 +10,6 @@ import { TAdmin } from '../admin/admin.interface';
 import { Admin } from '../admin/admin.model';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
-// import ApiError from '../../../errors/ApiError';
-// import httpStatus from 'http-status';
 
 const createAdmin = async (password: string, adminData: TAdmin) => {
   //
@@ -103,8 +101,13 @@ const getAllUser = async (
   };
 };
 
-const getMyProfile = async (email: string): Promise<TUser | null> => {
-  const result = await User.findOne({ email: email });
+const getMe = async (userEmail: string, role: string) => {
+  let result = null;
+
+  if (role === 'admin') {
+    result = await Admin.findOne({ email: userEmail }).populate('user');
+  }
+  console.log(result);
   return result;
 };
 
@@ -147,7 +150,7 @@ const deleteUser = async (id: string): Promise<TUser | null> => {
 export const UserService = {
   createAdmin,
   getAllUser,
-  getMyProfile,
+  getMe,
   // updateProfile,
   deleteUser,
 };

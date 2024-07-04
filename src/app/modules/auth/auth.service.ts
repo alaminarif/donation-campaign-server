@@ -238,5 +238,3 @@ export const AuthService = {
   forgetPassword,
   resetPassword,
 };
-
-// http://localhost:3000?email=me.alamin.arif@gmail.com&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1lLmFsYW1pbi5hcmlmQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsIl9pZCI6IjY2ODRmYWY3MzZjNjgxNDVjYzdiNzRmZCIsImlhdCI6MTcyMDAwMDcxMSwiZXhwIjoxNzIwOTUxMTExfQ.LfJOYHRjYiLSHcR9Hs6r0NdNH4W3dYUweLjS6_ZvHaM

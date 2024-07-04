@@ -159,14 +159,14 @@ const getAllAdmin = (0, catchAsync_1.default)((req, res) =>
     });
   })
 );
-const getMyProfile = (0, catchAsync_1.default)((req, res) =>
+const getMe = (0, catchAsync_1.default)((req, res) =>
   __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     // paginationOptions
     const email =
       (_a = req.user) === null || _a === void 0 ? void 0 : _a.adminEmail;
     console.log(' : ', email);
-    const result = yield admin_service_1.AdminService.getMyProfile(email);
+    const result = yield admin_service_1.AdminService.getMe(email);
     (0, sendResponse_1.default)(res, {
       success: true,
       statusCode: http_status_1.default.OK,
@@ -213,7 +213,7 @@ exports.AdminController = {
   refreshToken,
   changePassword,
   getAllAdmin,
-  getMyProfile,
+  getMe,
   updateProfile,
   deleteAdminFromDB,
 };

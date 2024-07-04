@@ -41,15 +41,13 @@ const getAllUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getMyProfile = catchAsync(async (req: Request, res: Response) => {
+const getMe = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
-  const email = req.user?.userEmail;
+  const { userEmail, role } = req.user!;
 
-  console.log(req.user);
+  const result = await UserService.getMe(userEmail, role);
 
-  const result = await UserService.getMyProfile(email);
-
-  sendResponse<TUser>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'User retrive successfully  ',
@@ -89,7 +87,7 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
 export const UserController = {
   createAdmin,
   getAllUser,
-  getMyProfile,
+  getMe,
   // updateProfile,
   deleteUser,
 };

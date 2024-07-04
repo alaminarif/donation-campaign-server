@@ -20,9 +20,9 @@ router.post(
 router.get('/', UserController.getAllUser);
 
 router.get(
-  '/my-profile',
-  auth(ENUM_USER_ROLE.USER),
-  UserController.getMyProfile
+  '/me',
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
+  UserController.getMe
 );
 
 // router.patch(

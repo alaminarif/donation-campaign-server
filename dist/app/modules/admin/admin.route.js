@@ -52,7 +52,7 @@ router.get('/', admin_controller_1.AdminController.getAllAdmin);
 router.get(
   '/my-profile',
   (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN),
-  admin_controller_1.AdminController.getMyProfile
+  admin_controller_1.AdminController.getMe
 );
 router.patch(
   '/my-profile',
