@@ -8,6 +8,7 @@ import { CommentRoutes } from '../modules/comment/comment.route';
 import { BlogRoutes } from '../modules/blog/blog.route';
 import { PaymentRoutes } from '../modules/payment/payment.route';
 import { RatingRoutes } from '../modules/rating/rating.route';
+import { ManagerRoutes } from '../modules/manager/manager.route';
 
 const router = express.Router();
 
@@ -23,6 +24,10 @@ const moduleRoutes = [
   {
     path: '/admins',
     route: AdminRoutes,
+  },
+  {
+    path: '/managers',
+    route: ManagerRoutes,
   },
 
   {
