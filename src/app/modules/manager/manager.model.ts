@@ -59,11 +59,6 @@ const ManagerSchema = new Schema<TManager, ManagerModel>(
       required: [true, 'Contact number is required'],
     },
 
-    emergencyContactNo: {
-      type: String,
-      required: [true, 'Emergency contact number is required'],
-    },
-
     bloogGroup: {
       type: String,
       enum: {
@@ -72,14 +67,9 @@ const ManagerSchema = new Schema<TManager, ManagerModel>(
       },
     },
 
-    presentAddress: {
+    address: {
       type: String,
-      required: [true, 'Present address is required'],
-    },
-
-    permanentAddress: {
-      type: String,
-      required: [true, 'Permanent address is required'],
+      required: [true, 'address is required'],
     },
 
     dateOfBirth: { type: Date },
@@ -90,11 +80,6 @@ const ManagerSchema = new Schema<TManager, ManagerModel>(
       type: Boolean,
       default: false,
     },
-
-    // address: {
-    //   type: String,
-    //   required: true,
-    // },
   },
   {
     timestamps: true,

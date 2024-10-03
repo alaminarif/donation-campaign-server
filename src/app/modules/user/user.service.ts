@@ -10,6 +10,7 @@ import { TAdmin } from '../admin/admin.interface';
 import { Admin } from '../admin/admin.model';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
+import { TManager } from '../manager/manager.interface';
 
 const createAdmin = async (password: string, adminData: TAdmin) => {
   //
@@ -46,6 +47,8 @@ const createAdmin = async (password: string, adminData: TAdmin) => {
     await session.endSession();
   }
 };
+
+const createManager = async (password: string, managerData: TManager) => {};
 
 const getAllUser = async (
   filter: TUserFilters,

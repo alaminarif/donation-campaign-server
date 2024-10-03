@@ -25,10 +25,8 @@ export type TManager = {
   name: TUserName;
   email: string;
   contactNo: string;
-  emergencyContactNo: string;
   gender: TGender;
-  presentAddress: string;
-  permanentAddress: string;
+  address: string;
   dateOfBirth?: Date;
   bloogGroup?: TBloodGroup;
   profileImg?: string;

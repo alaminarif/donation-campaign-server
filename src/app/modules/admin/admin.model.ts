@@ -28,6 +28,11 @@ const AdminSchema = new Schema<TAdmin, AdminModel>(
       unique: true,
       ref: 'User',
     },
+    email: {
+      type: String,
+      required: true,
+      // unique: true,
+    },
 
     designation: {
       type: String,
@@ -37,12 +42,6 @@ const AdminSchema = new Schema<TAdmin, AdminModel>(
     name: {
       type: userNameSchema,
       required: [true, 'Name is required'],
-    },
-
-    email: {
-      type: String,
-      required: true,
-      // unique: true,
     },
 
     gender: {
@@ -59,11 +58,6 @@ const AdminSchema = new Schema<TAdmin, AdminModel>(
       required: [true, 'Contact number is required'],
     },
 
-    emergencyContactNo: {
-      type: String,
-      required: [true, 'Emergency contact number is required'],
-    },
-
     bloogGroup: {
       type: String,
       enum: {
@@ -72,29 +66,19 @@ const AdminSchema = new Schema<TAdmin, AdminModel>(
       },
     },
 
-    presentAddress: {
-      type: String,
-      required: [true, 'Present address is required'],
-    },
-
-    permanentAddress: {
-      type: String,
-      required: [true, 'Permanent address is required'],
-    },
-
     dateOfBirth: { type: Date },
 
     profileImg: { type: String },
+
+    address: {
+      type: String,
+      required: true,
+    },
 
     isDeleted: {
       type: Boolean,
       default: false,
     },
-
-    // address: {
-    //   type: String,
-    //   required: true,
-    // },
   },
   {
     timestamps: true,

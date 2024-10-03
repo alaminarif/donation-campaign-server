@@ -21,14 +21,12 @@ export type TBloodGroup =
 export type TAdmin = {
   _id?: Types.ObjectId;
   user: Types.ObjectId;
+  email: string;
   designation: string;
   name: TUserName;
-  email: string;
   contactNo: string;
-  emergencyContactNo: string;
   gender: TGender;
-  presentAddress: string;
-  permanentAddress: string;
+  address: string;
   dateOfBirth?: Date;
   bloogGroup?: TBloodGroup;
   profileImg?: string;
