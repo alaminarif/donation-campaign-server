@@ -14,7 +14,23 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
   // const us = req.headers.authorization;
   // console.log('us', us, req.user);
 
-  const result = await UserService.createAdmin(password, adminData);
+  const result = await UserService.createAdminIntoDB(password, adminData);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'admin created successfully  ',
+    data: result,
+  });
+});
+
+const createManager = catchAsync(async (req: Request, res: Response) => {
+  const { password, manager: managerData } = req.body;
+
+  // const us = req.headers.authorization;
+  // console.log('us', us, req.user);
+
+  const result = await UserService.createManagerIntoDB(password, managerData);
 
   sendResponse(res, {
     success: true,
@@ -50,44 +66,14 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'User retrive successfully  ',
-    data: result,
-  });
-});
-
-// const updateProfile = catchAsync(async (req: Request, res: Response) => {
-//   // paginationOptions
-//   const email = req.user?.userEmail;
-//   const updatedData = req.body;
-
-//   const result = await UserService.updateProfile(email, updatedData);
-
-//   sendResponse<TUser>(res, {
-//     success: true,
-//     statusCode: httpStatus.OK,
-//     message: 'User Updated successfully  ',
-//     data: result,
-//   });
-// });
-
-const deleteUser = catchAsync(async (req: Request, res: Response) => {
-  // paginationOptions
-  const { id } = req.params;
-
-  const result = await UserService.deleteUser(id);
-
-  sendResponse<TUser>(res, {
-    success: true,
-    statusCode: httpStatus.OK,
-    message: 'User delete successfully  ',
+    message: 'Manager retrive successfully  ',
     data: result,
   });
 });
 
 export const UserController = {
   createAdmin,
+  createManager,
   getAllUser,
   getMe,
-  // updateProfile,
-  deleteUser,
 };

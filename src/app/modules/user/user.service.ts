@@ -12,7 +12,7 @@ import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
 import { TManager } from '../manager/manager.interface';
 
-const createAdmin = async (password: string, adminData: TAdmin) => {
+const createAdminIntoDB = async (password: string, adminData: TAdmin) => {
   //
   const userData: Partial<TUser> = {};
 
@@ -48,7 +48,15 @@ const createAdmin = async (password: string, adminData: TAdmin) => {
   }
 };
 
-const createManager = async (password: string, managerData: TManager) => {};
+const createManagerIntoDB = async (password: string, managerData: TManager) => {
+  const userData: Partial<TManager> = {};
+
+  userData.role = 'manager';
+  userData.password = password;
+  userData.email = managerData.email;
+  const result = await User.create(managerData);
+  return result;
+};
 
 const getAllUser = async (
   filter: TUserFilters,
@@ -114,59 +122,9 @@ const getMe = async (userEmail: string, role: string) => {
   return result;
 };
 
-// const updateProfile = async (
-//   email: string,
-//   payload: Partial<TUser>
-// ): Promise<TUser | null> => {
-//   //
-
-//   // const isExist = await User.findOne({ email: email });
-//   // if (!isExist) {
-//   //   throw new ApiError(httpStatus.NOT_FOUND, 'User Not found');
-//   // }
-
-//   const { name, ...userData } = payload;
-//   const updatedUserData: Partial<TUser> = { ...userData };
-//   // const updatedUserData: Partial<TUser> = userData;
-
-//   if (name && Object.keys(name).length > 0) {
-//     Object.keys(name).forEach(key => {
-//       const nameKey = `name.${key}` as keyof Partial<TUser>;
-//       (updatedUserData as any)[nameKey] = name[key as keyof typeof name];
-//     });
-//   }
-//   const result = await User.findOneAndUpdate(
-//     { email: email },
-//     updatedUserData,
-//     {
-//       new: true,
-//     }
-//   );
-//   return result;
-// };
-
-const deleteUser = async (id: string): Promise<TUser | null> => {
-  const result = await User.findByIdAndDelete({ _id: id });
-  return result;
-};
-
 export const UserService = {
-  createAdmin,
+  createAdminIntoDB,
+  createManagerIntoDB,
   getAllUser,
   getMe,
-  // updateProfile,
-  deleteUser,
 };
-
-// const andConditions = [
-//   {
-//     $or: [
-//       {
-//         phoneNumber: {
-//           $regex: searchTerm,
-//           $options: 'i',
-//         },
-//       },
-//     ],
-//   },
-// ];
