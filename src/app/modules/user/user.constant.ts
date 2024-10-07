@@ -1,9 +1,18 @@
-export const role = ['super_admin', 'admin', 'donor'] as const;
+export const role = [
+  'super_admin',
+  'admin',
+  'manager',
+  'volunteer',
+  'donor',
+  'guest',
+] as const;
+
 export const USER_ROLE = {
-  superAdmin: 'superAdmin',
-  student: 'student',
-  faculty: 'faculty',
+  super_admin: 'super_admin',
   admin: 'admin',
+  manager: 'manager',
+  volunteer: 'volunteer',
+  guest: 'guest',
 } as const;
 
 export const userSearchableFields = [

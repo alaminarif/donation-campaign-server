@@ -21,6 +21,7 @@ const createAdminIntoDB = async (password: string, adminData: TAdmin) => {
   userData.email = adminData.email;
 
   const session = await mongoose.startSession();
+
   try {
     session.startTransaction();
 
@@ -49,11 +50,40 @@ const createAdminIntoDB = async (password: string, adminData: TAdmin) => {
 };
 
 const createManagerIntoDB = async (password: string, managerData: TManager) => {
-  const userData: Partial<TManager> = {};
+  const userData: Partial<TUser> = {};
 
   userData.role = 'manager';
   userData.password = password;
   userData.email = managerData.email;
+
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    const newUser = await User.create([userData], { session });
+
+    if (!newUser.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create user');
+    }
+    managerData.email = newUser[0].email;
+    managerData.user = newUser[0]._id;
+
+    const newAdmin = await Admin.create([managerData], { session });
+
+    if (!newAdmin.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create admin');
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+
+    return newAdmin;
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+  }
+
   const result = await User.create(managerData);
   return result;
 };

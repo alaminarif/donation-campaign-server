@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Model, Types } from 'mongoose';
-export type Role = 'super_admin' | 'admin';
+export type Role = 'super_admin' | 'admin' | 'manager';
 
 export type TUser = {
   _id?: Types.ObjectId;

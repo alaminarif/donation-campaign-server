@@ -23,4 +23,5 @@ router.patch(
 router.delete('/:email', ManagerController.deleteManager);
 
 router.patch('/my-profile', ManagerController.updateProfile);
+
 export const ManagerRoutes = router;
