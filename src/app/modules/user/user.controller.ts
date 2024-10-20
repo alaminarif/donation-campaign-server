@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import catchAsync from '../../../share/catchAsync';
+import catchAsync from '../../../utils/catchAsync';
 import { UserService } from './user.service';
 import httpStatus from 'http-status';
 import { TUser } from './user.interface';
-import sendResponse from '../../../share/sendResponse';
-import pick from '../../../share/pick';
+import sendResponse from '../../../utils/sendResponse';
+import pick from '../../../utils/pick';
 import { paginationFields } from '../../../constants/pagination';
 import { userFilterableFields } from './user.constant';
 

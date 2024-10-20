@@ -1,9 +1,9 @@
 import httpStatus from 'http-status';
 
-import sendResponse from '../../../share/sendResponse';
-import catchAsync from '../../../share/catchAsync';
+import sendResponse from '../../../utils/sendResponse';
+import catchAsync from '../../../utils/catchAsync';
 import { Request, Response } from 'express';
-import pick from '../../../share/pick';
+import pick from '../../../utils/pick';
 import { paginationFields } from '../../../constants/pagination';
 import { managerFilterableFields } from './manager.constant';
 import { ManagerService } from './manager.service';

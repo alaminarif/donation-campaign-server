@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import catchAsync from '../../../share/catchAsync';
+import catchAsync from '../../../utils/catchAsync';
 
-import sendResponse from '../../../share/sendResponse';
+import sendResponse from '../../../utils/sendResponse';
 
 import httpStatus from 'http-status';
 
 import { paginationFields } from '../../../constants/pagination';
-import pick from '../../../share/pick';
+import pick from '../../../utils/pick';
 import { BlogService } from './blog.service';
 import { IBlog } from './blog.interface';
 import { blogFilterableFields } from './blog.constant';

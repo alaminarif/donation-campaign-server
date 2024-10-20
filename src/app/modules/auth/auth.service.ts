@@ -12,7 +12,7 @@ import {
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import config from '../../../config';
 import { JwtPayload, Secret } from 'jsonwebtoken';
-import { sendEmail } from '../../../share/sendEmail';
+import { sendEmail } from '../../../utils/sendEmail';
 
 const loginUser = async (payload: TLogin): Promise<TLoginResponse> => {
   const { email, password } = payload;

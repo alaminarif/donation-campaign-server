@@ -137,7 +137,6 @@ const deleteAdminFromDB = async (email: string) => {
 };
 
 export const AdminService = {
-
   getAllAdmin,
   getMe,
   updateProfile,

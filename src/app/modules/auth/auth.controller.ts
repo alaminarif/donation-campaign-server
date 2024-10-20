@@ -1,6 +1,6 @@
 import httpStatus from 'http-status';
-import catchAsync from '../../../share/catchAsync';
-import sendResponse from '../../../share/sendResponse';
+import catchAsync from '../../../utils/catchAsync';
+import sendResponse from '../../../utils/sendResponse';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { TLoginResponse, IRefreshTokenResponse } from './auth.interface';

@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
 import { paginationFields } from '../../../constants/pagination';
-import catchAsync from '../../../share/catchAsync';
-import pick from '../../../share/pick';
-import sendResponse from '../../../share/sendResponse';
+import catchAsync from '../../../utils/catchAsync';
+import pick from '../../../utils/pick';
+import sendResponse from '../../../utils/sendResponse';
 // import { commentFilterableFields } from './comment.constant';
 import { IComment } from './comment.interface';
 import { CommentService } from './comment.service';

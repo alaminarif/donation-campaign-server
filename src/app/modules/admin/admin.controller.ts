@@ -1,11 +1,11 @@
 import httpStatus from 'http-status';
 import { TAdmin } from './admin.interface';
 import { AdminService } from './admin.service';
-import sendResponse from '../../../share/sendResponse';
-import catchAsync from '../../../share/catchAsync';
+import sendResponse from '../../../utils/sendResponse';
+import catchAsync from '../../../utils/catchAsync';
 import { Request, Response } from 'express';
 import { adminFilterableFields } from './admin.constant';
-import pick from '../../../share/pick';
+import pick from '../../../utils/pick';
 import { paginationFields } from '../../../constants/pagination';
 
 const getAllAdmin = catchAsync(async (req: Request, res: Response) => {
