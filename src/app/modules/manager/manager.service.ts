@@ -64,37 +64,43 @@ const getAllmanager = async (
   };
 };
 
-const getMe = async (email: string): Promise<TManager | null> => {
-  const result = await Manager.findOne({ email: email });
+const getSingleManagerFromDB = async (
+  adminId: string
+): Promise<TManager | null> => {
+  const result = await Manager.findOne({ email: adminId });
   return result;
 };
 
-const updateProfile = async (
+const updateManagerIntroDB = async (
   email: string,
   payload: Partial<TManager>
 ): Promise<TManager | null> => {
   //
 
-  // const isExist = await manager.findOne({ email: email });
+  // const isExist = await Admin.findOne({ email: email });
   // if (!isExist) {
-  //   throw new ApiError(httpStatus.NOT_FOUND, 'manager Not found');
+  //   throw new ApiError(httpStatus.NOT_FOUND, 'Admin Not found');
   // }
 
-  const { name, ...managerData } = payload;
-  const updatedmanagerData: Partial<TManager> = { ...managerData };
-  // const updatedmanagerData: Partial<TManager> = managerData;
+  const { name, ...remainingManagerData } = payload;
 
-  if (name && Object.keys(name).length > 0) {
-    Object.keys(name).forEach(key => {
-      const nameKey = `name.${key}` as keyof Partial<TManager>;
-      (updatedmanagerData as any)[nameKey] = name[key as keyof typeof name];
-    });
+  console.log('name:', payload);
+
+  const modifiedUpdatedData: Record<string, unknown> = {
+    ...remainingManagerData,
+  };
+
+  if (name && Object.keys(name).length) {
+    for (const [key, value] of Object.entries(name)) {
+      modifiedUpdatedData[`name.${key}`] = value;
+    }
   }
   const result = await Manager.findOneAndUpdate(
     { email: email },
-    updatedmanagerData,
+    modifiedUpdatedData,
     {
       new: true,
+      runValidators: true,
     }
   );
   return result;
@@ -138,7 +144,7 @@ const deleteManagerFromDB = async (email: string) => {
 
 export const ManagerService = {
   getAllmanager,
-  getMe,
-  updateProfile,
+  getSingleManagerFromDB,
+  updateManagerIntroDB,
   deleteManagerFromDB,
 };

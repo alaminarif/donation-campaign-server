@@ -10,7 +10,7 @@ import { paginationHelpers } from '../../../helpers/paginationHelper';
 import mongoose, { SortOrder } from 'mongoose';
 import { User } from '../user/user.model';
 
-const getAllAdmin = async (
+const getAllAdminFromDB = async (
   filter: TAdminFilters,
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<TAdmin[]> | null> => {
@@ -64,12 +64,14 @@ const getAllAdmin = async (
   };
 };
 
-const getMe = async (email: string): Promise<TAdmin | null> => {
-  const result = await Admin.findOne({ email: email });
+const getSingleAdminFromDB = async (
+  adminId: string
+): Promise<TAdmin | null> => {
+  const result = await Admin.findOne({ email: adminId });
   return result;
 };
 
-const updateProfile = async (
+const updateAdminIntroDB = async (
   email: string,
   payload: Partial<TAdmin>
 ): Promise<TAdmin | null> => {
@@ -80,21 +82,24 @@ const updateProfile = async (
   //   throw new ApiError(httpStatus.NOT_FOUND, 'Admin Not found');
   // }
 
-  const { name, ...AdminData } = payload;
-  const updatedAdminData: Partial<TAdmin> = { ...AdminData };
-  // const updatedAdminData: Partial<TAdmin> = AdminData;
+  const { name, ...remainingAdminData } = payload;
+  console.log('name:', payload);
 
-  if (name && Object.keys(name).length > 0) {
-    Object.keys(name).forEach(key => {
-      const nameKey = `name.${key}` as keyof Partial<TAdmin>;
-      (updatedAdminData as any)[nameKey] = name[key as keyof typeof name];
-    });
+  const modifiedUpdatedData: Record<string, unknown> = {
+    ...remainingAdminData,
+  };
+
+  if (name && Object.keys(name).length) {
+    for (const [key, value] of Object.entries(name)) {
+      modifiedUpdatedData[`name.${key}`] = value;
+    }
   }
   const result = await Admin.findOneAndUpdate(
     { email: email },
-    updatedAdminData,
+    modifiedUpdatedData,
     {
       new: true,
+      runValidators: true,
     }
   );
   return result;
@@ -137,8 +142,8 @@ const deleteAdminFromDB = async (email: string) => {
 };
 
 export const AdminService = {
-  getAllAdmin,
-  getMe,
-  updateProfile,
+  getAllAdminFromDB,
+  getSingleAdminFromDB,
+  updateAdminIntroDB,
   deleteAdminFromDB,
 };

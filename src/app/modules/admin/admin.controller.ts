@@ -14,7 +14,10 @@ const getAllAdmin = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, adminFilterableFields);
   const paginationOptions = pick(req.query, paginationFields);
 
-  const result = await AdminService.getAllAdmin(filters, paginationOptions);
+  const result = await AdminService.getAllAdminFromDB(
+    filters,
+    paginationOptions
+  );
 
   sendResponse<TAdmin[]>(res, {
     success: true,
@@ -25,14 +28,12 @@ const getAllAdmin = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getMe = catchAsync(async (req: Request, res: Response) => {
-  // paginationOptions
-  const email = req.user?.adminEmail;
-  console.log(' : ', email);
+const getSingleAdmin = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
 
-  const result = await AdminService.getMe(email);
+  const result = await AdminService.getSingleAdminFromDB(email);
 
-  sendResponse<TAdmin>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'Admin retrive successfully  ',
@@ -40,17 +41,16 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateProfile = catchAsync(async (req: Request, res: Response) => {
-  // paginationOptions
-  const email = req.user?.adminEmail;
-  const updatedData = req.body;
+const updateAdmin = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const { admin } = req.body;
+  console.log('admin : ', email);
+  const result = await AdminService.updateAdminIntroDB(email, admin);
 
-  const result = await AdminService.updateProfile(email, updatedData);
-
-  sendResponse<TAdmin>(res, {
-    success: true,
+  sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'Admin Updated successfully  ',
+    success: true,
+    message: 'Admin is updated successfully',
     data: result,
   });
 });
@@ -68,9 +68,10 @@ const deleteAdmin = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 export const AdminController = {
   getAllAdmin,
-  getMe,
-  updateProfile,
+  getSingleAdmin,
+  updateAdmin,
   deleteAdmin,
 };

@@ -11,6 +11,7 @@ import { Admin } from '../admin/admin.model';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
 import { TManager } from '../manager/manager.interface';
+import { Manager } from '../manager/manager.model';
 
 const createAdminIntoDB = async (password: string, adminData: TAdmin) => {
   //
@@ -43,9 +44,10 @@ const createAdminIntoDB = async (password: string, adminData: TAdmin) => {
     await session.endSession();
 
     return newAdmin;
-  } catch (error) {
+  } catch (err: any) {
     await session.abortTransaction();
     await session.endSession();
+    throw new Error(err);
   }
 };
 
@@ -69,23 +71,21 @@ const createManagerIntoDB = async (password: string, managerData: TManager) => {
     managerData.email = newUser[0].email;
     managerData.user = newUser[0]._id;
 
-    const newAdmin = await Admin.create([managerData], { session });
+    const newManager = await Manager.create([managerData], { session });
 
-    if (!newAdmin.length) {
+    if (!newManager.length) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create admin');
     }
 
     await session.commitTransaction();
     await session.endSession();
 
-    return newAdmin;
-  } catch (error) {
+    return newManager;
+  } catch (error: any) {
     await session.abortTransaction();
     await session.endSession();
+    throw new Error(error);
   }
-
-  const result = await User.create(managerData);
-  return result;
 };
 
 const getAllUser = async (

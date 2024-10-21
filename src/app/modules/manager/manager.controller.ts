@@ -26,14 +26,12 @@ const getAllManager = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getMe = catchAsync(async (req: Request, res: Response) => {
-  // paginationOptions
-  const email = req.user?.adminEmail;
-  console.log(' : ', email);
+const getSingleManager = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
 
-  const result = await ManagerService.getMe(email);
+  const result = await ManagerService.getSingleManagerFromDB(email);
 
-  sendResponse<TManager>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'Admin retrive successfully  ',
@@ -41,17 +39,17 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateProfile = catchAsync(async (req: Request, res: Response) => {
-  // paginationOptions
-  const email = req.user?.adminEmail;
-  const updatedData = req.body;
+const updateManager = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
+  console.log('manage email :', email);
+  const { manager } = req.body;
+  // console.log('admin : ', id);
+  const result = await ManagerService.updateManagerIntroDB(email, manager);
 
-  const result = await ManagerService.updateProfile(email, updatedData);
-
-  sendResponse<TManager>(res, {
-    success: true,
+  sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'Admin Updated successfully  ',
+    success: true,
+    message: 'Manager is updated successfully',
     data: result,
   });
 });
@@ -69,9 +67,10 @@ const deleteManager = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 export const ManagerController = {
   getAllManager,
-  getMe,
-  updateProfile,
+  getSingleManager,
+  updateManager,
   deleteManager,
 };
