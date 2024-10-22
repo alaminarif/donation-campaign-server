@@ -26,6 +26,10 @@ const moduleRoutes = [
     route: AdminRoutes,
   },
   {
+    path: '/volunteers',
+    route: AdminRoutes,
+  },
+  {
     path: '/managers',
     route: ManagerRoutes,
   },
