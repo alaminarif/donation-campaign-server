@@ -2,6 +2,8 @@ import { TBloodGroup, TGender } from './volunteer.interface';
 
 export const Gender: TGender[] = ['male', 'female', 'other'];
 
+export const Days = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+
 export const BloodGroup: TBloodGroup[] = [
   'A+',
   'A-',

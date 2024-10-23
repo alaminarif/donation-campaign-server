@@ -9,6 +9,7 @@ import { BlogRoutes } from '../modules/blog/blog.route';
 import { PaymentRoutes } from '../modules/payment/payment.route';
 import { RatingRoutes } from '../modules/rating/rating.route';
 import { ManagerRoutes } from '../modules/manager/manager.route';
+import { VolunteerRoutes } from '../modules/volunteer/volunteer.route';
 
 const router = express.Router();
 
@@ -27,7 +28,7 @@ const moduleRoutes = [
   },
   {
     path: '/volunteers',
-    route: AdminRoutes,
+    route: VolunteerRoutes,
   },
   {
     path: '/managers',

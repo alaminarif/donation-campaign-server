@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 // import bcrypt from 'bcrypt';
-import { BloodGroup, Gender } from './volunteer.constant';
+import { BloodGroup, Days, Gender } from './volunteer.constant';
 import { VolunteerModel, TVolunteer, TUserName } from './volunteer.interface';
 // import config from '../../../config';
 
@@ -53,9 +53,15 @@ const VolunteerSchema = new Schema<TVolunteer, VolunteerModel>(
       required: [true, 'Gender is required'],
     },
 
+    dateOfBirth: { type: Date },
+
     contactNo: {
       type: String,
       required: [true, 'Contact number is required'],
+    },
+    address: {
+      type: String,
+      required: [true, 'address is required'],
     },
 
     bloogGroup: {
@@ -66,14 +72,31 @@ const VolunteerSchema = new Schema<TVolunteer, VolunteerModel>(
       },
     },
 
-    dateOfBirth: { type: Date },
-
-    profileImg: { type: String },
-
-    address: {
+    skill: {
       type: String,
-      required: true,
+      required: [true, 'skill is required'],
     },
+
+    abailability: {
+      type: String,
+      enum: Days,
+    },
+    preferredCampaigns: {
+      type: String,
+    },
+
+    startDate: {
+      type: Date,
+      required: [true, 'startDate is required'],
+    },
+    endDate: {
+      type: Date,
+      required: [true, 'endDate is required'],
+    },
+    hoursLogged: {
+      type: String,
+    },
+    profileImg: { type: String },
 
     isDeleted: {
       type: Boolean,

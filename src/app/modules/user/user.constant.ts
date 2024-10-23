@@ -1,12 +1,3 @@
-export const role = [
-  'super_admin',
-  'admin',
-  'manager',
-  'volunteer',
-  'donor',
-  'guest',
-] as const;
-
 export const USER_ROLE = {
   super_admin: 'super_admin',
   admin: 'admin',

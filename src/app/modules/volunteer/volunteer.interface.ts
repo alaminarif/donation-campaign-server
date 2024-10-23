@@ -7,13 +7,14 @@ export type TUserName = {
   lastName: string;
 };
 export type TGender = 'male' | 'female' | 'other';
-export type TSkill =
-  | 'Event Planning'
-  | 'Public Speaking'
-  | 'IT Support'
-  | 'Graphic Design'
-  | 'Fundraising'
-  | 'Marketing';
+
+// export type TSkill =
+//   | 'Event Planning'
+//   | 'Public Speaking'
+//   | 'IT Support'
+//   | 'Graphic Design'
+//   | 'Fundraising'
+//   | 'Marketing';
 
 export type TBloodGroup =
   | 'A+'
@@ -37,10 +38,13 @@ export type TVolunteer = {
   dateOfBirth?: Date;
   contactNo: string;
   address: string;
-  bloogGroup?: TBloodGroup;
-  skill: TSkill;
+  bloogGroup: TBloodGroup;
+  skill: string;
   abailability: TDays;
-
+  preferredCampaigns: string;
+  startDate: Date;
+  endDate: Date;
+  hoursLogged?: string;
   profileImg?: string;
   isDeleted: boolean;
 };

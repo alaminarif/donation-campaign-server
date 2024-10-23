@@ -12,6 +12,8 @@ import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
 import { TManager } from '../manager/manager.interface';
 import { Manager } from '../manager/manager.model';
+import { TVolunteer } from '../volunteer/volunteer.interface';
+import { Volunteer } from '../volunteer/volunteer.model';
 
 const createAdminIntoDB = async (password: string, adminData: TAdmin) => {
   //
@@ -88,6 +90,44 @@ const createManagerIntoDB = async (password: string, managerData: TManager) => {
   }
 };
 
+const createVolunteerIntoDB = async (
+  password: string,
+  volunteerData: TVolunteer
+) => {
+  const userData: Partial<TUser> = {};
+  userData.password = password;
+  userData.email = volunteerData.email;
+  userData.role = 'volunteer';
+
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+
+    const newUser = await User.create([userData], { session });
+
+    if (!newUser.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create user');
+    }
+
+    volunteerData.email = newUser[0].email;
+    volunteerData.user = newUser[0]._id;
+
+    const newVolunteer = await Volunteer.create([volunteerData], { session });
+    if (!newVolunteer.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create admin');
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+
+    return newVolunteer;
+  } catch (err: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(err);
+  }
+};
+
 const getAllUser = async (
   filter: TUserFilters,
   paginationOptions: IPaginationOptions
@@ -155,6 +195,7 @@ const getMe = async (userEmail: string, role: string) => {
 export const UserService = {
   createAdminIntoDB,
   createManagerIntoDB,
+  createVolunteerIntoDB,
   getAllUser,
   getMe,
 };
