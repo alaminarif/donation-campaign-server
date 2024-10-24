@@ -1,27 +1,27 @@
 import { Response } from 'express';
 
-type TApiReponse<T> = {
-  statusCode: number;
-  success: boolean;
-  message?: string | null;
-  meta?: {
-    page: number;
-    limit: number;
-    total: number;
-  };
-  data?: T | null;
+type TMeta = {
+  limit: number;
+  page: number;
+  total: number;
+  totalPage: number;
 };
 
-const sendResponse = <T>(res: Response, data: TApiReponse<T>): void => {
-  const responseData: TApiReponse<T> = {
-    statusCode: data.statusCode,
-    success: data.success,
-    message: data.message || null,
-    meta: data.meta || null || undefined,
-    data: data.data || null || undefined,
-  };
+type TResponse<T> = {
+  statusCode: number;
+  success: boolean;
+  message?: string;
+  meta?: TMeta;
+  data: T;
+};
 
-  res.status(data.statusCode).json(responseData);
+const sendResponse = <T>(res: Response, data: TResponse<T>) => {
+  res.status(data?.statusCode).json({
+    success: data.success,
+    message: data.message,
+    meta: data.meta,
+    data: data.data,
+  });
 };
 
 export default sendResponse;

@@ -1,30 +1,20 @@
 import httpStatus from 'http-status';
-import { TAdmin } from './admin.interface';
 import { AdminService } from './admin.service';
 import sendResponse from '../../../utils/sendResponse';
 import catchAsync from '../../../utils/catchAsync';
 import { Request, Response } from 'express';
-import { adminFilterableFields } from './admin.constant';
-import pick from '../../../utils/pick';
-import { paginationFields } from '../../../constants/pagination';
 
 const getAllAdmin = catchAsync(async (req: Request, res: Response) => {
   // paginationOptions
 
-  const filters = pick(req.query, adminFilterableFields);
-  const paginationOptions = pick(req.query, paginationFields);
+  const result = await AdminService.getAllAdminsFromDB(req.query);
 
-  const result = await AdminService.getAllAdminFromDB(
-    filters,
-    paginationOptions
-  );
-
-  sendResponse<TAdmin[]>(res, {
-    success: true,
+  sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'Admin retrive successfully  ',
-    meta: result?.meta,
-    data: result?.data,
+    success: true,
+    message: 'Admins are retrieved successfully',
+    meta: result.meta,
+    data: result.result,
   });
 });
 

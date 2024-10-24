@@ -1,14 +1,9 @@
-import { Request, Response } from 'express';
 import catchAsync from '../../../utils/catchAsync';
 import { UserService } from './user.service';
 import httpStatus from 'http-status';
-import { TUser } from './user.interface';
 import sendResponse from '../../../utils/sendResponse';
-import pick from '../../../utils/pick';
-import { paginationFields } from '../../../constants/pagination';
-import { userFilterableFields } from './user.constant';
 
-const createAdmin = catchAsync(async (req: Request, res: Response) => {
+const createAdmin = catchAsync(async (req, res) => {
   const { password, admin: adminData } = req.body;
 
   // const us = req.headers.authorization;
@@ -24,7 +19,7 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const createManager = catchAsync(async (req: Request, res: Response) => {
+const createManager = catchAsync(async (req, res) => {
   const { password, manager: managerData } = req.body;
 
   // const us = req.headers.authorization;
@@ -40,24 +35,22 @@ const createManager = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getAllUser = catchAsync(async (req: Request, res: Response) => {
-  // paginationOptions
+const createVolunteer = catchAsync(async (req, res) => {
+  const { password, volunteer: volunteerData } = req.body;
+  const result = await UserService.createVolunteerIntoDB(
+    password,
+    volunteerData
+  );
 
-  const filters = pick(req.query, userFilterableFields);
-  const paginationOptions = pick(req.query, paginationFields);
-
-  const result = await UserService.getAllUser(filters, paginationOptions);
-
-  sendResponse<TUser[]>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'User retrive successfully  ',
-    meta: result?.meta,
-    data: result?.data,
+    message: 'Volunteer created successfully  ',
+    data: result,
   });
 });
 
-const getMe = catchAsync(async (req: Request, res: Response) => {
+const getMe = catchAsync(async (req, res) => {
   // paginationOptions
   const { userEmail, role } = req.user!;
 
@@ -74,6 +67,6 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
 export const UserController = {
   createAdmin,
   createManager,
-  getAllUser,
+  createVolunteer,
   getMe,
 };

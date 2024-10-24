@@ -1,13 +1,11 @@
 import express from 'express';
-// import validateRequest from '../../middlewares/validateRequest';
-
 import { UserController } from './user.controller';
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import validateRequest from '../../middlewares/validateRequest';
-// import { UserValidation } from './user.validation';
 import { AdminValidation } from '../admin/admin.validation';
 import { ManagerValidation } from '../manager/manager.validation';
+import { VolunteerValidation } from '../volunteer/volunteer.validation';
 
 const router = express.Router();
 
@@ -24,7 +22,11 @@ router.post(
   UserController.createManager
 );
 
-// router.get('/', UserController.getAllUser);
+router.post(
+  '/create-volunteer',
+  validateRequest(VolunteerValidation.createVolunteerValidationSchema),
+  UserController.createVolunteer
+);
 
 router.get(
   '/me',

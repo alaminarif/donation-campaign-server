@@ -1,66 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
-import { TAdmin, TAdminFilters } from './admin.interface';
+import { TAdmin } from './admin.interface';
 import { Admin } from './admin.model';
-import { IPaginationOptions } from '../../../interfaces/pagination';
-import { IGenericResponse } from '../../../interfaces/common';
-import { adminSearchableFields } from './admin.constant';
-import { paginationHelpers } from '../../../helpers/paginationHelper';
-import mongoose, { SortOrder } from 'mongoose';
+import mongoose from 'mongoose';
 import { User } from '../user/user.model';
+import QueryBuilder from '../../builder/QueryBuilder';
+import { AdminSearchableFields } from './admin.constant';
 
-const getAllAdminFromDB = async (
-  filter: TAdminFilters,
-  paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<TAdmin[]> | null> => {
-  //
+const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
+  const adminQuery = new QueryBuilder(Admin.find(), query)
+    .search(AdminSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
 
-  const { searchTerm, ...filterData } = filter;
-  const andConditions = [];
-
-  if (searchTerm) {
-    andConditions.push({
-      $or: adminSearchableFields.map(field => ({
-        [field]: {
-          $regex: searchTerm,
-          $options: 'i',
-        },
-      })),
-    });
-  }
-
-  if (Object.keys(filterData).length) {
-    andConditions.push({
-      $and: Object.entries(filterData).map(([field, value]) => ({
-        [field]: value,
-      })),
-    });
-  }
-  const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelpers.calculatePagination(paginationOptions);
-
-  const sortConditions: { [key: string]: SortOrder } = {};
-
-  if (sortBy && sortOrder) {
-    sortConditions[sortBy] = sortOrder;
-  }
-
-  const whareConditions =
-    andConditions.length > 0 ? { $and: andConditions } : {};
-  const result = await Admin.find(whareConditions)
-    .skip(skip)
-    .limit(limit)
-    .sort(sortConditions);
-
-  const total = await Admin.countDocuments(whareConditions);
+  const result = await adminQuery.modelQuery;
+  const meta = await adminQuery.countTotal();
   return {
-    meta: {
-      page,
-      limit,
-      total,
-    },
-    data: result,
+    result,
+    meta,
   };
 };
 
@@ -77,13 +37,13 @@ const updateAdminIntroDB = async (
 ): Promise<TAdmin | null> => {
   //
 
-  // const isExist = await Admin.findOne({ email: email });
-  // if (!isExist) {
-  //   throw new ApiError(httpStatus.NOT_FOUND, 'Admin Not found');
-  // }
+  const isExist = await Admin.findOne({ email: email });
+
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Admin Not found');
+  }
 
   const { name, ...remainingAdminData } = payload;
-  console.log('name:', payload);
 
   const modifiedUpdatedData: Record<string, unknown> = {
     ...remainingAdminData,
@@ -106,6 +66,13 @@ const updateAdminIntroDB = async (
 };
 
 const deleteAdminFromDB = async (email: string) => {
+  //
+  const isExist = await Admin.findOne({ email: email });
+
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Admin Not found');
+  }
+
   const session = await mongoose.startSession();
 
   try {
@@ -142,7 +109,7 @@ const deleteAdminFromDB = async (email: string) => {
 };
 
 export const AdminService = {
-  getAllAdminFromDB,
+  getAllAdminsFromDB,
   getSingleAdminFromDB,
   updateAdminIntroDB,
   deleteAdminFromDB,

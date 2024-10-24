@@ -1,11 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import mongoose, { SortOrder } from 'mongoose';
-import { paginationHelpers } from '../../../helpers/paginationHelper';
-import { IGenericResponse } from '../../../interfaces/common';
-import { IPaginationOptions } from '../../../interfaces/pagination';
-import { TUser, TUserFilters } from './user.interface';
+import mongoose from 'mongoose';
+import { TUser } from './user.interface';
 import { User } from './user.model';
-import { userSearchableFields } from './user.constant';
 import { TAdmin } from '../admin/admin.interface';
 import { Admin } from '../admin/admin.model';
 import ApiError from '../../../errors/ApiError';
@@ -128,60 +124,6 @@ const createVolunteerIntoDB = async (
   }
 };
 
-const getAllUser = async (
-  filter: TUserFilters,
-  paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<TUser[]> | null> => {
-  //
-
-  const { searchTerm, ...filterData } = filter;
-  const andConditions = [];
-
-  if (searchTerm) {
-    andConditions.push({
-      $or: userSearchableFields.map(field => ({
-        [field]: {
-          $regex: searchTerm,
-          $options: 'i',
-        },
-      })),
-    });
-  }
-
-  if (Object.keys(filterData).length) {
-    andConditions.push({
-      $and: Object.entries(filterData).map(([field, value]) => ({
-        [field]: value,
-      })),
-    });
-  }
-  const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelpers.calculatePagination(paginationOptions);
-
-  const sortConditions: { [key: string]: SortOrder } = {};
-
-  if (sortBy && sortOrder) {
-    sortConditions[sortBy] = sortOrder;
-  }
-
-  const whareConditions =
-    andConditions.length > 0 ? { $and: andConditions } : {};
-  const result = await User.find(whareConditions)
-    .skip(skip)
-    .limit(limit)
-    .sort(sortConditions);
-
-  const total = await User.countDocuments(whareConditions);
-  return {
-    meta: {
-      page,
-      limit,
-      total,
-    },
-    data: result,
-  };
-};
-
 const getMe = async (userEmail: string, role: string) => {
   let result = null;
 
@@ -196,6 +138,6 @@ export const UserService = {
   createAdminIntoDB,
   createManagerIntoDB,
   createVolunteerIntoDB,
-  getAllUser,
+  // getAllUser,
   getMe,
 };

@@ -1,66 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
-import { TManager, TManagerFilters } from './manager.interface';
-import { IPaginationOptions } from '../../../interfaces/pagination';
-import { IGenericResponse } from '../../../interfaces/common';
-import { managerSearchableFields } from './manager.constant';
-import { paginationHelpers } from '../../../helpers/paginationHelper';
-import mongoose, { SortOrder } from 'mongoose';
+import { TManager } from './manager.interface';
+
+import mongoose from 'mongoose';
 import { User } from '../user/user.model';
 import { Manager } from './manager.model';
+import QueryBuilder from '../../builder/QueryBuilder';
+import { managerSearchableFields } from './manager.constant';
 
-const getAllmanager = async (
-  filter: TManagerFilters,
-  paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<TManager[]> | null> => {
+const getAllmanager = async (query: Record<string, unknown>) => {
   //
+  const managerQuery = new QueryBuilder(Manager.find(), query)
+    .search(managerSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
 
-  const { searchTerm, ...filterData } = filter;
-  const andConditions = [];
-
-  if (searchTerm) {
-    andConditions.push({
-      $or: managerSearchableFields.map(field => ({
-        [field]: {
-          $regex: searchTerm,
-          $options: 'i',
-        },
-      })),
-    });
-  }
-
-  if (Object.keys(filterData).length) {
-    andConditions.push({
-      $and: Object.entries(filterData).map(([field, value]) => ({
-        [field]: value,
-      })),
-    });
-  }
-  const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelpers.calculatePagination(paginationOptions);
-
-  const sortConditions: { [key: string]: SortOrder } = {};
-
-  if (sortBy && sortOrder) {
-    sortConditions[sortBy] = sortOrder;
-  }
-
-  const whareConditions =
-    andConditions.length > 0 ? { $and: andConditions } : {};
-  const result = await Manager.find(whareConditions)
-    .skip(skip)
-    .limit(limit)
-    .sort(sortConditions);
-
-  const total = await Manager.countDocuments(whareConditions);
+  const result = await managerQuery.modelQuery;
+  const meta = await managerQuery.countTotal();
   return {
-    meta: {
-      page,
-      limit,
-      total,
-    },
-    data: result,
+    result,
+    meta,
   };
 };
 
