@@ -1,11 +1,9 @@
 import httpStatus from 'http-status';
-
 import sendResponse from '../../../utils/sendResponse';
 import catchAsync from '../../../utils/catchAsync';
-import { Request, Response } from 'express';
 import { ManagerService } from './manager.service';
 
-const getAllManager = catchAsync(async (req: Request, res: Response) => {
+const getAllManager = catchAsync(async (req, res) => {
   // paginationOptions
 
   const result = await ManagerService.getAllmanager(req.query);
@@ -18,7 +16,7 @@ const getAllManager = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getSingleManager = catchAsync(async (req: Request, res: Response) => {
+const getSingleManager = catchAsync(async (req, res) => {
   const { email } = req.params;
 
   const result = await ManagerService.getSingleManagerFromDB(email);
@@ -31,7 +29,7 @@ const getSingleManager = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateManager = catchAsync(async (req: Request, res: Response) => {
+const updateManager = catchAsync(async (req, res) => {
   const { email } = req.params;
   console.log('manage email :', email);
   const { manager } = req.body;
@@ -46,7 +44,7 @@ const updateManager = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const deleteManager = catchAsync(async (req: Request, res: Response) => {
+const deleteManager = catchAsync(async (req, res) => {
   // paginationOptions
   const { email } = req.params;
 

@@ -2,9 +2,8 @@ import httpStatus from 'http-status';
 import { AdminService } from './admin.service';
 import sendResponse from '../../../utils/sendResponse';
 import catchAsync from '../../../utils/catchAsync';
-import { Request, Response } from 'express';
 
-const getAllAdmin = catchAsync(async (req: Request, res: Response) => {
+const getAllAdmin = catchAsync(async (req, res) => {
   // paginationOptions
 
   const result = await AdminService.getAllAdminsFromDB(req.query);
@@ -18,7 +17,7 @@ const getAllAdmin = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getSingleAdmin = catchAsync(async (req: Request, res: Response) => {
+const getSingleAdmin = catchAsync(async (req, res) => {
   const { email } = req.params;
 
   const result = await AdminService.getSingleAdminFromDB(email);
@@ -31,10 +30,9 @@ const getSingleAdmin = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateAdmin = catchAsync(async (req: Request, res: Response) => {
+const updateAdmin = catchAsync(async (req, res) => {
   const { email } = req.params;
   const { admin } = req.body;
-  console.log('admin : ', email);
   const result = await AdminService.updateAdminIntroDB(email, admin);
 
   sendResponse(res, {
@@ -45,7 +43,7 @@ const updateAdmin = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const deleteAdmin = catchAsync(async (req: Request, res: Response) => {
+const deleteAdmin = catchAsync(async (req, res) => {
   // paginationOptions
   const { email } = req.params;
 

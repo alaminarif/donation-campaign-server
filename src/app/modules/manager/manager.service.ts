@@ -26,9 +26,7 @@ const getAllmanager = async (query: Record<string, unknown>) => {
   };
 };
 
-const getSingleManagerFromDB = async (
-  adminId: string
-): Promise<TManager | null> => {
+const getSingleManagerFromDB = async (adminId: string) => {
   const result = await Manager.findOne({ email: adminId });
   return result;
 };
