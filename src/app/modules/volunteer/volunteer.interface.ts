@@ -32,7 +32,6 @@ export type TVolunteer = {
   _id?: Types.ObjectId;
   user: Types.ObjectId;
   email: string;
-  designation: string;
   name: TUserName;
   gender: TGender;
   dateOfBirth?: Date;

@@ -34,11 +34,6 @@ const VolunteerSchema = new Schema<TVolunteer, VolunteerModel>(
       // unique: true,
     },
 
-    designation: {
-      type: String,
-      required: [true, 'Designation is required'],
-    },
-
     name: {
       type: userNameSchema,
       required: [true, 'Name is required'],

@@ -50,6 +50,18 @@ const createVolunteer = catchAsync(async (req, res) => {
   });
 });
 
+const createDonor = catchAsync(async (req, res) => {
+  const { password, donor: donorData } = req.body;
+  const result = await UserService.createDonorIntoDB(password, donorData);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'donor created successfully  ',
+    data: result,
+  });
+});
+
 const getMe = catchAsync(async (req, res) => {
   // paginationOptions
   const { userEmail, role } = req.user!;
@@ -68,5 +80,6 @@ export const UserController = {
   createAdmin,
   createManager,
   createVolunteer,
+  createDonor,
   getMe,
 };

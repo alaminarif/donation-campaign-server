@@ -1,8 +1,6 @@
-import { Schema, model } from 'mongoose';
-// import bcrypt from 'bcrypt';
-import { BloodGroup, Gender } from './admin.constant';
-import { AdminModel, TAdmin, TUserName } from './admin.interface';
-// import config from '../../../config';
+import { model, Schema } from 'mongoose';
+import { DonorModel, TDonor, TUserName } from './donor.interface';
+import { BloodGroup, Gender } from './donor.constant';
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -20,7 +18,7 @@ const userNameSchema = new Schema<TUserName>({
   },
 });
 
-const AdminSchema = new Schema<TAdmin, AdminModel>(
+const DonorSchema = new Schema<TDonor, DonorModel>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -28,15 +26,21 @@ const AdminSchema = new Schema<TAdmin, AdminModel>(
       unique: true,
       ref: 'User',
     },
-    email: {
+
+    designation: {
       type: String,
-      required: true,
-      // unique: true,
+      required: [true, 'Designation is required'],
     },
 
     name: {
       type: userNameSchema,
       required: [true, 'Name is required'],
+    },
+
+    email: {
+      type: String,
+      required: true,
+      // unique: true,
     },
 
     gender: {
@@ -61,14 +65,14 @@ const AdminSchema = new Schema<TAdmin, AdminModel>(
       },
     },
 
+    address: {
+      type: String,
+      required: [true, 'address is required'],
+    },
+
     dateOfBirth: { type: Date },
 
     profileImg: { type: String },
-
-    address: {
-      type: String,
-      required: true,
-    },
 
     isDeleted: {
       type: Boolean,
@@ -82,24 +86,24 @@ const AdminSchema = new Schema<TAdmin, AdminModel>(
 );
 
 // query middlewares
-AdminSchema.pre('find', function (next) {
+DonorSchema.pre('find', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
 
-AdminSchema.pre('findOne', function (next) {
+DonorSchema.pre('findOne', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
 
-AdminSchema.pre('aggregate', function (next) {
+DonorSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
   next();
 });
 
-AdminSchema.statics.isUserExists = async function (email: string) {
-  const existingUser = await Admin.findOne({ email });
+DonorSchema.statics.isUserExists = async function (email: string) {
+  const existingUser = await Donor.findOne({ email });
   return existingUser;
 };
 
-export const Admin = model<TAdmin, AdminModel>('Admin', AdminSchema);
+export const Donor = model<TDonor, DonorModel>('Donor', DonorSchema);

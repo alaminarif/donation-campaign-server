@@ -10,6 +10,7 @@ import { PaymentRoutes } from '../modules/payment/payment.route';
 import { RatingRoutes } from '../modules/rating/rating.route';
 import { ManagerRoutes } from '../modules/manager/manager.route';
 import { VolunteerRoutes } from '../modules/volunteer/volunteer.route';
+import { DonorRoutes } from '../modules/donor/donor.route';
 
 const router = express.Router();
 
@@ -33,6 +34,10 @@ const moduleRoutes = [
   {
     path: '/managers',
     route: ManagerRoutes,
+  },
+  {
+    path: '/donors',
+    route: DonorRoutes,
   },
 
   {

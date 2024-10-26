@@ -1,11 +1,10 @@
 import express from 'express';
 import { UserController } from './user.controller';
-import auth from '../../middlewares/auth';
-import { ENUM_USER_ROLE } from '../../../enums/user';
 import validateRequest from '../../middlewares/validateRequest';
 import { AdminValidation } from '../admin/admin.validation';
 import { ManagerValidation } from '../manager/manager.validation';
 import { VolunteerValidation } from '../volunteer/volunteer.validation';
+import { DonorValidation } from '../donor/donor.validation';
 
 const router = express.Router();
 
@@ -28,9 +27,15 @@ router.post(
   UserController.createVolunteer
 );
 
+router.post(
+  '/create-donor',
+  validateRequest(DonorValidation.createDonorValidationSchema),
+  UserController.createDonor
+);
+
 router.get(
   '/me',
-  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
+  // auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
   UserController.getMe
 );
 

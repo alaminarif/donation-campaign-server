@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Model, Types } from 'mongoose';
-export type Role = 'admin';
+export type Role = 'donor';
 
 export type TUserName = {
   firstName: string;
@@ -18,9 +18,10 @@ export type TBloodGroup =
   | 'O+'
   | 'O-';
 
-export type TManager = {
+export type TDonor = {
   _id?: Types.ObjectId;
   user: Types.ObjectId;
+  designation: string;
   name: TUserName;
   email: string;
   contactNo: string;
@@ -37,20 +38,20 @@ export type TManager = {
 // export type AdminModel = {
 //   isAdminExist(
 //     email: string
-//   ): Promise<Pick<TManager, '_id' | 'email' | 'password' | 'role'>>;
+//   ): Promise<Pick<TDonor, '_id' | 'email' | 'password' | 'role'>>;
 //   isPasswordMatched(
 //     givenPassword: string,
 //     savedPassword: string
 //   ): Promise<boolean>;
-// } & Model<TManager>;
+// } & Model<TDonor>;
 
 // //
 
-export type ManagerModel = {
-  isUserExists(email: string): Promise<TManager | null>;
-} & Model<TManager>;
+export type DonorModel = {
+  isUserExists(email: string): Promise<TDonor | null>;
+} & Model<TDonor>;
 
-export type TManagerFilters = {
+export type TDonorFilters = {
   searchTerm?: string;
 };
-// export type AdminModel = Model<TManager, Record<string, unknown>>;
+// export type AdminModel = Model<TDonor, Record<string, unknown>>;

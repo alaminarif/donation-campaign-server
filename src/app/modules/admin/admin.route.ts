@@ -15,7 +15,7 @@ router.get(
 
 router.patch(
   '/:email',
-  validateRequest(AdminValidation.updateProfileZodSchema),
+  validateRequest(AdminValidation.updateAdminValidationSchema),
   // auth(ENUM_USER_ROLE.ADMIN),
   AdminController.updateAdmin
 );

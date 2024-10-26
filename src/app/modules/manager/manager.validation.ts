@@ -10,7 +10,6 @@ export const createManagerValidationSchema = z.object({
   body: z.object({
     password: z.string().max(20),
     manager: z.object({
-      designation: z.string(),
       name: createUserNameValidationSchema,
       email: z.string().email(),
       contactNo: z.string(),
@@ -23,22 +22,28 @@ export const createManagerValidationSchema = z.object({
   }),
 });
 
-const updateProfileZodSchema = z.object({
+const updateUserNameValidationSchema = z.object({
+  firstName: z.string().min(1).max(20),
+  lastName: z.string().max(20),
+});
+
+const updateManagerValidationSchema = z.object({
   body: z.object({
-    name: z
-      .object({
-        firstName: z.string().optional(),
-        lastName: z.string().optional(),
-      })
-      .optional(),
-    email: z.string().optional(),
-    password: z.string().optional(),
-    phoneNumber: z.string().optional(),
-    address: z.string().optional(),
+    manager: z.object({
+      name: updateUserNameValidationSchema,
+      gender: z.enum([...Gender] as [string, ...string[]]).optional(),
+      dateOfBirth: z.string().optional(),
+      email: z.string().email().optional(),
+      contactNo: z.string().optional(),
+      bloogGroup: z.enum([...BloodGroup] as [string, ...string[]]).optional(),
+      address: z.string().optional(),
+      // permanentAddress: z.string().optional(),
+      profileImg: z.string().optional(),
+    }),
   }),
 });
 
 export const ManagerValidation = {
   createManagerValidationSchema,
-  updateProfileZodSchema,
+  updateManagerValidationSchema,
 };
