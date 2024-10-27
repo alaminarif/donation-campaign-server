@@ -23,8 +23,8 @@ export const createManagerValidationSchema = z.object({
 });
 
 const updateUserNameValidationSchema = z.object({
-  firstName: z.string().min(1).max(20),
-  lastName: z.string().max(20),
+  firstName: z.string().min(1).max(20).optional(),
+  lastName: z.string().max(20).optional(),
 });
 
 const updateManagerValidationSchema = z.object({

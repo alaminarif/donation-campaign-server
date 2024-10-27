@@ -1,13 +1,20 @@
 /* eslint-disable no-unused-vars */
 import { Model, Types } from 'mongoose';
-export type Role = 'super_admin' | 'admin' | 'manager' | 'volunteer' | 'donor';
+
+export type TRole =
+  | 'super_admin'
+  | 'admin'
+  | 'manager'
+  | 'volunteer'
+  | 'donor'
+  | 'guest';
 
 export type TUser = {
   _id?: Types.ObjectId;
   email: string;
   password: string;
   passwordchangedAt?: Date;
-  role: Role;
+  role: TRole;
   isDeleted: boolean;
   // admin?: Types.ObjectId | TAdmin;
 };

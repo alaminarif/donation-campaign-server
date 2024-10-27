@@ -27,11 +27,6 @@ const DonorSchema = new Schema<TDonor, DonorModel>(
       ref: 'User',
     },
 
-    designation: {
-      type: String,
-      required: [true, 'Designation is required'],
-    },
-
     name: {
       type: userNameSchema,
       required: [true, 'Name is required'],

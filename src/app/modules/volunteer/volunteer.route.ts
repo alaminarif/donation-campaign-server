@@ -7,7 +7,7 @@ const router = expres.Router();
 
 router.get('/', VolunteerController.getAllVolunteers);
 
-router.get('/:volunteerId', VolunteerController.getSingleVolunteer);
+router.get('/:email', VolunteerController.getSingleVolunteer);
 
 router.patch(
   '/:email',

@@ -1,3 +1,5 @@
+import { TRole } from './user.interface';
+
 export const USER_ROLE = {
   super_admin: 'super_admin',
   admin: 'admin',
@@ -5,6 +7,15 @@ export const USER_ROLE = {
   volunteer: 'volunteer',
   guest: 'guest',
 } as const;
+
+export const Role: TRole[] = [
+  'super_admin',
+  'admin',
+  'manager',
+  'volunteer',
+  'donor',
+  'guest',
+];
 
 export const userSearchableFields = [
   'name.firstName',

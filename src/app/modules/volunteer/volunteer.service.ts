@@ -24,7 +24,7 @@ const getAllvolunteersFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getSingleVolunteerFromDB = async (volunteerId: string) => {
-  const result = await Volunteer.findOne({ _id: volunteerId });
+  const result = await Volunteer.findOne({ email: volunteerId });
   return result;
 };
 

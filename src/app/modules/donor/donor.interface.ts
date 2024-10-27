@@ -21,7 +21,6 @@ export type TBloodGroup =
 export type TDonor = {
   _id?: Types.ObjectId;
   user: Types.ObjectId;
-  designation: string;
   name: TUserName;
   email: string;
   contactNo: string;

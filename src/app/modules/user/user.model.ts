@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import { TUser, UserModel } from './user.interface';
-import { role } from './user.constant';
 import config from '../../../config';
+import { Role } from './user.constant';
 
 const UserSchema = new Schema<TUser, UserModel>(
   {
@@ -20,7 +20,7 @@ const UserSchema = new Schema<TUser, UserModel>(
     },
     role: {
       type: String,
-      enum: role,
+      enum: Role,
     },
     isDeleted: {
       type: Boolean,

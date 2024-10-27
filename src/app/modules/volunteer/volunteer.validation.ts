@@ -29,8 +29,8 @@ export const createVolunteerValidationSchema = z.object({
 });
 
 const updateUserNameValidationSchema = z.object({
-  firstName: z.string().min(1).max(20),
-  lastName: z.string().max(20),
+  firstName: z.string().min(1).max(20).optional(),
+  lastName: z.string().max(20).optional(),
 });
 
 const updateVolunteerValidationSchema = z.object({
@@ -43,8 +43,8 @@ const updateVolunteerValidationSchema = z.object({
       contactNo: z.string().optional(),
       bloogGroup: z.enum([...BloodGroup] as [string, ...string[]]).optional(),
       address: z.string().optional(),
-      skill: z.string(),
-      abailability: z.enum([...Days] as [string, ...string[]]),
+      skill: z.string().optional(),
+      abailability: z.enum([...Days] as [string, ...string[]]).optional(),
       preferredCampaigns: z.string().optional(),
       startDate: z.string().datetime().optional(),
       endDate: z.string().datetime().optional(),

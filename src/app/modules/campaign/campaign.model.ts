@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { CampaignModel, ICampaign } from './campaign.interface';
+import { Category, Status } from './campaign.constant';
 
 const CampaignSchema = new Schema<ICampaign, CampaignModel>(
   {
@@ -7,34 +8,67 @@ const CampaignSchema = new Schema<ICampaign, CampaignModel>(
       type: String,
       required: true,
     },
+
     description: {
       type: String,
       required: true,
     },
+
     targetAmount: {
       type: String,
       required: true,
     },
+
+    currentAmount: {
+      type: String,
+      required: true,
+    },
+
     startDate: {
       type: Date,
       required: true,
       // default: Date.now,
     },
+
     endDate: {
       type: Date,
-      // required: true,
-    },
-    currentAmount: {
-      type: String,
       required: true,
     },
+
     location: {
       type: String,
       required: true,
     },
-    donationCategories: {
+    category: {
+      type: String,
+      enum: {
+        values: Category,
+        message: '{VALUE} is not a valid category',
+      },
+    },
+    status: {
+      type: String,
+      enum: {
+        values: Status,
+        message: '{VALUE} is not a valid status',
+      },
+    },
+
+    volunteerOpportunity: {
+      type: String,
+    },
+
+    manager: {
       type: Schema.Types.ObjectId,
-      ref: 'DonationCategory',
+      ref: 'Manager',
+    },
+
+    img: {
+      type: String,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
     },
   },
   {

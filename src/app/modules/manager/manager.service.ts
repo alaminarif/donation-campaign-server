@@ -37,10 +37,10 @@ const updateManagerIntroDB = async (
 ): Promise<TManager | null> => {
   //
 
-  // const isExist = await Admin.findOne({ email: email });
-  // if (!isExist) {
-  //   throw new ApiError(httpStatus.NOT_FOUND, 'Admin Not found');
-  // }
+  const isExist = await Manager.findOne({ email: email });
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Manager Not found');
+  }
 
   const { name, ...remainingManagerData } = payload;
 

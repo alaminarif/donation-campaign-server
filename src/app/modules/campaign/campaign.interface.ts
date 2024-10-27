@@ -1,14 +1,23 @@
 import { Model, Types } from 'mongoose';
 
+export type TDays = 'Sat' | 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri';
+export type TCategory = 'Health' | 'Education' | 'Disaster Relief';
+export type TStatus = 'UPCOMING' | 'ACTIVE' | 'COMPLETED';
+
 export type ICampaign = {
   name: string;
   description: string;
   targetAmount: string;
+  currentAmount: string;
   startDate: Date;
   endDate: Date;
-  currentAmount: string;
   location: string;
-  donationCategories: Types.ObjectId;
+  category: TCategory;
+  status: TStatus;
+  volunteerOpportunity?: string;
+  manager: Types.ObjectId;
+  img: string;
+  isDeleted: boolean;
 };
 
 export type CampaignModel = Model<ICampaign, Record<string, unknown>>;
