@@ -4,22 +4,22 @@ import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IGenericResponse } from '../../../interfaces/common';
 import { DonationSearchableFields } from './donation.constant';
-import { IDonation, IDonationFilters } from './donation.interface';
+import { TDonation, TDonationFilters } from './donation.interface';
 import { Donation } from './donation.model';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
 
 const createDonation = async (
-  payload: IDonation
-): Promise<IDonation | null> => {
+  payload: TDonation
+): Promise<TDonation | null> => {
   const result = await Donation.create(payload);
   return result;
 };
 
 const getAllDonation = async (
-  filter: IDonationFilters,
+  filter: TDonationFilters,
   paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<IDonation[]> | null> => {
+): Promise<IGenericResponse<TDonation[]> | null> => {
   //
 
   const { searchTerm, ...filterData } = filter;
@@ -71,15 +71,15 @@ const getAllDonation = async (
   };
 };
 
-const getSingleDonation = async (id: string): Promise<IDonation | null> => {
+const getSingleDonation = async (id: string): Promise<TDonation | null> => {
   const result = await Donation.findById({ _id: id }).populate('user');
   return result;
 };
 
 const updateDonation = async (
   id: string,
-  paylaoad: Partial<IDonation>
-): Promise<IDonation | null> => {
+  paylaoad: Partial<TDonation>
+): Promise<TDonation | null> => {
   //
   const query = { user: id };
   const isExist = await Donation.findOne(query);
@@ -95,7 +95,7 @@ const updateDonation = async (
   return result;
 };
 
-const deleteDonation = async (id: string): Promise<IDonation | null> => {
+const deleteDonation = async (id: string): Promise<TDonation | null> => {
   const result = await Donation.findByIdAndDelete({ _id: id }).populate('user');
   return result;
 };

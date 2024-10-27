@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
-import { CampaignModel, ICampaign } from './campaign.interface';
+import { CampaignModel, TCampaign } from './campaign.interface';
 import { Category, Status } from './campaign.constant';
 
-const CampaignSchema = new Schema<ICampaign, CampaignModel>(
+const CampaignSchema = new Schema<TCampaign, CampaignModel>(
   {
     name: {
       type: String,
@@ -76,7 +76,7 @@ const CampaignSchema = new Schema<ICampaign, CampaignModel>(
   }
 );
 
-export const Campaign = model<ICampaign, CampaignModel>(
+export const Campaign = model<TCampaign, CampaignModel>(
   'Campaign',
   CampaignSchema
 );

@@ -1,22 +1,14 @@
-import { Request, Response } from 'express';
 import catchAsync from '../../../utils/catchAsync';
-
 import sendResponse from '../../../utils/sendResponse';
-
 import httpStatus from 'http-status';
-
-import { paginationFields } from '../../../constants/pagination';
-import pick from '../../../utils/pick';
 import { CampaignService } from './campaign.service';
-import { ICampaign } from './campaign.interface';
-import { campaignFilterableFields } from './campaign.constant';
 
-const createCampaign = catchAsync(async (req: Request, res: Response) => {
-  const user = req.body;
+const createCampaign = catchAsync(async (req, res) => {
+  const campaign = req.body;
 
-  const result = await CampaignService.createCampaign(user);
+  const result = await CampaignService.createCampaignIntoDB(campaign);
 
-  sendResponse<ICampaign>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'donationa categories created successfully  ',
@@ -24,65 +16,59 @@ const createCampaign = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getAllCampaign = catchAsync(async (req: Request, res: Response) => {
+const getAllCampaign = catchAsync(async (req, res) => {
   // paginationOptions
 
-  const filters = pick(req.query, campaignFilterableFields);
-  const paginationOptions = pick(req.query, paginationFields);
+  const result = await CampaignService.getAllCampaignFromDB(req.query);
 
-  const result = await CampaignService.getAllCampaign(
-    filters,
-    paginationOptions
-  );
-
-  sendResponse<ICampaign[]>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'Donation Category retrive successfully  ',
-    meta: result?.meta,
-    data: result?.data,
+    message: 'Campaign retrive successfully  ',
+    meta: result.meta,
+    data: result.result,
   });
 });
 
-const getSingleCampaign = catchAsync(async (req: Request, res: Response) => {
+const getSingleCampaign = catchAsync(async (req, res) => {
   // paginationOptions
   const { id } = req.params;
 
-  const result = await CampaignService.getSingleCampaign(id);
+  const result = await CampaignService.getSingleCampaignFromDB(id);
 
-  sendResponse<ICampaign>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'Donation Category rtive successfully  ',
+    message: 'Campaign rtive successfully  ',
     data: result,
   });
 });
 
-const updateCampaign = catchAsync(async (req: Request, res: Response) => {
+const updateCampaign = catchAsync(async (req, res) => {
   // paginationOptions
   const { id } = req.params;
   const updatedData = req.body;
 
   const result = await CampaignService.updateCampaign(id, updatedData);
 
-  sendResponse<ICampaign>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'User delete successfully  ',
+    message: 'Campaign updated successfully  ',
     data: result,
   });
 });
 
-const deleteCampaign = catchAsync(async (req: Request, res: Response) => {
+const deleteCampaign = catchAsync(async (req, res) => {
   // paginationOptions
   const { id } = req.params;
 
   const result = await CampaignService.deleteCampaign(id);
 
-  sendResponse<ICampaign>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'User delete successfully  ',
+    message: 'Campaign delete successfully  ',
     data: result,
   });
 });

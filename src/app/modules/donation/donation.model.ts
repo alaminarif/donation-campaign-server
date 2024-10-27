@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
-import { DonationModel, IDonation } from './donation.interface';
+import { DonationModel, TDonation } from './donation.interface';
 
-const DonationSchema = new Schema<IDonation, DonationModel>(
+const DonationSchema = new Schema<TDonation, DonationModel>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -34,7 +34,7 @@ const DonationSchema = new Schema<IDonation, DonationModel>(
   }
 );
 
-export const Donation = model<IDonation, DonationModel>(
+export const Donation = model<TDonation, DonationModel>(
   'Donation',
   DonationSchema
 );

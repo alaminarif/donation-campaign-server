@@ -4,7 +4,7 @@ import catchAsync from '../../../utils/catchAsync';
 import { paginationFields } from '../../../constants/pagination';
 import pick from '../../../utils/pick';
 import { DonationService } from './donation.service';
-import { IDonation } from './donation.interface';
+import { TDonation } from './donation.interface';
 import sendResponse from '../../../utils/sendResponse';
 import httpStatus from 'http-status';
 import { DonationFilterableFields } from './donation.constant';
@@ -14,7 +14,7 @@ const createDonation = catchAsync(async (req: Request, res: Response) => {
 
   const result = await DonationService.createDonation(user);
 
-  sendResponse<IDonation>(res, {
+  sendResponse<TDonation>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'donationa categories created successfully  ',
@@ -33,7 +33,7 @@ const getAllDonation = catchAsync(async (req: Request, res: Response) => {
     paginationOptions
   );
 
-  sendResponse<IDonation[]>(res, {
+  sendResponse<TDonation[]>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'Donation Category retrive successfully  ',
@@ -48,7 +48,7 @@ const getSingleDonation = catchAsync(async (req: Request, res: Response) => {
 
   const result = await DonationService.getSingleDonation(id);
 
-  sendResponse<IDonation>(res, {
+  sendResponse<TDonation>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'Donation Category rtive successfully  ',
@@ -63,7 +63,7 @@ const updateDonation = catchAsync(async (req: Request, res: Response) => {
 
   const result = await DonationService.updateDonation(id, updatedData);
 
-  sendResponse<IDonation>(res, {
+  sendResponse<TDonation>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'User delete successfully  ',
@@ -77,7 +77,7 @@ const deleteDonation = catchAsync(async (req: Request, res: Response) => {
 
   const result = await DonationService.deleteDonation(id);
 
-  sendResponse<IDonation>(res, {
+  sendResponse<TDonation>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'User delete successfully  ',

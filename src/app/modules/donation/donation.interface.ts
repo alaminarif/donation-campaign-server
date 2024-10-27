@@ -1,7 +1,7 @@
 import { Model, Types } from 'mongoose';
 import { TUser } from '../user/user.interface';
 
-export type IDonation = {
+export type TDonation = {
   user: Types.ObjectId | TUser;
   image: string;
   amount: string;
@@ -10,8 +10,8 @@ export type IDonation = {
   description: string;
 };
 
-export type DonationModel = Model<IDonation, Record<string, unknown>>;
+export type DonationModel = Model<TDonation, Record<string, unknown>>;
 
-export type IDonationFilters = {
+export type TDonationFilters = {
   searchTerm?: string;
 };

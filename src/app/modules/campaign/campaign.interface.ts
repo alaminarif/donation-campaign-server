@@ -4,7 +4,7 @@ export type TDays = 'Sat' | 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri';
 export type TCategory = 'Health' | 'Education' | 'Disaster Relief';
 export type TStatus = 'UPCOMING' | 'ACTIVE' | 'COMPLETED';
 
-export type ICampaign = {
+export type TCampaign = {
   name: string;
   description: string;
   targetAmount: string;
@@ -20,8 +20,8 @@ export type ICampaign = {
   isDeleted: boolean;
 };
 
-export type CampaignModel = Model<ICampaign, Record<string, unknown>>;
+export type CampaignModel = Model<TCampaign, Record<string, unknown>>;
 
-export type ICampaignFilters = {
+export type TCampaignFilters = {
   searchTerm?: string;
 };
