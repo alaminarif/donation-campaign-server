@@ -33,7 +33,10 @@ const getSingleCampaignFromDB = async (id: string) => {
   return result;
 };
 
-const updateCampaign = async (id: string, paylaoad: Partial<TCampaign>) => {
+const updateCampaignIntoDB = async (
+  id: string,
+  paylaoad: Partial<TCampaign>
+) => {
   //
   const query = { _id: id };
   const isExist = await Campaign.findOne(query);
@@ -49,7 +52,7 @@ const updateCampaign = async (id: string, paylaoad: Partial<TCampaign>) => {
   return result;
 };
 
-const deleteCampaign = async (id: string): Promise<TCampaign | null> => {
+const deleteCampaignFromDB = async (id: string): Promise<TCampaign | null> => {
   const result = await Campaign.findByIdAndDelete({ _id: id });
   return result;
 };
@@ -57,6 +60,6 @@ export const CampaignService = {
   createCampaignIntoDB,
   getAllCampaignFromDB,
   getSingleCampaignFromDB,
-  updateCampaign,
-  deleteCampaign,
+  updateCampaignIntoDB,
+  deleteCampaignFromDB,
 };

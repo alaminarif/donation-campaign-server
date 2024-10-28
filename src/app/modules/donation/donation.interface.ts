@@ -1,13 +1,24 @@
 import { Model, Types } from 'mongoose';
-import { TUser } from '../user/user.interface';
+
+export type TPaymentMethod =
+  | 'Bank Transfer'
+  | 'Credit Card'
+  | 'PayPal'
+  | 'Bkash'
+  | 'Nagad';
+
+export type TCategory = 'Recurring' | 'One-time';
 
 export type TDonation = {
-  user: Types.ObjectId | TUser;
-  image: string;
   amount: string;
-  category: string;
-  title: string;
-  description: string;
+  paymentMethod: TPaymentMethod;
+  date: Date;
+  category: TCategory;
+  anonymous: boolean;
+  message: string;
+  campaign: Types.ObjectId;
+  donor: Types.ObjectId;
+  isDeleted: boolean;
 };
 
 export type DonationModel = Model<TDonation, Record<string, unknown>>;

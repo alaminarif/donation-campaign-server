@@ -49,7 +49,7 @@ const updateCampaign = catchAsync(async (req, res) => {
   const { id } = req.params;
   const updatedData = req.body;
 
-  const result = await CampaignService.updateCampaign(id, updatedData);
+  const result = await CampaignService.updateCampaignIntoDB(id, updatedData);
 
   sendResponse(res, {
     success: true,
@@ -63,7 +63,7 @@ const deleteCampaign = catchAsync(async (req, res) => {
   // paginationOptions
   const { id } = req.params;
 
-  const result = await CampaignService.deleteCampaign(id);
+  const result = await CampaignService.deleteCampaignFromDB(id);
 
   sendResponse(res, {
     success: true,

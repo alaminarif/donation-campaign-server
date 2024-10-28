@@ -1,85 +1,43 @@
-import { SortOrder } from 'mongoose';
-
-import { paginationHelpers } from '../../../helpers/paginationHelper';
-import { IPaginationOptions } from '../../../interfaces/pagination';
-import { IGenericResponse } from '../../../interfaces/common';
-import { DonationSearchableFields } from './donation.constant';
-import { TDonation, TDonationFilters } from './donation.interface';
 import { Donation } from './donation.model';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
+import QueryBuilder from '../../builder/QueryBuilder';
+import { donorSearchableFields } from '../donor/donor.constant';
+import { TDonation } from './donation.interface';
 
-const createDonation = async (
-  payload: TDonation
-): Promise<TDonation | null> => {
+const createDonationIntoDB = async (payload: TDonation) => {
   const result = await Donation.create(payload);
   return result;
 };
 
-const getAllDonation = async (
-  filter: TDonationFilters,
-  paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<TDonation[]> | null> => {
+const getAllDonationFromDB = async (query: Record<string, unknown>) => {
   //
 
-  const { searchTerm, ...filterData } = filter;
-  const andConditions = [];
+  const donationQuery = new QueryBuilder(Donation.find(), query)
+    .search(donorSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
 
-  if (searchTerm) {
-    andConditions.push({
-      $or: DonationSearchableFields.map(field => ({
-        [field]: {
-          $regex: searchTerm,
-          $options: 'i',
-        },
-      })),
-    });
-  }
+  const result = await donationQuery.modelQuery;
+  const meta = await donationQuery.countTotal();
 
-  if (Object.keys(filterData).length) {
-    andConditions.push({
-      $and: Object.entries(filterData).map(([field, value]) => ({
-        [field]: value,
-      })),
-    });
-  }
-  const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelpers.calculatePagination(paginationOptions);
-
-  const sortConditions: { [key: string]: SortOrder } = {};
-
-  if (sortBy && sortOrder) {
-    sortConditions[sortBy] = sortOrder;
-  }
-
-  const whareConditions =
-    andConditions.length > 0 ? { $and: andConditions } : {};
-  const result = await Donation.find(whareConditions)
-    .populate('user')
-    .skip(skip)
-    .limit(limit)
-    .sort(sortConditions);
-
-  const total = await Donation.countDocuments(whareConditions);
   return {
-    meta: {
-      page,
-      limit,
-      total,
-    },
-    data: result,
+    meta,
+    result,
   };
 };
 
-const getSingleDonation = async (id: string): Promise<TDonation | null> => {
-  const result = await Donation.findById({ _id: id }).populate('user');
+const getSingleDonationFromDB = async (id: string) => {
+  const result = await Donation.findById({ _id: id });
   return result;
 };
 
-const updateDonation = async (
+const updateDonationIntoDB = async (
   id: string,
   paylaoad: Partial<TDonation>
-): Promise<TDonation | null> => {
+) => {
   //
   const query = { user: id };
   const isExist = await Donation.findOne(query);
@@ -95,14 +53,15 @@ const updateDonation = async (
   return result;
 };
 
-const deleteDonation = async (id: string): Promise<TDonation | null> => {
-  const result = await Donation.findByIdAndDelete({ _id: id }).populate('user');
+const deleteDonationFromDB = async (id: string) => {
+  const result = await Donation.findByIdAndDelete({ _id: id });
   return result;
 };
+
 export const DonationService = {
-  createDonation,
-  getAllDonation,
-  getSingleDonation,
-  updateDonation,
-  deleteDonation,
+  createDonationIntoDB,
+  getAllDonationFromDB,
+  getSingleDonationFromDB,
+  updateDonationIntoDB,
+  deleteDonationFromDB,
 };

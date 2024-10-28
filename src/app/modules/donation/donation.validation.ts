@@ -1,36 +1,45 @@
 import { z } from 'zod';
+import { Category, PaymentMethod } from './donation.constant';
 
 const createDonationZodSchema = z.object({
   body: z.object({
-    user: z.string({
-      required_error: 'user id is required',
-    }),
-    image: z.string({
-      required_error: ' photo is requied',
-    }),
     amount: z.string({
       required_error: ' amount is requied',
     }),
-    category: z.string({
-      required_error: ' category is requied',
+    paymentMethod: z.enum([...(PaymentMethod as [string, ...string[]])]),
+    date: z.string().datetime().optional(),
+    category: z.enum([...(Category as [string, ...string[]])]),
+
+    anonymous: z.boolean().optional(),
+    message: z.string({
+      required_error: ' message is requied',
     }),
-    title: z.string({
-      required_error: ' title is requied',
+    campaign: z.string({
+      required_error: 'campaign id is required',
     }),
-    description: z.string({
-      required_error: ' description is requied',
+    donor: z.string({
+      required_error: 'donor id is required',
     }),
+
+    isDeleted: z.boolean().optional(),
   }),
 });
 
 const updateDonationZodSchema = z.object({
   body: z.object({
-    user: z.string().optional(),
-    image: z.string().optional(),
     amount: z.string().optional(),
-    category: z.string().optional(),
-    title: z.string().optional(),
-    description: z.string().optional(),
+    paymentMethod: z
+      .enum([...(PaymentMethod as [string, ...string[]])])
+      .optional(),
+    date: z.string().datetime().optional(),
+    category: z.enum([...(Category as [string, ...string[]])]).optional(),
+
+    anonymous: z.boolean().optional(),
+    message: z.string().optional(),
+    campaign: z.string().optional(),
+    donor: z.string().optional(),
+
+    isDeleted: z.boolean().optional(),
   }),
 });
 

@@ -1,86 +1,72 @@
-import { Request, Response } from 'express';
 import catchAsync from '../../../utils/catchAsync';
-
-import { paginationFields } from '../../../constants/pagination';
-import pick from '../../../utils/pick';
 import { DonationService } from './donation.service';
-import { TDonation } from './donation.interface';
 import sendResponse from '../../../utils/sendResponse';
 import httpStatus from 'http-status';
-import { DonationFilterableFields } from './donation.constant';
 
-const createDonation = catchAsync(async (req: Request, res: Response) => {
+const createDonation = catchAsync(async (req, res) => {
   const user = req.body;
 
-  const result = await DonationService.createDonation(user);
+  const result = await DonationService.createDonationIntoDB(user);
 
-  sendResponse<TDonation>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'donationa categories created successfully  ',
+    message: 'donation created successfully  ',
     data: result,
   });
 });
 
-const getAllDonation = catchAsync(async (req: Request, res: Response) => {
-  // paginationOptions
+const getAllDonation = catchAsync(async (req, res) => {
+  const result = await DonationService.getAllDonationFromDB(req.query);
 
-  const filters = pick(req.query, DonationFilterableFields);
-  const paginationOptions = pick(req.query, paginationFields);
-
-  const result = await DonationService.getAllDonation(
-    filters,
-    paginationOptions
-  );
-
-  sendResponse<TDonation[]>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'Donation Category retrive successfully  ',
-    meta: result?.meta,
-    data: result?.data,
+    message: 'Donation retrive successfully  ',
+    meta: result.meta,
+    data: result.result,
   });
 });
 
-const getSingleDonation = catchAsync(async (req: Request, res: Response) => {
+const getSingleDonation = catchAsync(async (req, res) => {
   // paginationOptions
   const { id } = req.params;
 
-  const result = await DonationService.getSingleDonation(id);
+  const result = await DonationService.getSingleDonationFromDB(id);
 
-  sendResponse<TDonation>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'Donation Category rtive successfully  ',
+    message: 'Donation rtive successfully  ',
     data: result,
   });
 });
 
-const updateDonation = catchAsync(async (req: Request, res: Response) => {
+const updateDonation = catchAsync(async (req, res) => {
   // paginationOptions
   const id = req.user?._id;
   const updatedData = req.body;
 
-  const result = await DonationService.updateDonation(id, updatedData);
+  const result = await DonationService.updateDonationIntoDB(id, updatedData);
 
-  sendResponse<TDonation>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'User delete successfully  ',
+    message: 'updated donotion successfully  ',
     data: result,
   });
 });
 
-const deleteDonation = catchAsync(async (req: Request, res: Response) => {
+const deleteDonation = catchAsync(async (req, res) => {
   // paginationOptions
   const { id } = req.params;
 
-  const result = await DonationService.deleteDonation(id);
+  const result = await DonationService.deleteDonationFromDB(id);
 
-  sendResponse<TDonation>(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'User delete successfully  ',
+    message: 'donotion delete successfully  ',
     data: result,
   });
 });
