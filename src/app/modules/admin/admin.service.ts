@@ -24,10 +24,8 @@ const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
   };
 };
 
-const getSingleAdminFromDB = async (
-  adminId: string
-): Promise<TAdmin | null> => {
-  const result = await Admin.findOne({ email: adminId });
+const getSingleAdminFromDB = async (adminId: string) => {
+  const result = await Admin.find({ email: adminId });
   return result;
 };
 

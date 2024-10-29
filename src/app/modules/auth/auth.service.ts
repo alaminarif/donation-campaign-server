@@ -13,83 +13,66 @@ import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import config from '../../../config';
 import { JwtPayload, Secret } from 'jsonwebtoken';
 import { sendEmail } from '../../../utils/sendEmail';
+import { createToken } from './auth.utils';
 
 const loginUser = async (payload: TLogin): Promise<TLoginResponse> => {
-  const { email, password } = payload;
+  const { email } = payload;
 
-  const isUserExist = await User.isUserExist(email);
+  const user = await User.isUserExistByEmail(email);
 
   // const isUserExist = await User.findOne({ email });
 
-  console.log(isUserExist);
-
-  if (!isUserExist) {
+  if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
-  // const {password}= isUserExist
-  // const isPasswordMatched = await bcrypt.compare(
-  //   password,
-  //   isUserExist?.password
-  // );
 
-  // const isDeleted = isUserExist?.
+  const isDeleted = user?.isDeleted;
 
-  if (
-    isUserExist.password &&
-    !(await User.isPasswordMatched(password, isUserExist?.password))
-  ) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
+  if (isDeleted) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'this user is Deleted');
   }
 
-  const { email: userEmail, role, _id } = isUserExist;
+  if (!(await User.isPasswordMatched(payload?.password, user?.password)))
+    throw new ApiError(httpStatus.FORBIDDEN, 'Password do not matched');
 
-  const accessToken = jwtHelpers.createToken(
-    { userEmail, role, _id },
-    config.jwt.secret as Secret,
-    config.jwt.expires_in as string
+  const jwtPayload = {
+    userEmail: user.email,
+    role: user.role,
+  };
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string
   );
 
-  const refreshToken = jwtHelpers.createToken(
-    { userEmail, role, _id },
-    config.jwt.refresh_secret as Secret,
-    config.jwt.refresh_expires_in as string
+  const refreshToken = createToken(
+    jwtPayload,
+    config.jwt_refresh_secret as string,
+    config.jwt_refresh_expires_in as string
   );
 
-  return { accessToken, refreshToken };
+  return {
+    accessToken,
+    refreshToken,
+  };
+
+  // const { email: userEmail, role, _id } = user;
+
+  // const accessToken = jwtHelpers.createToken(
+  //   { userEmail, role, _id },
+  //   config.jwt.secret as Secret,
+  //   config.jwt.expires_in as string
+  // );
+
+  // const refreshToken = jwtHelpers.createToken(
+  //   { userEmail, role, _id },
+  //   config.jwt.refresh_secret as Secret,
+  //   config.jwt.refresh_expires_in as string
+  // );
+
+  // return { accessToken, refreshToken };
 };
-
-// const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
-//   let verifiedToken = null;
-//   try {
-//     verifiedToken = jwtHelpers.verifyToken(
-//       token,
-//       config.jwt.refresh_secret as Secret
-//     );
-//   } catch (err) {
-//     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
-//   }
-
-//   const { email } = verifiedToken;
-
-//   const isUserExist = await User.isUserExist(email);
-//   if (!isUserExist) {
-//     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
-//   }
-//   //generate new token
-
-//   const newAccessToken = jwtHelpers.createToken(
-//     {
-//       email: isUserExist.email,
-//       role: isUserExist.role,
-//     },
-//     config.jwt.secret as Secret,
-//     config.jwt.expires_in as string
-//   );
-
-//   return {
-//     accessToken: newAccessToken,
-//   };
-// };
 
 const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   //verify token
@@ -99,7 +82,7 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   try {
     verifiedToken = jwtHelpers.verifyToken(
       token,
-      config.jwt.refresh_secret as Secret
+      config.jwt_refresh_secret as Secret
     );
   } catch (err) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
@@ -109,7 +92,8 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 
   // checking deleted user's refresh token
 
-  const isUserExist = await User.isUserExist(userEmail);
+  const isUserExist = await User.isUserExistByEmail(userEmail);
+
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
@@ -120,8 +104,8 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
       email: isUserExist.email,
       role: isUserExist.role,
     },
-    config.jwt.secret as Secret,
-    config.jwt.expires_in as string
+    config.jwt_access_secret as Secret,
+    config.jwt_access_expires_in as string
   );
   console.log('newAccessToken: ', newAccessToken);
 
@@ -136,7 +120,7 @@ const changePassword = async (
 ): Promise<void> => {
   const { oldPassword, newPassword } = payload;
 
-  const isUserExist = await User.isUserExist(user?.userEmail);
+  const isUserExist = await User.isUserExistByEmail(user?.userEmail);
 
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
@@ -165,7 +149,7 @@ const changePassword = async (
 };
 
 const forgetPassword = async (userEmail: string) => {
-  const user = await User.isUserExist(userEmail);
+  const user = await User.isUserExistByEmail(userEmail);
 
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'this user is not found !');
@@ -177,12 +161,15 @@ const forgetPassword = async (userEmail: string) => {
     throw new ApiError(httpStatus.FORBIDDEN, 'this user is deleted');
   }
 
-  const { email, role, _id } = user;
+  const jwtPayload = {
+    userEmail: user.email,
+    role: user.role,
+  };
 
-  const resetToken = jwtHelpers.createToken(
-    { email, role, _id },
-    config.jwt.secret as Secret,
-    config.jwt.expires_in as string
+  const resetToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string
   );
 
   const resetLink = `${config.reset_pass_ui_link}?email=${user.email}&token=${resetToken}`;
@@ -196,7 +183,7 @@ const resetPassword = async (
   payload: { email: string; newPassword: string },
   token: string
 ) => {
-  const user = await User.isUserExist(payload?.email);
+  const user = await User.isUserExistByEmail(payload?.email);
 
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'this user is not found !');
@@ -208,7 +195,10 @@ const resetPassword = async (
     throw new ApiError(httpStatus.FORBIDDEN, 'this user is deleted');
   }
 
-  const decode = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
+  const decode = jwtHelpers.verifyToken(
+    token,
+    config.jwt_access_secret as Secret
+  );
 
   if (payload.email !== decode.email) {
     throw new ApiError(httpStatus.FORBIDDEN, 'you are forbidden');

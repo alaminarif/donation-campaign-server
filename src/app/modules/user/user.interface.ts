@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
 /* eslint-disable no-unused-vars */
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
+import { USER_ROLE } from './user.constant';
 
 export type TRole =
   | 'super_admin'
@@ -9,32 +11,30 @@ export type TRole =
   | 'donor'
   | 'guest';
 
-export type TUser = {
-  _id?: Types.ObjectId;
+export interface TUser {
   email: string;
   password: string;
   passwordchangedAt?: Date;
   role: TRole;
   isDeleted: boolean;
-  // admin?: Types.ObjectId | TAdmin;
-};
+}
 
-export type UserModel = {
-  isUserExist(
-    email: string
-  ): Promise<Pick<TUser, '_id' | 'email' | 'password' | 'role' | 'isDeleted'>>;
+export interface UserModel extends Model<TUser> {
+  isUserExistByEmail(email: string): Promise<TUser>;
   isPasswordMatched(
-    givenPassword: string,
-    savedPassword: string
+    plainTextPassword: string,
+    hashedPassword: string
   ): Promise<boolean>;
 
   isJWTIssuedDeforedPasswordChanged(
     passwordChangeTimestamp: Date,
     jwtIssuedTimestamp: number
   ): boolean;
-} & Model<TUser>;
+}
 
-export type TUserFilters = {
-  searchTerm?: string;
-};
+export type TUserRole = keyof typeof USER_ROLE;
+
+// export type TUserFilters = {
+//   searchTerm?: string;
+// };
 // export type UserModel = Model<TUser, Record<string, unknown>>;

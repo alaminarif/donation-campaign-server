@@ -4,16 +4,37 @@ import httpStatus from 'http-status';
 import QueryBuilder from '../../builder/QueryBuilder';
 import { donorSearchableFields } from '../donor/donor.constant';
 import { TDonation } from './donation.interface';
+import { Donor } from '../donor/donor.model';
+import { Campaign } from '../campaign/campaign.model';
 
 const createDonationIntoDB = async (payload: TDonation) => {
-  const result = await Donation.create(payload);
+  const campaignId = payload?.campaign;
+
+  const iscampaignExists = await Campaign.findById(campaignId);
+
+  if (!iscampaignExists) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'campaign not found !');
+  }
+
+  const donorId = payload?.donor;
+
+  const isDonorExists = await Donor.findById(donorId);
+
+  if (!isDonorExists) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'donor not found !');
+  }
+
+  const result = (await Donation.create(payload)).populate('campaign donor');
   return result;
 };
 
 const getAllDonationFromDB = async (query: Record<string, unknown>) => {
   //
 
-  const donationQuery = new QueryBuilder(Donation.find(), query)
+  const donationQuery = new QueryBuilder(
+    Donation.find().populate('campaign donor'),
+    query
+  )
     .search(donorSearchableFields)
     .filter()
     .sort()
@@ -30,7 +51,9 @@ const getAllDonationFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getSingleDonationFromDB = async (id: string) => {
-  const result = await Donation.findById({ _id: id });
+  const result = await Donation.findById({ _id: id }).populate(
+    'campaign donor'
+  );
   return result;
 };
 
