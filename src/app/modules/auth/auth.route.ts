@@ -3,7 +3,7 @@ import validateRequest from '../../middlewares/validateRequest';
 import { AuthController } from './auth.controller';
 import { AuthValidation } from './auth.validation';
 import auth from '../../middlewares/auth';
-import { ENUM_USER_ROLE } from '../../../enums/user';
+import { USER_ROLE } from '../user/user.constant';
 const router = express.Router();
 
 router.post(
@@ -20,14 +20,28 @@ router.post(
 router.post(
   '/change-password',
   validateRequest(AuthValidation.changePasswordZodSchema),
-  auth(ENUM_USER_ROLE.USER),
+  auth(
+    USER_ROLE.super_admin,
+    USER_ROLE.admin,
+    USER_ROLE.volunteer,
+    USER_ROLE.donor,
+    USER_ROLE.guest,
+    USER_ROLE.manager
+  ),
   AuthController.changePassword
 );
 
 router.post(
   '/forget-password',
   validateRequest(AuthValidation.forgetPasswordValidationSchema),
-  // auth(ENUM_USER_ROLE.USER),
+  auth(
+    USER_ROLE.super_admin,
+    USER_ROLE.admin,
+    USER_ROLE.volunteer,
+    USER_ROLE.donor,
+    USER_ROLE.guest,
+    USER_ROLE.manager
+  ),
   AuthController.forgetPassword
 );
 

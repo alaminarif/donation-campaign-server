@@ -2,16 +2,17 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-expressions */
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
-import config from '../../config';
-import ApiError from '../../errors/ApiError';
-import handleValidationError from '../../errors/handleValidationError';
+import config from '../config';
+import AppError from '../errors/AppError';
+
+import handleValidationError from '../errors/handleValidationError';
 
 import { ZodError } from 'zod';
 
-import { IGenericErrorMessage } from '../../interfaces/error';
+import { IGenericErrorMessage } from '../interfaces/error';
 // import { errorLogger } from '../../share/logger';
-import handleValidationZodError from '../../errors/handleValidationZodError';
-import handleValidationCastError from '../../errors/handleValidationCastError';
+import handleValidationZodError from '../errors/handleValidationZodError';
+import handleValidationCastError from '../errors/handleValidationCastError';
 
 const globalErrorHandler: ErrorRequestHandler = (
   error,
@@ -42,7 +43,7 @@ const globalErrorHandler: ErrorRequestHandler = (
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorMessages = simplifiedError.errorMessages;
-  } else if (error instanceof ApiError) {
+  } else if (error instanceof AppError) {
     statusCode = error?.statusCode;
     message = error.message;
     errorMessages = error?.message

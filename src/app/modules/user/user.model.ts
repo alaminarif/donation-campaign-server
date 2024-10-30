@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import { TUser, UserModel } from './user.interface';
-import config from '../../../config';
+import config from '../../config';
 import { Role } from './user.constant';
 
 const UserSchema = new Schema<TUser, UserModel>(
@@ -26,11 +26,6 @@ const UserSchema = new Schema<TUser, UserModel>(
       type: Boolean,
       default: false,
     },
-
-    // admin: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'Admin',
-    // },
   },
   {
     timestamps: true,
@@ -54,12 +49,13 @@ UserSchema.statics.isPasswordMatched = async function (
   return await bcrypt.compare(plainTextPassword, hashedPassword);
 };
 
-UserSchema.statics.isJWTIssuedDeforedPasswordChanged = async function (
-  passwordChangeTimestamp: Date,
+UserSchema.statics.isJWTIssuedBeforePasswordChanged = function (
+  passwordChangedTimestamp: Date,
   jwtIssuedTimestamp: number
 ) {
-  const passwordChangeTime = new Date(passwordChangeTimestamp).getTime() / 1000;
-  return passwordChangeTime > jwtIssuedTimestamp;
+  const passwordChangedTime =
+    new Date(passwordChangedTimestamp).getTime() / 1000;
+  return passwordChangedTime > jwtIssuedTimestamp;
 };
 
 UserSchema.pre('save', async function (next) {

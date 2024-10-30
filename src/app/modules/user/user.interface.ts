@@ -26,7 +26,7 @@ export interface UserModel extends Model<TUser> {
     hashedPassword: string
   ): Promise<boolean>;
 
-  isJWTIssuedDeforedPasswordChanged(
+  isJWTIssuedBeforePasswordChanged(
     passwordChangeTimestamp: Date,
     jwtIssuedTimestamp: number
   ): boolean;

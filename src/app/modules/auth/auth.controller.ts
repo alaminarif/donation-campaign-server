@@ -1,12 +1,11 @@
 import httpStatus from 'http-status';
-import catchAsync from '../../../utils/catchAsync';
-import sendResponse from '../../../utils/sendResponse';
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
 import { AuthService } from './auth.service';
-import { Request, Response } from 'express';
 import { TLoginResponse, IRefreshTokenResponse } from './auth.interface';
-import config from '../../../config';
+import config from '../../config';
 
-const loginUser = catchAsync(async (req: Request, res: Response) => {
+const loginUser = catchAsync(async (req, res) => {
   const { ...loginData } = req.body;
   const result = await AuthService.loginUser(loginData);
 
@@ -27,7 +26,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const refreshToken = catchAsync(async (req: Request, res: Response) => {
+const refreshToken = catchAsync(async (req, res) => {
   const { refreshToken } = req.cookies;
   const reslut = await AuthService.refreshToken(refreshToken);
 
@@ -45,9 +44,9 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const changePassword = catchAsync(async (req: Request, res: Response) => {
+const changePassword = catchAsync(async (req, res) => {
   const user = req.user;
-  console.log('user : ', user);
+
   const { ...passwordData } = req.body;
   const result = await AuthService.changePassword(user, passwordData);
 
@@ -59,7 +58,7 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const forgetPassword = catchAsync(async (req: Request, res: Response) => {
+const forgetPassword = catchAsync(async (req, res) => {
   const userEmail = req.body.email;
 
   const result = await AuthService.forgetPassword(userEmail);
@@ -73,7 +72,7 @@ const forgetPassword = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const resetPassword = catchAsync(async (req: Request, res: Response) => {
+const resetPassword = catchAsync(async (req, res) => {
   // const userEmail = req.body.email;
 
   const token = req.headers.authorization;

@@ -1,12 +1,12 @@
 import { SortOrder } from 'mongoose';
 
-import { paginationHelpers } from '../../../helpers/paginationHelper';
-import { IPaginationOptions } from '../../../interfaces/pagination';
-import { IGenericResponse } from '../../../interfaces/common';
+import { paginationHelpers } from '../../helpers/paginationHelper';
+import { IPaginationOptions } from '../../interfaces/pagination';
+import { IGenericResponse } from '../../interfaces/common';
 import { IPayment, IPaymentFilters } from './payment.interface';
 import { Payment } from './payment.model';
 import { paymentSearchableFields } from './payment.constant';
-import ApiError from '../../../errors/ApiError';
+import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 
 const createPayment = async (payload: IPayment): Promise<IPayment | null> => {
@@ -89,7 +89,7 @@ const updatePayment = async (
   // console.log('isExist : ', isExist);
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, ' User Not found');
+    throw new AppError(httpStatus.NOT_FOUND, ' User Not found');
   }
   const result = await Payment.findByIdAndUpdate(query, paylaoad, {
     new: true,

@@ -1,7 +1,7 @@
-import catchAsync from '../../../utils/catchAsync';
+import catchAsync from '../../utils/catchAsync';
 import { UserService } from './user.service';
 import httpStatus from 'http-status';
-import sendResponse from '../../../utils/sendResponse';
+import sendResponse from '../../utils/sendResponse';
 
 const createAdmin = catchAsync(async (req, res) => {
   const { password, admin: adminData } = req.body;

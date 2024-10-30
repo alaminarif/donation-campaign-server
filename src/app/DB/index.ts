@@ -1,5 +1,5 @@
-import config from '../../config';
-import { ENUM_USER_ROLE } from '../../enums/user';
+import config from '../config';
+import { ENUM_USER_ROLE } from '../enums/user';
 // import { ENUM_USER_ROLE } from '../../enums/user';
 import { User } from '../modules/user/user.model';
 

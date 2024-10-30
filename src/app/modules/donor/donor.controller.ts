@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
-import sendResponse from '../../../utils/sendResponse';
+import sendResponse from '../../utils/sendResponse';
 import { DonorService } from './donor.service';
-import catchAsync from '../../../utils/catchAsync';
+import catchAsync from '../../utils/catchAsync';
 
 const getAllDonor = catchAsync(async (req, res) => {
   // paginationOptions

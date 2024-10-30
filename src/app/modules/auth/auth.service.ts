@@ -1,19 +1,20 @@
 import httpStatus from 'http-status';
 import bcrypt from 'bcrypt';
-import ApiError from '../../../errors/ApiError';
+
 // import { TUser } from '../user/user.interface';
 import { User } from './../user/user.model';
 import {
   TLogin,
   TLoginResponse,
   IRefreshTokenResponse,
-  IchangePassword,
+  TChangePassword,
 } from './auth.interface';
-import { jwtHelpers } from '../../../helpers/jwtHelpers';
-import config from '../../../config';
+import { jwtHelpers } from '../../helpers/jwtHelpers';
+import config from '../../config';
 import { JwtPayload, Secret } from 'jsonwebtoken';
-import { sendEmail } from '../../../utils/sendEmail';
+import { sendEmail } from '../../utils/sendEmail';
 import { createToken } from './auth.utils';
+import AppError from '../../errors/AppError';
 
 const loginUser = async (payload: TLogin): Promise<TLoginResponse> => {
   const { email } = payload;
@@ -23,17 +24,17 @@ const loginUser = async (payload: TLogin): Promise<TLoginResponse> => {
   // const isUserExist = await User.findOne({ email });
 
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
+    throw new AppError(httpStatus.NOT_FOUND, 'User does not exist');
   }
 
   const isDeleted = user?.isDeleted;
 
   if (isDeleted) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'this user is Deleted');
+    throw new AppError(httpStatus.FORBIDDEN, 'this user is Deleted');
   }
 
   if (!(await User.isPasswordMatched(payload?.password, user?.password)))
-    throw new ApiError(httpStatus.FORBIDDEN, 'Password do not matched');
+    throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');
 
   const jwtPayload = {
     userEmail: user.email,
@@ -85,24 +86,24 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
       config.jwt_refresh_secret as Secret
     );
   } catch (err) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
+    throw new AppError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
   }
 
   const { userEmail } = verifiedToken;
 
   // checking deleted user's refresh token
 
-  const isUserExist = await User.isUserExistByEmail(userEmail);
+  const user = await User.isUserExistByEmail(userEmail);
 
-  if (!isUserExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User does not exist');
   }
   //generate new token
 
   const newAccessToken = jwtHelpers.createToken(
     {
-      email: isUserExist.email,
-      role: isUserExist.role,
+      email: user.email,
+      role: user.role,
     },
     config.jwt_access_secret as Secret,
     config.jwt_access_expires_in as string
@@ -115,30 +116,32 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 };
 
 const changePassword = async (
-  user: JwtPayload | null,
-  payload: IchangePassword
-): Promise<void> => {
+  userData: JwtPayload | null,
+  payload: TChangePassword
+) => {
   const { oldPassword, newPassword } = payload;
 
-  const isUserExist = await User.isUserExistByEmail(user?.userEmail);
+  const user = await User.isUserExistByEmail(userData?.userEmail);
 
-  if (!isUserExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'this user is not found !');
   }
 
-  if (
-    isUserExist.password &&
-    !(await User.isPasswordMatched(oldPassword, isUserExist.password))
-  ) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'old password is incorrect');
+  const isDeleted = user?.isDeleted;
+
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
   }
+
+  if (!(await User.isPasswordMatched(oldPassword, user?.password)))
+    throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');
 
   const newHashPassword = await bcrypt.hash(
     newPassword,
     Number(config.bcrypt_salt_rounds)
   );
 
-  const query = { email: user?.userEmail };
+  const query = { email: userData?.userEmail, role: userData?.role };
 
   const updatedData = {
     password: newHashPassword,
@@ -152,13 +155,13 @@ const forgetPassword = async (userEmail: string) => {
   const user = await User.isUserExistByEmail(userEmail);
 
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'this user is not found !');
+    throw new AppError(httpStatus.NOT_FOUND, 'this user is not found !');
   }
 
   const isDeleted = user?.isDeleted;
 
   if (isDeleted) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'this user is deleted');
+    throw new AppError(httpStatus.FORBIDDEN, 'this user is deleted');
   }
 
   const jwtPayload = {
@@ -186,13 +189,13 @@ const resetPassword = async (
   const user = await User.isUserExistByEmail(payload?.email);
 
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'this user is not found !');
+    throw new AppError(httpStatus.NOT_FOUND, 'this user is not found !');
   }
 
   const isDeleted = user?.isDeleted;
 
   if (isDeleted) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'this user is deleted');
+    throw new AppError(httpStatus.FORBIDDEN, 'this user is deleted');
   }
 
   const decode = jwtHelpers.verifyToken(
@@ -201,7 +204,7 @@ const resetPassword = async (
   );
 
   if (payload.email !== decode.email) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'you are forbidden');
+    throw new AppError(httpStatus.FORBIDDEN, 'you are forbidden');
   }
 
   const newHashPassword = await bcrypt.hash(

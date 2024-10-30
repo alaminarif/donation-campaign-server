@@ -1,12 +1,12 @@
 import { SortOrder } from 'mongoose';
 
-import { paginationHelpers } from '../../../helpers/paginationHelper';
-import { IPaginationOptions } from '../../../interfaces/pagination';
-import { IGenericResponse } from '../../../interfaces/common';
+import { paginationHelpers } from '../../helpers/paginationHelper';
+import { IPaginationOptions } from '../../interfaces/pagination';
+import { IGenericResponse } from '../../interfaces/common';
 import { IRating } from './rating.interface';
 import { Rating } from './rating.model';
 import httpStatus from 'http-status';
-import ApiError from '../../../errors/ApiError';
+import AppError from '../../errors/AppError';
 
 const createRating = async (payload: IRating): Promise<IRating | null> => {
   const result = await Rating.create(payload);
@@ -58,7 +58,7 @@ const updateRating = async (
   // console.log('isExist : ', isExist);
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Comment Not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'Comment Not found');
   }
   const result = await Rating.findByIdAndUpdate(query, paylaoad, {
     new: true,

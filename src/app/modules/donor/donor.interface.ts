@@ -32,20 +32,6 @@ export type TDonor = {
   isDeleted: boolean;
 };
 
-// auth part
-
-// export type AdminModel = {
-//   isAdminExist(
-//     email: string
-//   ): Promise<Pick<TDonor, '_id' | 'email' | 'password' | 'role'>>;
-//   isPasswordMatched(
-//     givenPassword: string,
-//     savedPassword: string
-//   ): Promise<boolean>;
-// } & Model<TDonor>;
-
-// //
-
 export type DonorModel = {
   isUserExists(email: string): Promise<TDonor | null>;
 } & Model<TDonor>;
@@ -53,4 +39,3 @@ export type DonorModel = {
 export type TDonorFilters = {
   searchTerm?: string;
 };
-// export type AdminModel = Model<TDonor, Record<string, unknown>>;

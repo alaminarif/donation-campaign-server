@@ -54,7 +54,7 @@ exports.UserService = void 0;
 const paginationHelper_1 = require('../../../helpers/paginationHelper');
 const user_model_1 = require('./user.model');
 const user_constant_1 = require('./user.constant');
-// import ApiError from '../../../errors/ApiError';
+// import AppError from '../../../errors/AppError';
 // import httpStatus from 'http-status';
 const getAllUser = (filter, paginationOptions) =>
   __awaiter(void 0, void 0, void 0, function* () {
@@ -113,7 +113,7 @@ const updateProfile = (email, payload) =>
     //
     // const isExist = await User.findOne({ email: email });
     // if (!isExist) {
-    //   throw new ApiError(httpStatus.NOT_FOUND, 'User Not found');
+    //   throw new AppError(httpStatus.NOT_FOUND, 'User Not found');
     // }
     const { name } = payload,
       userData = __rest(payload, ['name']);

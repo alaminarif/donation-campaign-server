@@ -1,5 +1,5 @@
 import { Donation } from './donation.model';
-import ApiError from '../../../errors/ApiError';
+import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 import QueryBuilder from '../../builder/QueryBuilder';
 import { donorSearchableFields } from '../donor/donor.constant';
@@ -13,7 +13,7 @@ const createDonationIntoDB = async (payload: TDonation) => {
   const iscampaignExists = await Campaign.findById(campaignId);
 
   if (!iscampaignExists) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'campaign not found !');
+    throw new AppError(httpStatus.NOT_FOUND, 'campaign not found !');
   }
 
   const donorId = payload?.donor;
@@ -21,7 +21,7 @@ const createDonationIntoDB = async (payload: TDonation) => {
   const isDonorExists = await Donor.findById(donorId);
 
   if (!isDonorExists) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'donor not found !');
+    throw new AppError(httpStatus.NOT_FOUND, 'donor not found !');
   }
 
   const result = (await Donation.create(payload)).populate('campaign donor');
@@ -67,7 +67,7 @@ const updateDonationIntoDB = async (
   // console.log('isExist : ', isExist);
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'user Not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'user Not found');
   }
   const result = await Donation.findByIdAndUpdate(query, paylaoad, {
     new: true,

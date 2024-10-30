@@ -5,6 +5,7 @@ export const USER_ROLE = {
   admin: 'admin',
   manager: 'manager',
   volunteer: 'volunteer',
+  donor: 'donor',
   guest: 'guest',
 } as const;
 

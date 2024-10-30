@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
-import ApiError from '../../../errors/ApiError';
+import AppError from '../../errors/AppError';
 import { TManager } from './manager.interface';
 
 import mongoose from 'mongoose';
@@ -39,7 +39,7 @@ const updateManagerIntroDB = async (
 
   const isExist = await Manager.findOne({ email: email });
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Manager Not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'Manager Not found');
   }
 
   const { name, ...remainingManagerData } = payload;
@@ -79,7 +79,7 @@ const deleteManagerFromDB = async (email: string) => {
     );
 
     if (!deletedmanager) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'failed to delete manager');
+      throw new AppError(httpStatus.BAD_REQUEST, 'failed to delete manager');
     }
 
     const deletedUser = await User.findOneAndUpdate(
@@ -89,7 +89,7 @@ const deleteManagerFromDB = async (email: string) => {
     );
 
     if (!deletedUser) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'failed to delete User');
+      throw new AppError(httpStatus.BAD_REQUEST, 'failed to delete User');
     }
 
     await session.commitTransaction();

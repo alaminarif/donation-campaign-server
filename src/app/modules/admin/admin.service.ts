@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
-import ApiError from '../../../errors/ApiError';
+import AppError from '../../errors/AppError';
 import { TAdmin } from './admin.interface';
 import { Admin } from './admin.model';
 import mongoose from 'mongoose';
@@ -38,7 +38,7 @@ const updateAdminIntroDB = async (
   const isExist = await Admin.findOne({ email: email });
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Admin Not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'Admin Not found');
   }
 
   const { name, ...remainingAdminData } = payload;
@@ -68,7 +68,7 @@ const deleteAdminFromDB = async (email: string) => {
   const isExist = await Admin.findOne({ email: email });
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Admin Not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'Admin Not found');
   }
 
   const session = await mongoose.startSession();
@@ -83,7 +83,7 @@ const deleteAdminFromDB = async (email: string) => {
     );
 
     if (!deletedAdmin) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'failed to delete Admin');
+      throw new AppError(httpStatus.BAD_REQUEST, 'failed to delete Admin');
     }
 
     const deletedUser = await User.findOneAndUpdate(
@@ -93,7 +93,7 @@ const deleteAdminFromDB = async (email: string) => {
     );
 
     if (!deletedUser) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'failed to delete User');
+      throw new AppError(httpStatus.BAD_REQUEST, 'failed to delete User');
     }
 
     await session.commitTransaction();

@@ -4,7 +4,7 @@ import { TUser } from './user.interface';
 import { User } from './user.model';
 import { TAdmin } from '../admin/admin.interface';
 import { Admin } from '../admin/admin.model';
-import ApiError from '../../../errors/ApiError';
+import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 import { TManager } from '../manager/manager.interface';
 import { Manager } from '../manager/manager.model';
@@ -29,7 +29,7 @@ const createAdminIntoDB = async (password: string, adminData: TAdmin) => {
     const newUser = await User.create([userData], { session });
 
     if (!newUser.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create user');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
     }
     adminData.email = newUser[0].email;
     adminData.user = newUser[0]._id;
@@ -37,7 +37,7 @@ const createAdminIntoDB = async (password: string, adminData: TAdmin) => {
     const newAdmin = await Admin.create([adminData], { session });
 
     if (!newAdmin.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create admin');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
     }
 
     await session.commitTransaction();
@@ -66,7 +66,7 @@ const createManagerIntoDB = async (password: string, managerData: TManager) => {
     const newUser = await User.create([userData], { session });
 
     if (!newUser.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create user');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
     }
     managerData.email = newUser[0].email;
     managerData.user = newUser[0]._id;
@@ -74,7 +74,7 @@ const createManagerIntoDB = async (password: string, managerData: TManager) => {
     const newManager = await Manager.create([managerData], { session });
 
     if (!newManager.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create admin');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
     }
 
     await session.commitTransaction();
@@ -104,7 +104,7 @@ const createVolunteerIntoDB = async (
     const newUser = await User.create([userData], { session });
 
     if (!newUser.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create user');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
     }
 
     volunteerData.email = newUser[0].email;
@@ -112,7 +112,7 @@ const createVolunteerIntoDB = async (
 
     const newVolunteer = await Volunteer.create([volunteerData], { session });
     if (!newVolunteer.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create admin');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
     }
 
     await session.commitTransaction();
@@ -139,7 +139,7 @@ const createDonorIntoDB = async (password: string, donorData: TDonor) => {
     const newUser = await User.create([userData], { session });
 
     if (!newUser.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create user');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
     }
 
     donorData.email = newUser[0].email;
@@ -147,7 +147,7 @@ const createDonorIntoDB = async (password: string, donorData: TDonor) => {
 
     const newVolunteer = await Donor.create([donorData], { session });
     if (!newVolunteer.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create donor');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create donor');
     }
 
     await session.commitTransaction();

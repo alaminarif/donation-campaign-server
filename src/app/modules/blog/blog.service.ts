@@ -1,12 +1,12 @@
 import { SortOrder } from 'mongoose';
 
-import { paginationHelpers } from '../../../helpers/paginationHelper';
-import { IPaginationOptions } from '../../../interfaces/pagination';
-import { IGenericResponse } from '../../../interfaces/common';
+import { paginationHelpers } from '../../helpers/paginationHelper';
+import { IPaginationOptions } from '../../interfaces/pagination';
+import { IGenericResponse } from '../../interfaces/common';
 import { IBlog, IBlogFilters } from './blog.interface';
 import { Blog } from './blog.model';
 import { blogSearchableFields } from './blog.constant';
-import ApiError from '../../../errors/ApiError';
+import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 
 const createBlog = async (payload: IBlog): Promise<IBlog | null> => {
@@ -77,7 +77,7 @@ const getSingleBlog = async (id: string): Promise<IBlog | null> => {
   const isExist = await Blog.findOne(query);
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'user Not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'user Not found');
   }
 
   const result = await Blog.findOne(query).populate('comment');
@@ -92,7 +92,7 @@ const getMyBlog = async (id: string): Promise<IBlog | null> => {
   const isExist = await Blog.findOne(query);
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'user Not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'user Not found');
   }
 
   const result = await Blog.findOne(query).populate('user');
@@ -109,7 +109,7 @@ const updateBlog = async (
   const isExist = await Blog.findOne(query);
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Blog Not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'Blog Not found');
   }
 
   const result = await Blog.findOneAndUpdate(query, payload, {

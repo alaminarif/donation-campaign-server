@@ -1,10 +1,10 @@
 import { SortOrder } from 'mongoose';
-import { paginationHelpers } from '../../../helpers/paginationHelper';
-import { IGenericResponse } from '../../../interfaces/common';
-import { IPaginationOptions } from '../../../interfaces/pagination';
+import { paginationHelpers } from '../../helpers/paginationHelper';
+import { IGenericResponse } from '../../interfaces/common';
+import { IPaginationOptions } from '../../interfaces/pagination';
 import { IComment } from './comment.interface';
 import { Comment } from './comment.model';
-import ApiError from '../../../errors/ApiError';
+import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 
 const createComment = async (payload: IComment): Promise<IComment | null> => {
@@ -50,7 +50,7 @@ const getMyComment = async (id: string): Promise<IComment | null> => {
   const isExist = await Comment.findOne(query);
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'user Not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'user Not found');
   }
 
   const result = await Comment.findOne(query).populate('user');
@@ -68,7 +68,7 @@ const updateComment = async (
   // console.log('isExist : ', isExist);
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Comment Not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'Comment Not found');
   }
 
   const result = await Comment.findOneAndUpdate(query, payload, {

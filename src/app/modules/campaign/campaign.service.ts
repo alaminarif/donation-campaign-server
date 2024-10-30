@@ -2,7 +2,7 @@ import { TCampaign } from './campaign.interface';
 import { Campaign } from './campaign.model';
 import { campaignSearchableFields } from './campaign.constant';
 import httpStatus from 'http-status';
-import ApiError from '../../../errors/ApiError';
+import AppError from '../../errors/AppError';
 import QueryBuilder from '../../builder/QueryBuilder';
 import { Manager } from '../manager/manager.model';
 
@@ -12,7 +12,7 @@ const createCampaignIntoDB = async (payload: TCampaign) => {
   const isManagerExists = await Manager.findById(managerId);
 
   if (!isManagerExists) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'manager not found !');
+    throw new AppError(httpStatus.NOT_FOUND, 'manager not found !');
   }
 
   const result = (await Campaign.create(payload)).populate('manager');
@@ -54,7 +54,7 @@ const updateCampaignIntoDB = async (
   const isExist = await Campaign.findOne(query);
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Campaign does't exist ");
+    throw new AppError(httpStatus.NOT_FOUND, "Campaign does't exist ");
   }
 
   const result = await Campaign.findByIdAndUpdate(query, paylaoad, {

@@ -32,20 +32,6 @@ export type TAdmin = {
   isDeleted: boolean;
 };
 
-// auth part
-
-// export type AdminModel = {
-//   isAdminExist(
-//     email: string
-//   ): Promise<Pick<TAdmin, '_id' | 'email' | 'password' | 'role'>>;
-//   isPasswordMatched(
-//     givenPassword: string,
-//     savedPassword: string
-//   ): Promise<boolean>;
-// } & Model<TAdmin>;
-
-// //
-
 export type AdminModel = {
   isUserExists(email: string): Promise<TAdmin | null>;
 } & Model<TAdmin>;
@@ -53,4 +39,3 @@ export type AdminModel = {
 export type TAdminFilters = {
   searchTerm?: string;
 };
-// export type AdminModel = Model<TAdmin, Record<string, unknown>>;

@@ -58,7 +58,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 exports.AdminService = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const http_status_1 = __importDefault(require('http-status'));
-const ApiError_1 = __importDefault(require('../../../errors/ApiError'));
+const AppError_1 = __importDefault(require('../../../errors/AppError'));
 const admin_model_1 = require('./admin.model');
 const jwtHelpers_1 = require('../../../helpers/jwtHelpers');
 const config_1 = __importDefault(require('../../../config'));
@@ -76,7 +76,7 @@ const loginAdmin = payload =>
     const { email } = payload;
     const isAdminExist = yield admin_model_1.Admin.isAdminExist(email);
     if (!isAdminExist) {
-      throw new ApiError_1.default(
+      throw new AppError_1.default(
         http_status_1.default.NOT_FOUND,
         'admin does not exist'
       );
@@ -105,7 +105,7 @@ const refreshToken = token =>
         config_1.default.jwt.refresh_secret
       );
     } catch (err) {
-      throw new ApiError_1.default(
+      throw new AppError_1.default(
         http_status_1.default.FORBIDDEN,
         'Invalid Refresh Token'
       );
@@ -114,7 +114,7 @@ const refreshToken = token =>
     // checking deleted Admin's refresh token
     const isAdminExist = yield admin_model_1.Admin.isAdminExist(adminEmail);
     if (!isAdminExist) {
-      throw new ApiError_1.default(
+      throw new AppError_1.default(
         http_status_1.default.NOT_FOUND,
         'Admin does not exist'
       );
@@ -145,7 +145,7 @@ const changePassword = (Admin, payload) =>
         }).select('+password');
     // console.log('isAdminExist', isAdminExist);
     if (!isAdminExist) {
-      throw new ApiError_1.default(
+      throw new AppError_1.default(
         http_status_1.default.NOT_FOUND,
         'admin does not exist'
       );
@@ -156,7 +156,7 @@ const changePassword = (Admin, payload) =>
         ? void 0
         : Admin.isPasswordMatched(oldPassword, isAdminExist.password))
     ) {
-      throw new ApiError_1.default(
+      throw new AppError_1.default(
         http_status_1.default.UNAUTHORIZED,
         'old password is incorrect'
       );
@@ -222,7 +222,7 @@ const updateProfile = (email, payload) =>
     //
     // const isExist = await Admin.findOne({ email: email });
     // if (!isExist) {
-    //   throw new ApiError(httpStatus.NOT_FOUND, 'Admin Not found');
+    //   throw new AppError(httpStatus.NOT_FOUND, 'Admin Not found');
     // }
     const { name } = payload,
       AdminData = __rest(payload, ['name']);

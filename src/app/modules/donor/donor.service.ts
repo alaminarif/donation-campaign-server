@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import ApiError from '../../../errors/ApiError';
+import AppError from '../../errors/AppError';
 import mongoose from 'mongoose';
 import { Donor } from './donor.model';
 import { User } from '../user/user.model';
@@ -37,7 +37,7 @@ const updateDonorIntroDB = async (
 
   // const isExist = await Admin.findOne({ email: email });
   // if (!isExist) {
-  //   throw new ApiError(httpStatus.NOT_FOUND, 'Admin Not found');
+  //   throw new AppError(httpStatus.NOT_FOUND, 'Admin Not found');
   // }
 
   const { name, ...remainingDonorData } = payload;
@@ -77,7 +77,7 @@ const deleteDonorFromDB = async (email: string) => {
     );
 
     if (!deletedDonor) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'failed to delete Donor');
+      throw new AppError(httpStatus.BAD_REQUEST, 'failed to delete Donor');
     }
 
     const deletedUser = await User.findOneAndUpdate(
@@ -87,7 +87,7 @@ const deleteDonorFromDB = async (email: string) => {
     );
 
     if (!deletedUser) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'failed to delete User');
+      throw new AppError(httpStatus.BAD_REQUEST, 'failed to delete User');
     }
 
     await session.commitTransaction();

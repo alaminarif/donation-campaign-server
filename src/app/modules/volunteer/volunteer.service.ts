@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import ApiError from '../../../errors/ApiError';
+import AppError from '../../errors/AppError';
 import QueryBuilder from '../../builder/QueryBuilder';
 import { VolunteerSearchableFields } from './volunteer.constant';
 import { TVolunteer } from './volunteer.interface';
@@ -32,10 +32,11 @@ const updateVolunteerIntoDB = async (
   email: string,
   payload: Partial<TVolunteer>
 ) => {
-  const isExist = await Volunteer.findOne({ email: email });
+  // const isExist = await Volunteer.findOne({ email: email });
+  const isExist = await Volunteer.isUserExists(email);
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Volunteer Not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'Volunteer Not found');
   }
 
   const { name, ...remaimingVolunteerData } = payload;
@@ -63,7 +64,7 @@ const deleteVolunteerFromDB = async (email: string) => {
   const isExist = await Volunteer.findOne({ email: email });
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Admin Not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'Admin Not found');
   }
 
   const session = await mongoose.startSession();
@@ -78,7 +79,7 @@ const deleteVolunteerFromDB = async (email: string) => {
     );
 
     if (!deletedVolunteer) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'failed to delete Volunteer');
+      throw new AppError(httpStatus.BAD_REQUEST, 'failed to delete Volunteer');
     }
 
     const deletedUser = await User.findOneAndUpdate(
@@ -88,7 +89,7 @@ const deleteVolunteerFromDB = async (email: string) => {
     );
 
     if (!deletedUser) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'failed to delete User');
+      throw new AppError(httpStatus.BAD_REQUEST, 'failed to delete User');
     }
     await session.commitTransaction();
     await session.endSession();

@@ -32,20 +32,6 @@ export type TManager = {
   isDeleted: boolean;
 };
 
-// auth part
-
-// export type AdminModel = {
-//   isAdminExist(
-//     email: string
-//   ): Promise<Pick<TManager, '_id' | 'email' | 'password' | 'role'>>;
-//   isPasswordMatched(
-//     givenPassword: string,
-//     savedPassword: string
-//   ): Promise<boolean>;
-// } & Model<TManager>;
-
-// //
-
 export type ManagerModel = {
   isUserExists(email: string): Promise<TManager | null>;
 } & Model<TManager>;
@@ -53,4 +39,3 @@ export type ManagerModel = {
 export type TManagerFilters = {
   searchTerm?: string;
 };
-// export type AdminModel = Model<TManager, Record<string, unknown>>;

@@ -4,7 +4,7 @@ import validateRequest from '../../middlewares/validateRequest';
 import { BlogValidation } from './blog.validation';
 import { BlogController } from './blog.controller';
 import auth from '../../middlewares/auth';
-import { ENUM_USER_ROLE } from '../../../enums/user';
+import { ENUM_USER_ROLE } from '../../enums/user';
 const router = express.Router();
 
 router.post(
