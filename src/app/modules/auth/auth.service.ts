@@ -1,7 +1,5 @@
 import httpStatus from 'http-status';
 import bcrypt from 'bcrypt';
-
-// import { TUser } from '../user/user.interface';
 import { User } from './../user/user.model';
 import {
   TLogin,
@@ -9,11 +7,10 @@ import {
   IRefreshTokenResponse,
   TChangePassword,
 } from './auth.interface';
-import { jwtHelpers } from '../../helpers/jwtHelpers';
 import config from '../../config';
-import { JwtPayload, Secret } from 'jsonwebtoken';
+import { JwtPayload } from 'jsonwebtoken';
 import { sendEmail } from '../../utils/sendEmail';
-import { createToken } from './auth.utils';
+import { createToken, verifyToken } from './auth.utils';
 import AppError from '../../errors/AppError';
 
 const loginUser = async (payload: TLogin): Promise<TLoginResponse> => {
@@ -77,14 +74,11 @@ const loginUser = async (payload: TLogin): Promise<TLoginResponse> => {
 
 const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   //verify token
-  // invalid token - synchronous
+
   let verifiedToken = null;
 
   try {
-    verifiedToken = jwtHelpers.verifyToken(
-      token,
-      config.jwt_refresh_secret as Secret
-    );
+    verifiedToken = verifyToken(token, config.jwt_refresh_secret as string);
   } catch (err) {
     throw new AppError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
   }
@@ -92,26 +86,26 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   const { userEmail } = verifiedToken;
 
   // checking deleted user's refresh token
-
   const user = await User.isUserExistByEmail(userEmail);
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User does not exist');
   }
-  //generate new token
 
-  const newAccessToken = jwtHelpers.createToken(
-    {
-      email: user.email,
-      role: user.role,
-    },
-    config.jwt_access_secret as Secret,
+  //generate new token
+  const jwtPayload = {
+    userEmail: user.email,
+    role: user.role,
+  };
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
     config.jwt_access_expires_in as string
   );
-  console.log('newAccessToken: ', newAccessToken);
 
   return {
-    accessToken: newAccessToken,
+    accessToken,
   };
 };
 
@@ -198,10 +192,7 @@ const resetPassword = async (
     throw new AppError(httpStatus.FORBIDDEN, 'this user is deleted');
   }
 
-  const decode = jwtHelpers.verifyToken(
-    token,
-    config.jwt_access_secret as Secret
-  );
+  const decode = verifyToken(token, config.jwt_access_secret as string);
 
   if (payload.email !== decode.email) {
     throw new AppError(httpStatus.FORBIDDEN, 'you are forbidden');

@@ -10,10 +10,9 @@ const loginUser = catchAsync(async (req, res) => {
   const result = await AuthService.loginUser(loginData);
 
   const { refreshToken, ...others } = result;
-  console.log('res', refreshToken);
 
   const cookieOptions = {
-    secure: config.env === 'production',
+    secure: config.NODE_ENV === 'production',
     httpOnly: true,
   };
   res.cookie('refreshToken', refreshToken, cookieOptions);
@@ -31,7 +30,7 @@ const refreshToken = catchAsync(async (req, res) => {
   const reslut = await AuthService.refreshToken(refreshToken);
 
   const cookieOptions = {
-    secure: config.env === 'production',
+    secure: config.NODE_ENV === 'production',
     httpOnly: true,
   };
   res.cookie('refreshToken', refreshToken, cookieOptions);

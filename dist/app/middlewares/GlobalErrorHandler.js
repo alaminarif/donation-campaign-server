@@ -12,8 +12,8 @@ const handleValidationError_1 = __importDefault(
 );
 const zod_1 = require('zod');
 // import { errorLogger } from '../../share/logger';
-const handleValidationZodError_1 = __importDefault(
-  require('../../errors/handleValidationZodError')
+const handleZodError_1 = __importDefault(
+  require('../../errors/handleZodError')
 );
 const handleValidationCastError_1 = __importDefault(
   require('../../errors/handleValidationCastError')
@@ -34,7 +34,7 @@ const globalErrorHandler = (error, req, res, next) => {
     message = simplifiedError.message;
     errorMessages = simplifiedError.errorMessages;
   } else if (error instanceof zod_1.ZodError) {
-    const simplifiedError = (0, handleValidationZodError_1.default)(error);
+    const simplifiedError = (0, handleZodError_1.default)(error);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorMessages = simplifiedError.errorMessages;
