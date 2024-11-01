@@ -25,6 +25,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CampaignValidation = void 0;
 const z = __importStar(require("zod"));
+const campaign_constant_1 = require("./campaign.constant");
 const createCampaignZodSchema = z.object({
     body: z.object({
         name: z.string({
@@ -34,33 +35,38 @@ const createCampaignZodSchema = z.object({
         targetAmount: z.string().min(0, {
             message: 'Target amount is required and must be non-negative',
         }),
-        startDate: z.string().refine(value => {
-            return !value || !isNaN(Date.parse(value)); // Check if the value is a valid date string
-        }, { message: 'Invalid date format for startDate' }),
-        endDate: z
-            .string()
-            .optional()
-            .refine(value => {
-            return !value || !isNaN(Date.parse(value)); // Check if the value is a valid date string
-        }, { message: 'Invalid date format for endDate' }),
+        startDate: z.string().datetime(),
+        endDate: z.string().datetime(),
         currentAmount: z.string().min(0, {
             message: 'Current amount is required and must be non-negative',
         }),
         location: z.string().min(1, { message: 'Location is required' }),
-        donationCategories: z.string({
-            required_error: 'donationCategories is required',
+        category: z.enum([...campaign_constant_1.Category]),
+        status: z.enum([...campaign_constant_1.Status]),
+        volunteerOpportunity: z.string().optional(),
+        manager: z.string({
+            required_error: 'manager is required',
         }),
+        img: z.string({
+            required_error: 'img is required',
+        }),
+        isDeleted: z.boolean().optional(),
     }),
 });
 const updateCampaignZodSchema = z.object({
     name: z.string().optional(),
     description: z.string().optional(),
     targetAmount: z.number().optional(),
-    startDate: z.date().optional(),
-    endDate: z.date().optional(),
+    startDate: z.string().datetime().optional(),
+    endDate: z.string().datetime().optional(),
     currentAmount: z.number().optional(),
     location: z.string().optional(),
-    donationCategories: z.array(z.string()).optional(),
+    category: z.enum([...campaign_constant_1.Category]).optional(),
+    status: z.enum([...campaign_constant_1.Status]).optional(),
+    volunteerOpportunity: z.string().optional(),
+    manager: z.string().optional(),
+    img: z.string().optional(),
+    isDeleted: z.boolean().optional(),
 });
 exports.CampaignValidation = {
     createCampaignZodSchema,

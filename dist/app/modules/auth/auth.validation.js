@@ -29,8 +29,27 @@ const changePasswordZodSchema = zod_1.z.object({
         }),
     }),
 });
+const forgetPasswordValidationSchema = zod_1.z.object({
+    body: zod_1.z.object({
+        email: zod_1.z.string({
+            required_error: 'User id is required',
+        }),
+    }),
+});
+const resetPasswordValidationSchema = zod_1.z.object({
+    body: zod_1.z.object({
+        email: zod_1.z.string({
+            required_error: 'User id is required',
+        }),
+        newPassword: zod_1.z.string({
+            required_error: 'User password is required',
+        }),
+    }),
+});
 exports.AuthValidation = {
     loginZodSchema,
     refreshTokenZodSchema,
     changePasswordZodSchema,
+    forgetPasswordValidationSchema,
+    resetPasswordValidationSchema,
 };

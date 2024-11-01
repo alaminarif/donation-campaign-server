@@ -1,88 +1,79 @@
-'use strict';
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
-Object.defineProperty(exports, '__esModule', { value: true });
-const config_1 = __importDefault(require('../../config'));
-const AppError_1 = __importDefault(require('../../errors/AppError'));
-const handleValidationError_1 = __importDefault(
-  require('../../errors/handleValidationError')
-);
-const zod_1 = require('zod');
-// import { errorLogger } from '../../share/logger';
-const handleZodError_1 = __importDefault(
-  require('../../errors/handleZodError')
-);
-const handleValidationCastError_1 = __importDefault(
-  require('../../errors/handleValidationCastError')
-);
-const globalErrorHandler = (error, req, res, next) => {
-  config_1.default.env === 'development'
-    ? console.log(`🐱‍🏍 globalErrorHandler ~~`, { error })
-    : console.log(`🐱‍🏍 globalErrorHandler ~~`, error);
-  let statusCode = 500;
-  let message = 'Something went wrong !';
-  let errorMessages = [];
-  if (
-    (error === null || error === void 0 ? void 0 : error.name) ===
-    'ValidationError'
-  ) {
-    const simplifiedError = (0, handleValidationError_1.default)(error);
-    statusCode = simplifiedError.statusCode;
-    message = simplifiedError.message;
-    errorMessages = simplifiedError.errorMessages;
-  } else if (error instanceof zod_1.ZodError) {
-    const simplifiedError = (0, handleZodError_1.default)(error);
-    statusCode = simplifiedError.statusCode;
-    message = simplifiedError.message;
-    errorMessages = simplifiedError.errorMessages;
-  } else if (
-    (error === null || error === void 0 ? void 0 : error.name) === 'CastError'
-  ) {
-    const simplifiedError = (0, handleValidationCastError_1.default)(error);
-    statusCode = simplifiedError.statusCode;
-    message = simplifiedError.message;
-    errorMessages = simplifiedError.errorMessages;
-  } else if (error instanceof AppError_1.default) {
-    statusCode = error === null || error === void 0 ? void 0 : error.statusCode;
-    message = error.message;
-    errorMessages = (
-      error === null || error === void 0 ? void 0 : error.message
-    )
-      ? [
-          {
+"use strict";
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
+/* eslint-disable no-unused-expressions */
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const zod_1 = require("zod");
+const handleValidationError_1 = __importDefault(require("../errors/handleValidationError"));
+const handleCastError_1 = __importDefault(require("../errors/handleCastError"));
+const handleDuplicateError_1 = __importDefault(require("../errors/handleDuplicateError"));
+const AppError_1 = __importDefault(require("../errors/AppError"));
+const config_1 = __importDefault(require("../config"));
+const handleZodError_1 = __importDefault(require("../errors/handleZodError"));
+const globalErrorHandler = (err, req, res, next) => {
+    console.log(err.statusCode);
+    //setting default values
+    let statusCode = 500;
+    let message = 'Something went wrong!';
+    let errorSources = [
+        {
             path: '',
-            message:
-              error === null || error === void 0 ? void 0 : error.message,
-          },
-        ]
-      : [];
-  } else if (error instanceof Error) {
-    message = error === null || error === void 0 ? void 0 : error.message;
-    errorMessages = (
-      error === null || error === void 0 ? void 0 : error.message
-    )
-      ? [
-          {
-            path: '',
-            message:
-              error === null || error === void 0 ? void 0 : error.message,
-          },
-        ]
-      : [];
-  }
-  res.status(statusCode).json({
-    success: false,
-    message,
-    errorMessages,
-    stack:
-      config_1.default.env !== 'production'
-        ? error === null || error === void 0
-          ? void 0
-          : error.stack
-        : undefined,
-  });
+            message: 'Something went wrong',
+        },
+    ];
+    if (err instanceof zod_1.ZodError) {
+        const simplifiedError = (0, handleZodError_1.default)(err);
+        statusCode = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode;
+        message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
+        errorSources = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources;
+    }
+    else if ((err === null || err === void 0 ? void 0 : err.name) === 'ValidationError') {
+        const simplifiedError = (0, handleValidationError_1.default)(err);
+        statusCode = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode;
+        message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
+        errorSources = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources;
+    }
+    else if ((err === null || err === void 0 ? void 0 : err.name) === 'CastError') {
+        const simplifiedError = (0, handleCastError_1.default)(err);
+        statusCode = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode;
+        message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
+        errorSources = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources;
+    }
+    else if ((err === null || err === void 0 ? void 0 : err.code) === 11000) {
+        const simplifiedError = (0, handleDuplicateError_1.default)(err);
+        statusCode = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode;
+        message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
+        errorSources = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources;
+    }
+    else if (err instanceof AppError_1.default) {
+        statusCode = err === null || err === void 0 ? void 0 : err.statusCode;
+        message = err.message;
+        errorSources = [
+            {
+                path: '',
+                message: err === null || err === void 0 ? void 0 : err.message,
+            },
+        ];
+    }
+    else if (err instanceof Error) {
+        message = err.message;
+        errorSources = [
+            {
+                path: '',
+                message: err === null || err === void 0 ? void 0 : err.message,
+            },
+        ];
+    }
+    //ultimate return
+    return res.status(statusCode).json({
+        success: false,
+        message,
+        errorSources,
+        err,
+        stack: config_1.default.NODE_ENV === 'development' ? err === null || err === void 0 ? void 0 : err.stack : null,
+    });
 };
 exports.default = globalErrorHandler;

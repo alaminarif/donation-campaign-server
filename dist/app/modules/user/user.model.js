@@ -15,23 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const mongoose_1 = require("mongoose");
+const config_1 = __importDefault(require("../../config"));
 const user_constant_1 = require("./user.constant");
-const config_1 = __importDefault(require("../../../config"));
 const UserSchema = new mongoose_1.Schema({
-    name: {
-        firstName: {
-            type: String,
-            required: true,
-        },
-        lastName: {
-            type: String,
-            required: true,
-        },
-    },
     email: {
         type: String,
         required: true,
-        unique: true,
     },
     password: {
         type: String,
@@ -43,30 +32,33 @@ const UserSchema = new mongoose_1.Schema({
     },
     role: {
         type: String,
-        enum: user_constant_1.role,
+        enum: user_constant_1.Role,
     },
-    phoneNumber: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    address: {
-        type: String,
-        required: true,
+    isDeleted: {
+        type: Boolean,
+        default: false,
     },
 }, {
     timestamps: true,
     versionKey: false,
 });
-UserSchema.statics.isUserExist = function (email) {
+UserSchema.post('save', function (doc, next) {
+    doc.password = '';
+    next();
+});
+UserSchema.statics.isUserExistByEmail = function (email) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield exports.User.findOne({ email }, { _id: 1, email: 1, password: 1, role: 1 });
+        return yield exports.User.findOne({ email }).select('+password');
     });
 };
-UserSchema.statics.isPasswordMatched = function (givenPassword, savedPassword) {
+UserSchema.statics.isPasswordMatched = function (plainTextPassword, hashedPassword) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield bcrypt_1.default.compare(givenPassword, savedPassword);
+        return yield bcrypt_1.default.compare(plainTextPassword, hashedPassword);
     });
+};
+UserSchema.statics.isJWTIssuedBeforePasswordChanged = function (passwordChangedTimestamp, jwtIssuedTimestamp) {
+    const passwordChangedTime = new Date(passwordChangedTimestamp).getTime() / 1000;
+    return passwordChangedTime > jwtIssuedTimestamp;
 };
 UserSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {

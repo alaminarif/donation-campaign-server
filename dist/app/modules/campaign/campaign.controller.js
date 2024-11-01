@@ -13,16 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CampaignController = void 0;
-const catchAsync_1 = __importDefault(require("../../../share/catchAsync"));
-const sendResponse_1 = __importDefault(require("../../../share/sendResponse"));
+const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
+const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const http_status_1 = __importDefault(require("http-status"));
-const pagination_1 = require("../../../constants/pagination");
-const pick_1 = __importDefault(require("../../../share/pick"));
 const campaign_service_1 = require("./campaign.service");
-const campaign_constant_1 = require("./campaign.constant");
 const createCampaign = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = req.body;
-    const result = yield campaign_service_1.CampaignService.createCampaign(user);
+    const campaign = req.body;
+    const result = yield campaign_service_1.CampaignService.createCampaignIntoDB(campaign);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,
@@ -32,25 +29,23 @@ const createCampaign = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
 }));
 const getAllCampaign = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // paginationOptions
-    const filters = (0, pick_1.default)(req.query, campaign_constant_1.campaignFilterableFields);
-    const paginationOptions = (0, pick_1.default)(req.query, pagination_1.paginationFields);
-    const result = yield campaign_service_1.CampaignService.getAllCampaign(filters, paginationOptions);
+    const result = yield campaign_service_1.CampaignService.getAllCampaignFromDB(req.query);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,
-        message: 'Donation Category retrive successfully  ',
-        meta: result === null || result === void 0 ? void 0 : result.meta,
-        data: result === null || result === void 0 ? void 0 : result.data,
+        message: 'Campaign retrive successfully  ',
+        meta: result.meta,
+        data: result.result,
     });
 }));
 const getSingleCampaign = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // paginationOptions
     const { id } = req.params;
-    const result = yield campaign_service_1.CampaignService.getSingleCampaign(id);
+    const result = yield campaign_service_1.CampaignService.getSingleCampaignFromDB(id);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,
-        message: 'Donation Category rtive successfully  ',
+        message: 'Campaign rtive successfully  ',
         data: result,
     });
 }));
@@ -58,22 +53,22 @@ const updateCampaign = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
     // paginationOptions
     const { id } = req.params;
     const updatedData = req.body;
-    const result = yield campaign_service_1.CampaignService.updateCampaign(id, updatedData);
+    const result = yield campaign_service_1.CampaignService.updateCampaignIntoDB(id, updatedData);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,
-        message: 'User delete successfully  ',
+        message: 'Campaign updated successfully  ',
         data: result,
     });
 }));
 const deleteCampaign = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // paginationOptions
     const { id } = req.params;
-    const result = yield campaign_service_1.CampaignService.deleteCampaign(id);
+    const result = yield campaign_service_1.CampaignService.deleteCampaignFromDB(id);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,
-        message: 'User delete successfully  ',
+        message: 'Campaign delete successfully  ',
         data: result,
     });
 }));

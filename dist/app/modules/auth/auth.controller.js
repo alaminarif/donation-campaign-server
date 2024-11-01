@@ -25,29 +25,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const http_status_1 = __importDefault(require("http-status"));
-const catchAsync_1 = __importDefault(require("../../../share/catchAsync"));
-const sendResponse_1 = __importDefault(require("../../../share/sendResponse"));
+const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
+const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const auth_service_1 = require("./auth.service");
-const config_1 = __importDefault(require("../../../config"));
-const createUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = req.body;
-    const us = req.headers.authorization;
-    console.log('us', us, req.user);
-    const result = yield auth_service_1.AuthService.createUser(user);
-    (0, sendResponse_1.default)(res, {
-        success: true,
-        statusCode: http_status_1.default.OK,
-        message: 'user created successfully  ',
-        data: result,
-    });
-}));
+const config_1 = __importDefault(require("../../config"));
+const AppError_1 = __importDefault(require("../../errors/AppError"));
 const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const loginData = __rest(req.body, []);
     const result = yield auth_service_1.AuthService.loginUser(loginData);
     const { refreshToken } = result, others = __rest(result, ["refreshToken"]);
-    console.log('res', refreshToken);
     const cookieOptions = {
-        secure: config_1.default.env === 'production',
+        secure: config_1.default.NODE_ENV === 'production',
         httpOnly: true,
     };
     res.cookie('refreshToken', refreshToken, cookieOptions);
@@ -62,7 +50,7 @@ const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
     const { refreshToken } = req.cookies;
     const reslut = yield auth_service_1.AuthService.refreshToken(refreshToken);
     const cookieOptions = {
-        secure: config_1.default.env === 'production',
+        secure: config_1.default.NODE_ENV === 'production',
         httpOnly: true,
     };
     res.cookie('refreshToken', refreshToken, cookieOptions);
@@ -75,19 +63,45 @@ const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
 }));
 const changePassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
-    console.log('user : ', user);
     const passwordData = __rest(req.body, []);
     const result = yield auth_service_1.AuthService.changePassword(user, passwordData);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,
-        message: 'changePassword successfully  ',
+        message: 'change Password successfully  ',
+        data: result,
+    });
+}));
+const forgetPassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const userEmail = req.body.email;
+    const result = yield auth_service_1.AuthService.forgetPassword(userEmail);
+    console.log(result);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: 'Forget Password successfully  ',
+        data: result,
+    });
+}));
+const resetPassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // const userEmail = req.body.email;
+    const token = req.headers.authorization;
+    console.log('token :', token);
+    if (!token) {
+        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Something went wrong !');
+    }
+    const result = yield auth_service_1.AuthService.resetPassword(req.body, token);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: 'Password Reset successfully  ',
         data: result,
     });
 }));
 exports.AuthController = {
-    createUser,
     loginUser,
     refreshToken,
     changePassword,
+    forgetPassword,
+    resetPassword,
 };

@@ -7,13 +7,14 @@ const express_1 = __importDefault(require("express"));
 const auth_route_1 = require("../modules/auth/auth.route");
 const user_route_1 = require("../modules/user/user.route");
 const admin_route_1 = require("../modules/admin/admin.route");
-const donationCategory_route_1 = require("../modules/donationCategory/donationCategory.route");
 const donation_route_1 = require("../modules/donation/donation.route");
 const campaign_route_1 = require("../modules/campaign/campaign.route");
-const comment_route_1 = require("../modules/comment/comment.route");
-const blog_route_1 = require("../modules/blog/blog.route");
-const payment_route_1 = require("../modules/payment/payment.route");
-const rating_route_1 = require("../modules/rating/rating.route");
+// import { CommentRoutes } from '../modules/comment/comment.route';
+// import { BlogRoutes } from '../modules/blog/blog.route';
+// import { RatingRoutes } from '../modules/rating/rating.route';
+const manager_route_1 = require("../modules/manager/manager.route");
+const volunteer_route_1 = require("../modules/volunteer/volunteer.route");
+const donor_route_1 = require("../modules/donor/donor.route");
 const router = express_1.default.Router();
 const moduleRoutes = [
     {
@@ -29,8 +30,16 @@ const moduleRoutes = [
         route: admin_route_1.AdminRoutes,
     },
     {
-        path: '/donation-categories',
-        route: donationCategory_route_1.DonationCategoryRoutes,
+        path: '/volunteers',
+        route: volunteer_route_1.VolunteerRoutes,
+    },
+    {
+        path: '/managers',
+        route: manager_route_1.ManagerRoutes,
+    },
+    {
+        path: '/donors',
+        route: donor_route_1.DonorRoutes,
     },
     {
         path: '/donations',
@@ -40,22 +49,18 @@ const moduleRoutes = [
         path: '/campaigns',
         route: campaign_route_1.CampaignRoutes,
     },
-    {
-        path: '/blogs',
-        route: blog_route_1.BlogRoutes,
-    },
-    {
-        path: '/payments',
-        route: payment_route_1.PaymentRoutes,
-    },
-    {
-        path: '/ratings',
-        route: rating_route_1.RatingRoutes,
-    },
-    {
-        path: '/comments',
-        route: comment_route_1.CommentRoutes,
-    },
+    // {
+    //   path: '/blogs',
+    //   route: BlogRoutes,
+    // },
+    // {
+    //   path: '/ratings',
+    //   route: RatingRoutes,
+    // },
+    // {
+    //   path: '/comments',
+    //   route: CommentRoutes,
+    // },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));
 exports.default = router;

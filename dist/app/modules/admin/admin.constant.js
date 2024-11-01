@@ -1,8 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.adminFilterableFields = exports.adminSearchableFields = exports.role = void 0;
-exports.role = ['user', 'admin'];
-exports.adminSearchableFields = [
+exports.adminFilterableFields = exports.AdminSearchableFields = exports.BloodGroup = exports.Gender = void 0;
+exports.Gender = ['male', 'female', 'other'];
+exports.BloodGroup = [
+    'A+',
+    'A-',
+    'B+',
+    'B-',
+    'AB+',
+    'AB-',
+    'O+',
+    'O-',
+];
+exports.AdminSearchableFields = [
     'name.firstName',
     'name.lastName',
     'phoneNumber',

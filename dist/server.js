@@ -13,8 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const config_1 = __importDefault(require("./config"));
+const config_1 = __importDefault(require("./app/config"));
 const app_1 = __importDefault(require("./app"));
+const DB_1 = __importDefault(require("./app/DB"));
 // import { errorLogger, logger } from './share/logger';
 // Handle uncaught Exception
 process.on('uncaughtException', error => {
@@ -22,11 +23,12 @@ process.on('uncaughtException', error => {
     process.exit(1);
 });
 let server;
-const bootstrap = () => __awaiter(void 0, void 0, void 0, function* () {
+const main = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield mongoose_1.default.connect(config_1.default.database_url);
         // eslint-disable-next-line no-console
         console.log(`🛢   Database is connected successfully`);
+        (0, DB_1.default)();
         app_1.default.listen(config_1.default.port, () => {
             // eslint-disable-next-line no-console
             console.log(`Application  listening on port ${config_1.default.port}`);
@@ -51,7 +53,7 @@ const bootstrap = () => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 //
-bootstrap();
+main();
 // Hnadle SIGTERM
 process.on('SIGTERM', () => {
     console.log('SIGTERM is receive');

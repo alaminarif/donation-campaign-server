@@ -8,71 +8,92 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Admin = void 0;
 const mongoose_1 = require("mongoose");
-const bcrypt_1 = __importDefault(require("bcrypt"));
+// import bcrypt from 'bcrypt';
 const admin_constant_1 = require("./admin.constant");
-const config_1 = __importDefault(require("../../../config"));
+// import config from '../../../config';
+const userNameSchema = new mongoose_1.Schema({
+    firstName: {
+        type: String,
+        required: [true, 'First Name is required'],
+        trim: true,
+        maxlength: [20, 'Name can not be more than 20 characters'],
+    },
+    lastName: {
+        type: String,
+        trim: true,
+        required: [true, 'Last Name is required'],
+        maxlength: [20, 'Name can not be more than 20 characters'],
+    },
+});
 const AdminSchema = new mongoose_1.Schema({
-    name: {
-        firstName: {
-            type: String,
-            required: true,
-        },
-        lastName: {
-            type: String,
-            required: true,
-        },
+    user: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        required: [true, 'User id is required'],
+        unique: true,
+        ref: 'User',
     },
     email: {
         type: String,
         required: true,
         unique: true,
     },
-    password: {
+    name: {
+        type: userNameSchema,
+        required: [true, 'Name is required'],
+    },
+    gender: {
         type: String,
-        required: true,
-        select: 0,
+        enum: {
+            values: admin_constant_1.Gender,
+            message: '{VALUE} is not a valid gender',
+        },
+        required: [true, 'Gender is required'],
     },
-    passwordchangedAt: {
-        type: Date,
-    },
-    role: {
+    contactNo: {
         type: String,
-        enum: admin_constant_1.role,
+        required: [true, 'Contact number is required'],
     },
-    phoneNumber: {
+    bloogGroup: {
         type: String,
-        required: true,
-        unique: true,
+        enum: {
+            values: admin_constant_1.BloodGroup,
+            message: '{VALUE} is not a valid blood group',
+        },
     },
+    dateOfBirth: { type: Date },
+    profileImg: { type: String },
     address: {
         type: String,
         required: true,
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false,
     },
 }, {
     timestamps: true,
     versionKey: false,
 });
-AdminSchema.statics.isAdminExist = function (email) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield exports.Admin.findOne({ email }, { _id: 1, email: 1, password: 1, role: 1 });
-    });
-};
-//
-AdminSchema.statics.isPasswordMatched = function (givenPassword, savedPassword) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield bcrypt_1.default.compare(givenPassword, savedPassword);
-    });
-};
-AdminSchema.pre('save', function (next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        this.password = yield bcrypt_1.default.hash(this.password, Number(config_1.default.bcrypt_salt_rounds));
-        next();
-    });
+// query middlewares
+AdminSchema.pre('find', function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
 });
+AdminSchema.pre('findOne', function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
+AdminSchema.pre('aggregate', function (next) {
+    this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+    next();
+});
+AdminSchema.statics.isUserExists = function (email) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const existingUser = yield exports.Admin.findOne({ email });
+        return existingUser;
+    });
+};
 exports.Admin = (0, mongoose_1.model)('Admin', AdminSchema);

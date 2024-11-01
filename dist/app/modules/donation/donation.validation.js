@@ -2,36 +2,41 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DonationValidation = void 0;
 const zod_1 = require("zod");
+const donation_constant_1 = require("./donation.constant");
 const createDonationZodSchema = zod_1.z.object({
     body: zod_1.z.object({
-        user: zod_1.z.string({
-            required_error: 'user id is required',
-        }),
-        image: zod_1.z.string({
-            required_error: ' photo is requied',
-        }),
         amount: zod_1.z.string({
             required_error: ' amount is requied',
         }),
-        category: zod_1.z.string({
-            required_error: ' category is requied',
+        paymentMethod: zod_1.z.enum([...donation_constant_1.PaymentMethod]),
+        date: zod_1.z.string().datetime().optional(),
+        category: zod_1.z.enum([...donation_constant_1.Category]),
+        anonymous: zod_1.z.boolean().optional(),
+        message: zod_1.z.string({
+            required_error: ' message is requied',
         }),
-        title: zod_1.z.string({
-            required_error: ' title is requied',
+        campaign: zod_1.z.string({
+            required_error: 'campaign id is required',
         }),
-        description: zod_1.z.string({
-            required_error: ' description is requied',
+        donor: zod_1.z.string({
+            required_error: 'donor id is required',
         }),
+        isDeleted: zod_1.z.boolean().optional(),
     }),
 });
 const updateDonationZodSchema = zod_1.z.object({
     body: zod_1.z.object({
-        user: zod_1.z.string().optional(),
-        image: zod_1.z.string().optional(),
         amount: zod_1.z.string().optional(),
-        category: zod_1.z.string().optional(),
-        title: zod_1.z.string().optional(),
-        description: zod_1.z.string().optional(),
+        paymentMethod: zod_1.z
+            .enum([...donation_constant_1.PaymentMethod])
+            .optional(),
+        date: zod_1.z.string().datetime().optional(),
+        category: zod_1.z.enum([...donation_constant_1.Category]).optional(),
+        anonymous: zod_1.z.boolean().optional(),
+        message: zod_1.z.string().optional(),
+        campaign: zod_1.z.string().optional(),
+        donor: zod_1.z.string().optional(),
+        isDeleted: zod_1.z.boolean().optional(),
     }),
 });
 exports.DonationValidation = {
