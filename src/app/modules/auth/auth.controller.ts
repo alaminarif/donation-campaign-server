@@ -4,6 +4,7 @@ import sendResponse from '../../utils/sendResponse';
 import { AuthService } from './auth.service';
 import { TLoginResponse, IRefreshTokenResponse } from './auth.interface';
 import config from '../../config';
+import AppError from '../../errors/AppError';
 
 const loginUser = catchAsync(async (req, res) => {
   const { ...loginData } = req.body;
@@ -75,6 +76,11 @@ const resetPassword = catchAsync(async (req, res) => {
   // const userEmail = req.body.email;
 
   const token = req.headers.authorization;
+  console.log('token :', token);
+
+  if (!token) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Something went wrong !');
+  }
 
   const result = await AuthService.resetPassword(req.body, token!);
 

@@ -34,21 +34,12 @@ router.post(
 router.post(
   '/forget-password',
   validateRequest(AuthValidation.forgetPasswordValidationSchema),
-  auth(
-    USER_ROLE.super_admin,
-    USER_ROLE.admin,
-    USER_ROLE.volunteer,
-    USER_ROLE.donor,
-    USER_ROLE.guest,
-    USER_ROLE.manager
-  ),
   AuthController.forgetPassword
 );
 
 router.post(
   '/reset-password',
   validateRequest(AuthValidation.resetPasswordValidationSchema),
-  // auth(ENUM_USER_ROLE.USER),
   AuthController.resetPassword
 );
 

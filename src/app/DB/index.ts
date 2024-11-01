@@ -1,6 +1,5 @@
 import config from '../config';
-import { ENUM_USER_ROLE } from '../enums/user';
-// import { ENUM_USER_ROLE } from '../../enums/user';
+import { USER_ROLE } from '../modules/user/user.constant';
 import { User } from '../modules/user/user.model';
 
 const superUser = {
@@ -12,7 +11,7 @@ const superUser = {
 
 const seedSuperAdmin = async () => {
   const isSuperAdminExist = await User.findOne({
-    role: ENUM_USER_ROLE.SUPER_ADMIN,
+    role: USER_ROLE.super_admin,
   });
 
   if (!isSuperAdminExist) {

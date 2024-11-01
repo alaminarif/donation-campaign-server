@@ -194,7 +194,11 @@ const resetPassword = async (
 
   const decode = verifyToken(token, config.jwt_access_secret as string);
 
-  if (payload.email !== decode.email) {
+  console.log('decode', decode);
+
+  console.log(payload.email, decode.userEmail);
+
+  if (payload.email !== decode.userEmail) {
     throw new AppError(httpStatus.FORBIDDEN, 'you are forbidden');
   }
 
@@ -205,7 +209,7 @@ const resetPassword = async (
 
   await User.findOneAndUpdate(
     {
-      email: decode.email,
+      email: decode.userEmail,
       role: decode.role,
     },
     {

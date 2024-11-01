@@ -31,7 +31,7 @@ const AdminSchema = new Schema<TAdmin, AdminModel>(
     email: {
       type: String,
       required: true,
-      // unique: true,
+      unique: true,
     },
 
     name: {

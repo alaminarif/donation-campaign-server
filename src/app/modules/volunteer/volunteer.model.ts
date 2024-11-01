@@ -31,7 +31,7 @@ const VolunteerSchema = new Schema<TVolunteer, VolunteerModel>(
     email: {
       type: String,
       required: true,
-      // unique: true,
+      unique: true,
     },
 
     name: {

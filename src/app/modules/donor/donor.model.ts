@@ -35,7 +35,7 @@ const DonorSchema = new Schema<TDonor, DonorModel>(
     email: {
       type: String,
       required: true,
-      // unique: true,
+      unique: true,
     },
 
     gender: {

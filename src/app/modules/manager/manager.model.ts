@@ -37,7 +37,7 @@ const ManagerSchema = new Schema<TManager, ManagerModel>(
     email: {
       type: String,
       required: true,
-      // unique: true,
+      unique: true,
     },
 
     gender: {
