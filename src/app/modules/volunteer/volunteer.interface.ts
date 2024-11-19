@@ -37,7 +37,7 @@ export type TVolunteer = {
   dateOfBirth?: Date;
   contactNo: string;
   address: string;
-  bloogGroup: TBloodGroup;
+  bloodGroup: TBloodGroup;
   skill: string;
   abailability: TDays;
   preferredCampaigns: string;

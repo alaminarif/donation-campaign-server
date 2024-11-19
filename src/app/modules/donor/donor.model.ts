@@ -52,7 +52,7 @@ const DonorSchema = new Schema<TDonor, DonorModel>(
       required: [true, 'Contact number is required'],
     },
 
-    bloogGroup: {
+    bloodGroup: {
       type: String,
       enum: {
         values: BloodGroup,

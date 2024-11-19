@@ -53,7 +53,7 @@ const AdminSchema = new Schema<TAdmin, AdminModel>(
       required: [true, 'Contact number is required'],
     },
 
-    bloogGroup: {
+    bloodGroup: {
       type: String,
       enum: {
         values: BloodGroup,

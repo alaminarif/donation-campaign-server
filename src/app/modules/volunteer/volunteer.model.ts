@@ -59,7 +59,7 @@ const VolunteerSchema = new Schema<TVolunteer, VolunteerModel>(
       required: [true, 'address is required'],
     },
 
-    bloogGroup: {
+    bloodGroup: {
       type: String,
       enum: {
         values: BloodGroup,

@@ -54,7 +54,7 @@ const ManagerSchema = new Schema<TManager, ManagerModel>(
       required: [true, 'Contact number is required'],
     },
 
-    bloogGroup: {
+    bloodGroup: {
       type: String,
       enum: {
         values: BloodGroup,

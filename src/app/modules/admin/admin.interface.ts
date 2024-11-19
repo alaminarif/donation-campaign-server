@@ -27,7 +27,7 @@ export type TAdmin = {
   gender: TGender;
   address: string;
   dateOfBirth?: Date;
-  bloogGroup?: TBloodGroup;
+  bloodGroup: TBloodGroup;
   profileImg?: string;
   isDeleted: boolean;
 };
