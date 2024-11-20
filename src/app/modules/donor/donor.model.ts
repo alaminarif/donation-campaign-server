@@ -76,9 +76,16 @@ const DonorSchema = new Schema<TDonor, DonorModel>(
   },
   {
     timestamps: true,
-    versionKey: false,
+    toJSON: {
+      virtuals: true,
+    },
   }
 );
+
+// generating full name
+DonorSchema.virtual('fullName').get(function () {
+  return this?.name?.firstName + '' + this?.name?.lastName;
+});
 
 // query middlewares
 DonorSchema.pre('find', function (next) {

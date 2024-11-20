@@ -78,9 +78,16 @@ const ManagerSchema = new Schema<TManager, ManagerModel>(
   },
   {
     timestamps: true,
-    versionKey: false,
+    toJSON: {
+      virtuals: true,
+    },
   }
 );
+
+// generating full name
+ManagerSchema.virtual('fullName').get(function () {
+  return this?.name?.firstName + '' + this?.name?.lastName;
+});
 
 // query middlewares
 ManagerSchema.pre('find', function (next) {

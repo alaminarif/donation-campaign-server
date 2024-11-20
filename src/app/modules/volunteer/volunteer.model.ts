@@ -100,9 +100,16 @@ const VolunteerSchema = new Schema<TVolunteer, VolunteerModel>(
   },
   {
     timestamps: true,
-    versionKey: false,
+    toJSON: {
+      virtuals: true,
+    },
   }
 );
+
+// generating full name
+VolunteerSchema.virtual('fullName').get(function () {
+  return this?.name?.firstName + '' + this?.name?.lastName;
+});
 
 // query middlewares
 VolunteerSchema.pre('find', function (next) {

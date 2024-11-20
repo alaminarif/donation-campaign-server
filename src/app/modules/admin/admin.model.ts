@@ -77,9 +77,16 @@ const AdminSchema = new Schema<TAdmin, AdminModel>(
   },
   {
     timestamps: true,
-    versionKey: false,
+    toJSON: {
+      virtuals: true,
+    },
   }
 );
+
+// generating full name
+AdminSchema.virtual('fullName').get(function () {
+  return this?.name?.firstName + '' + this?.name?.lastName;
+});
 
 // query middlewares
 AdminSchema.pre('find', function (next) {
