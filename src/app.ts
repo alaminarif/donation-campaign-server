@@ -8,15 +8,11 @@ import notFound from './app/middlewares/notFound';
 const app: Application = express();
 
 app.use(cookieParser());
-app.use(cors({ origin: ['http://localhost:3000'] }));
+app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
 
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
 app.use('/api/v1', routes);
-
-// app.get('/', async (req: Request, res: Response, next: NextFunction) => {
-//   Promise.reject(new Error('Unhandle Promise Rejection'));
-// });
 
 app.use(globalErrodHandler);
 
