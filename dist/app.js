@@ -34,13 +34,11 @@ const routes_1 = __importDefault(require("./app/routes/"));
 const notFound_1 = __importDefault(require("./app/middlewares/notFound"));
 const app = (0, express_1.default)();
 app.use((0, cookie_parser_1.default)());
-app.use((0, cors_1.default)({ origin: ['http://localhost:3000'] }));
+app.use((0, cors_1.default)({ origin: ['http://localhost:3000'], credentials: true }));
+app.options('*', (0, cors_1.default)());
 app.use(express_1.default.json());
 app.use((0, express_1.urlencoded)({ extended: true }));
 app.use('/api/v1', routes_1.default);
-// app.get('/', async (req: Request, res: Response, next: NextFunction) => {
-//   Promise.reject(new Error('Unhandle Promise Rejection'));
-// });
 app.use(GlobalErrorHandler_1.default);
 // handle api not fund
 app.use(notFound_1.default);
