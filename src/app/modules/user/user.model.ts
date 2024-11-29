@@ -6,9 +6,15 @@ import { Role } from './user.constant';
 
 const UserSchema = new Schema<TUser, UserModel>(
   {
+    id: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
@@ -42,6 +48,9 @@ UserSchema.statics.isUserExistByEmail = async function (email: string) {
   return await User.findOne({ email }).select('+password');
 };
 
+UserSchema.statics.isUserExistById = async function (id: string) {
+  return await User.findOne({ id }).select('+password');
+};
 UserSchema.statics.isPasswordMatched = async function (
   plainTextPassword: string,
   hashedPassword: string

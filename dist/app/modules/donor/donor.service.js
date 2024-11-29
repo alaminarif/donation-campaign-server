@@ -46,18 +46,21 @@ const getAllDonor = (query) => __awaiter(void 0, void 0, void 0, function* () {
         meta,
     };
 });
-const getSingleDonorFromDB = (adminId) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield donor_model_1.Donor.findOne({ email: adminId });
+const getSingleDonorFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield donor_model_1.Donor.findById(id);
     return result;
 });
 const updateDonorIntroDB = (email, payload) => __awaiter(void 0, void 0, void 0, function* () {
     //
-    // const isExist = await Admin.findOne({ email: email });
-    // if (!isExist) {
-    //   throw new AppError(httpStatus.NOT_FOUND, 'Admin Not found');
-    // }
+    const user = yield user_model_1.User.isUserExistByEmail(email);
+    const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
+    if (isDeleted) {
+        throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is deleted !');
+    }
+    if (!user) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Donor Not found');
+    }
     const { name } = payload, remainingDonorData = __rest(payload, ["name"]);
-    console.log('name:', payload);
     const modifiedUpdatedData = Object.assign({}, remainingDonorData);
     if (name && Object.keys(name).length) {
         for (const [key, value] of Object.entries(name)) {
@@ -71,6 +74,14 @@ const updateDonorIntroDB = (email, payload) => __awaiter(void 0, void 0, void 0,
     return result;
 });
 const deleteDonorFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.User.isUserExistByEmail(email);
+    const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
+    if (isDeleted) {
+        throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is deleted !');
+    }
+    if (!user) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Donor Not found');
+    }
     const session = yield mongoose_1.default.startSession();
     try {
         session.startTransaction();

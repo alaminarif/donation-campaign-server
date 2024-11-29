@@ -34,9 +34,14 @@ const updateDonorIntroDB = async (
   payload: Partial<TDonor>
 ): Promise<TDonor | null> => {
   //
-  const isExist = await User.isUserExistByEmail(email);
+  const user = await User.isUserExistByEmail(email);
+  const isDeleted = user?.isDeleted;
 
-  if (!isExist) {
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
+  }
+
+  if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'Donor Not found');
   }
 
@@ -63,9 +68,14 @@ const updateDonorIntroDB = async (
 };
 
 const deleteDonorFromDB = async (email: string) => {
-  const isExist = await User.isUserExistByEmail(email);
+  const user = await User.isUserExistByEmail(email);
+  const isDeleted = user?.isDeleted;
 
-  if (!isExist) {
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
+  }
+
+  if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'Donor Not found');
   }
 

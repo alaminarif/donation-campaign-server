@@ -22,6 +22,11 @@ const userNameSchema = new Schema<TUserName>({
 
 const ManagerSchema = new Schema<TManager, ManagerModel>(
   {
+    id: {
+      type: String,
+      required: [true, 'ID is required'],
+      unique: true,
+    },
     user: {
       type: Schema.Types.ObjectId,
       required: [true, 'User id is required'],

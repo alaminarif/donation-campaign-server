@@ -46,14 +46,18 @@ const getAllAdminsFromDB = (query) => __awaiter(void 0, void 0, void 0, function
         meta,
     };
 });
-const getSingleAdminFromDB = (adminId) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield admin_model_1.Admin.find({ email: adminId });
+const getSingleAdminFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield admin_model_1.Admin.findById(id);
     return result;
 });
 const updateAdminIntroDB = (email, payload) => __awaiter(void 0, void 0, void 0, function* () {
     //
-    const isExist = yield admin_model_1.Admin.findOne({ email: email });
-    if (!isExist) {
+    const user = yield user_model_1.User.isUserExistByEmail(email);
+    const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
+    if (isDeleted) {
+        throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is deleted !');
+    }
+    if (!user) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Admin Not found');
     }
     const { name } = payload, remainingAdminData = __rest(payload, ["name"]);
@@ -71,8 +75,12 @@ const updateAdminIntroDB = (email, payload) => __awaiter(void 0, void 0, void 0,
 });
 const deleteAdminFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
     //
-    const isExist = yield admin_model_1.Admin.findOne({ email: email });
-    if (!isExist) {
+    const user = yield user_model_1.User.isUserExistByEmail(email);
+    const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
+    if (isDeleted) {
+        throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is already deleted !');
+    }
+    if (!user) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Admin Not found');
     }
     const session = yield mongoose_1.default.startSession();

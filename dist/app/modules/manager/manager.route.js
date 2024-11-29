@@ -8,15 +8,11 @@ const express_1 = __importDefault(require("express"));
 const manager_validation_1 = require("./manager.validation");
 const validateRequest_1 = __importDefault(require("../../middlewares/validateRequest"));
 const manager_controller_1 = require("./manager.controller");
-// import auth from '../../middlewares/auth';
-// import { ENUM_USER_ROLE } from '../../../enums/user';
+const user_constant_1 = require("../user/user.constant");
+const auth_1 = __importDefault(require("../../middlewares/auth"));
 const router = express_1.default.Router();
-router.get('/', manager_controller_1.ManagerController.getAllManager);
-router.get('/:email', 
-// auth(ENUM_USER_ROLE.ADMIN),
-manager_controller_1.ManagerController.getSingleManager);
-router.patch('/:email', (0, validateRequest_1.default)(manager_validation_1.ManagerValidation.updateManagerValidationSchema), 
-// auth(ENUM_USER_ROLE.ADMIN),
-manager_controller_1.ManagerController.updateManager);
-router.delete('/:email', manager_controller_1.ManagerController.deleteManager);
+router.get('/', (0, auth_1.default)(user_constant_1.USER_ROLE.manager, user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), manager_controller_1.ManagerController.getAllManager);
+router.get('/:email', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), manager_controller_1.ManagerController.getSingleManager);
+router.patch('/:email', (0, validateRequest_1.default)(manager_validation_1.ManagerValidation.updateManagerValidationSchema), (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), manager_controller_1.ManagerController.updateManager);
+router.delete('/:email', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), manager_controller_1.ManagerController.deleteManager);
 exports.ManagerRoutes = router;

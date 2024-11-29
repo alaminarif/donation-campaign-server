@@ -12,6 +12,7 @@ export type TRole =
   | 'guest';
 
 export interface TUser {
+  id: string;
   email: string;
   password: string;
   passwordchangedAt?: Date;
@@ -21,6 +22,7 @@ export interface TUser {
 
 export interface UserModel extends Model<TUser> {
   isUserExistByEmail(email: string): Promise<TUser>;
+  isUserExistById(Id: string): Promise<TUser>;
   isPasswordMatched(
     plainTextPassword: string,
     hashedPassword: string

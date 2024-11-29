@@ -18,9 +18,15 @@ const mongoose_1 = require("mongoose");
 const config_1 = __importDefault(require("../../config"));
 const user_constant_1 = require("./user.constant");
 const UserSchema = new mongoose_1.Schema({
+    id: {
+        type: String,
+        required: true,
+        unique: true,
+    },
     email: {
         type: String,
         required: true,
+        unique: true,
     },
     password: {
         type: String,
@@ -49,6 +55,11 @@ UserSchema.post('save', function (doc, next) {
 UserSchema.statics.isUserExistByEmail = function (email) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield exports.User.findOne({ email }).select('+password');
+    });
+};
+UserSchema.statics.isUserExistById = function (id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield exports.User.findOne({ id }).select('+password');
     });
 };
 UserSchema.statics.isPasswordMatched = function (plainTextPassword, hashedPassword) {

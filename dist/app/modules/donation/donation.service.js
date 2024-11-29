@@ -50,7 +50,7 @@ const getAllDonationFromDB = (query) => __awaiter(void 0, void 0, void 0, functi
     };
 });
 const getSingleDonationFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield donation_model_1.Donation.findById({ _id: id }).populate('campaign donor');
+    const result = yield donation_model_1.Donation.findById(id).populate('campaign donor');
     return result;
 });
 const updateDonationIntoDB = (id, paylaoad) => __awaiter(void 0, void 0, void 0, function* () {

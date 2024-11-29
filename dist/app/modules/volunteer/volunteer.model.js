@@ -29,6 +29,11 @@ const userNameSchema = new mongoose_1.Schema({
     },
 });
 const VolunteerSchema = new mongoose_1.Schema({
+    id: {
+        type: String,
+        required: [true, 'ID is required'],
+        unique: true,
+    },
     user: {
         type: mongoose_1.Schema.Types.ObjectId,
         required: [true, 'User id is required'],

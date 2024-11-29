@@ -29,6 +29,11 @@ const userNameSchema = new mongoose_1.Schema({
     },
 });
 const AdminSchema = new mongoose_1.Schema({
+    id: {
+        type: String,
+        required: [true, 'ID is required'],
+        unique: true,
+    },
     user: {
         type: mongoose_1.Schema.Types.ObjectId,
         required: [true, 'User id is required'],
@@ -82,7 +87,7 @@ const AdminSchema = new mongoose_1.Schema({
 // generating full name
 AdminSchema.virtual('fullName').get(function () {
     var _a, _b;
-    return ((_a = this === null || this === void 0 ? void 0 : this.name) === null || _a === void 0 ? void 0 : _a.firstName) + '' + ((_b = this === null || this === void 0 ? void 0 : this.name) === null || _b === void 0 ? void 0 : _b.lastName);
+    return ((_a = this === null || this === void 0 ? void 0 : this.name) === null || _a === void 0 ? void 0 : _a.firstName) + ' ' + ((_b = this === null || this === void 0 ? void 0 : this.name) === null || _b === void 0 ? void 0 : _b.lastName);
 });
 // query middlewares
 AdminSchema.pre('find', function (next) {

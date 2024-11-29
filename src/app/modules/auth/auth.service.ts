@@ -14,11 +14,12 @@ import { createToken, verifyToken } from './auth.utils';
 import AppError from '../../errors/AppError';
 
 const loginUser = async (payload: TLogin): Promise<TLoginResponse> => {
-  const { email } = payload;
+  const { email, id } = payload;
 
-  const user = await User.isUserExistByEmail(email);
+  console.log();
 
-  // const isUserExist = await User.findOne({ email });
+  const user =
+    (await User.isUserExistByEmail(email)) || (await User.isUserExistById(id));
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User does not exist');
@@ -34,6 +35,7 @@ const loginUser = async (payload: TLogin): Promise<TLoginResponse> => {
     throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');
 
   const jwtPayload = {
+    id: user.id,
     userEmail: user.email,
     role: user.role,
   };
@@ -54,22 +56,6 @@ const loginUser = async (payload: TLogin): Promise<TLoginResponse> => {
     accessToken,
     refreshToken,
   };
-
-  // const { email: userEmail, role, _id } = user;
-
-  // const accessToken = jwtHelpers.createToken(
-  //   { userEmail, role, _id },
-  //   config.jwt.secret as Secret,
-  //   config.jwt.expires_in as string
-  // );
-
-  // const refreshToken = jwtHelpers.createToken(
-  //   { userEmail, role, _id },
-  //   config.jwt.refresh_secret as Secret,
-  //   config.jwt.refresh_expires_in as string
-  // );
-
-  // return { accessToken, refreshToken };
 };
 
 const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {

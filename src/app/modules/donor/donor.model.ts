@@ -20,6 +20,11 @@ const userNameSchema = new Schema<TUserName>({
 
 const DonorSchema = new Schema<TDonor, DonorModel>(
   {
+    id: {
+      type: String,
+      required: [true, 'ID is required'],
+      unique: true,
+    },
     user: {
       type: Schema.Types.ObjectId,
       required: [true, 'User id is required'],
@@ -50,6 +55,7 @@ const DonorSchema = new Schema<TDonor, DonorModel>(
     contactNo: {
       type: String,
       required: [true, 'Contact number is required'],
+      
     },
 
     bloodGroup: {

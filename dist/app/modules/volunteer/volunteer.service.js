@@ -45,14 +45,14 @@ const getAllvolunteersFromDB = (query) => __awaiter(void 0, void 0, void 0, func
         meta,
     };
 });
-const getSingleVolunteerFromDB = (volunteerId) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield volunteer_model_1.Volunteer.findOne({ email: volunteerId });
+const getSingleVolunteerFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield volunteer_model_1.Volunteer.findById(id);
     return result;
 });
 const updateVolunteerIntoDB = (email, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    // const isExist = await Volunteer.findOne({ email: email });
-    const isExist = yield volunteer_model_1.Volunteer.isUserExists(email);
-    if (!isExist) {
+    //
+    const user = yield volunteer_model_1.Volunteer.isUserExists(email);
+    if (!user) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Volunteer Not found');
     }
     const { name } = payload, remaimingVolunteerData = __rest(payload, ["name"]);
@@ -66,9 +66,13 @@ const updateVolunteerIntoDB = (email, payload) => __awaiter(void 0, void 0, void
     return result;
 });
 const deleteVolunteerFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const isExist = yield volunteer_model_1.Volunteer.findOne({ email: email });
-    if (!isExist) {
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Admin Not found');
+    const user = yield user_model_1.User.isUserExistByEmail(email);
+    const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
+    if (isDeleted) {
+        throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is deleted !');
+    }
+    if (!user) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Volunteer Not found');
     }
     const session = yield mongoose_1.default.startSession();
     try {

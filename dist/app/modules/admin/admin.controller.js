@@ -29,8 +29,9 @@ const getAllAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
     });
 }));
 const getSingleAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = req.params;
-    const result = yield admin_service_1.AdminService.getSingleAdminFromDB(email);
+    const { id } = req.params;
+    console.log(id);
+    const result = yield admin_service_1.AdminService.getSingleAdminFromDB(id);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,

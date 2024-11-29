@@ -4,9 +4,16 @@ exports.AuthValidation = void 0;
 const zod_1 = require("zod");
 const loginZodSchema = zod_1.z.object({
     body: zod_1.z.object({
-        email: zod_1.z.string({
+        email: zod_1.z
+            .string({
             required_error: 'email is required',
-        }),
+        })
+            .optional(),
+        id: zod_1.z
+            .string({
+            required_error: 'id is required',
+        })
+            .optional(),
         password: zod_1.z.string({
             required_error: 'password is required',
         }),

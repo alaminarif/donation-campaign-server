@@ -21,9 +21,9 @@ const sendEmail_1 = require("../../utils/sendEmail");
 const auth_utils_1 = require("./auth.utils");
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = payload;
-    const user = yield user_model_1.User.isUserExistByEmail(email);
-    // const isUserExist = await User.findOne({ email });
+    const { email, id } = payload;
+    console.log();
+    const user = (yield user_model_1.User.isUserExistByEmail(email)) || (yield user_model_1.User.isUserExistById(id));
     if (!user) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User does not exist');
     }
@@ -34,6 +34,7 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     if (!(yield user_model_1.User.isPasswordMatched(payload === null || payload === void 0 ? void 0 : payload.password, user === null || user === void 0 ? void 0 : user.password)))
         throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'Password do not matched');
     const jwtPayload = {
+        id: user.id,
         userEmail: user.email,
         role: user.role,
     };
@@ -43,18 +44,6 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         accessToken,
         refreshToken,
     };
-    // const { email: userEmail, role, _id } = user;
-    // const accessToken = jwtHelpers.createToken(
-    //   { userEmail, role, _id },
-    //   config.jwt.secret as Secret,
-    //   config.jwt.expires_in as string
-    // );
-    // const refreshToken = jwtHelpers.createToken(
-    //   { userEmail, role, _id },
-    //   config.jwt.refresh_secret as Secret,
-    //   config.jwt.refresh_expires_in as string
-    // );
-    // return { accessToken, refreshToken };
 });
 const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     //verify token

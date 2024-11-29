@@ -29,7 +29,7 @@ export type TBloodGroup =
 export type TDays = 'Sat' | 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri';
 
 export type TVolunteer = {
-  _id?: Types.ObjectId;
+  id: string;
   user: Types.ObjectId;
   email: string;
   name: TUserName;

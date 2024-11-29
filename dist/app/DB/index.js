@@ -16,6 +16,7 @@ const config_1 = __importDefault(require("../config"));
 const user_constant_1 = require("../modules/user/user.constant");
 const user_model_1 = require("../modules/user/user.model");
 const superUser = {
+    id: '0001',
     email: 'arifurr231@gmail.com',
     password: config_1.default.super_admin_password,
     role: 'super_admin',

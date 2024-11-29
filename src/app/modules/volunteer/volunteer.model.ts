@@ -22,6 +22,11 @@ const userNameSchema = new Schema<TUserName>({
 
 const VolunteerSchema = new Schema<TVolunteer, VolunteerModel>(
   {
+    id: {
+      type: String,
+      required: [true, 'ID is required'],
+      unique: true,
+    },
     user: {
       type: Schema.Types.ObjectId,
       required: [true, 'User id is required'],

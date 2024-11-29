@@ -22,22 +22,25 @@ const http_status_1 = __importDefault(require("http-status"));
 const manager_model_1 = require("../manager/manager.model");
 const volunteer_model_1 = require("../volunteer/volunteer.model");
 const donor_model_1 = require("../donor/donor.model");
-const createAdminIntoDB = (password, adminData) => __awaiter(void 0, void 0, void 0, function* () {
+const user_utils_1 = require("./user.utils");
+const createAdminIntoDB = (password, payload) => __awaiter(void 0, void 0, void 0, function* () {
     //
     const userData = {};
     userData.role = 'admin';
     userData.password = password;
-    userData.email = adminData.email;
+    userData.email = payload.email;
     const session = yield mongoose_1.default.startSession();
     try {
         session.startTransaction();
+        userData.id = yield (0, user_utils_1.generateAdminId)();
         const newUser = yield user_model_1.User.create([userData], { session });
         if (!newUser.length) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create user');
         }
-        adminData.email = newUser[0].email;
-        adminData.user = newUser[0]._id;
-        const newAdmin = yield admin_model_1.Admin.create([adminData], { session });
+        payload.id = newUser[0].id;
+        payload.email = newUser[0].email;
+        payload.user = newUser[0]._id;
+        const newAdmin = yield admin_model_1.Admin.create([payload], { session });
         if (!newAdmin.length) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create admin');
         }
@@ -51,21 +54,23 @@ const createAdminIntoDB = (password, adminData) => __awaiter(void 0, void 0, voi
         throw new Error(err);
     }
 });
-const createManagerIntoDB = (password, managerData) => __awaiter(void 0, void 0, void 0, function* () {
+const createManagerIntoDB = (password, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const userData = {};
     userData.role = 'manager';
     userData.password = password;
-    userData.email = managerData.email;
+    userData.email = payload.email;
     const session = yield mongoose_1.default.startSession();
     try {
+        userData.id = yield (0, user_utils_1.generateManagerId)();
         session.startTransaction();
         const newUser = yield user_model_1.User.create([userData], { session });
         if (!newUser.length) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create user');
         }
-        managerData.email = newUser[0].email;
-        managerData.user = newUser[0]._id;
-        const newManager = yield manager_model_1.Manager.create([managerData], { session });
+        payload.id = newUser[0].id;
+        payload.email = newUser[0].email;
+        payload.user = newUser[0]._id;
+        const newManager = yield manager_model_1.Manager.create([payload], { session });
         if (!newManager.length) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create admin');
         }
@@ -79,21 +84,23 @@ const createManagerIntoDB = (password, managerData) => __awaiter(void 0, void 0,
         throw new Error(error);
     }
 });
-const createVolunteerIntoDB = (password, volunteerData) => __awaiter(void 0, void 0, void 0, function* () {
+const createVolunteerIntoDB = (password, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const userData = {};
     userData.password = password;
-    userData.email = volunteerData.email;
+    userData.email = payload.email;
     userData.role = 'volunteer';
     const session = yield mongoose_1.default.startSession();
     try {
+        userData.id = yield (0, user_utils_1.generateVolunteerId)();
         session.startTransaction();
         const newUser = yield user_model_1.User.create([userData], { session });
         if (!newUser.length) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create user');
         }
-        volunteerData.email = newUser[0].email;
-        volunteerData.user = newUser[0]._id;
-        const newVolunteer = yield volunteer_model_1.Volunteer.create([volunteerData], { session });
+        payload.id = newUser[0].id;
+        payload.email = newUser[0].email;
+        payload.user = newUser[0]._id;
+        const newVolunteer = yield volunteer_model_1.Volunteer.create([payload], { session });
         if (!newVolunteer.length) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create admin');
         }
@@ -107,21 +114,23 @@ const createVolunteerIntoDB = (password, volunteerData) => __awaiter(void 0, voi
         throw new Error(err);
     }
 });
-const createDonorIntoDB = (password, donorData) => __awaiter(void 0, void 0, void 0, function* () {
+const createDonorIntoDB = (password, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const userData = {};
     userData.password = password;
-    userData.email = donorData.email;
+    userData.email = payload.email;
     userData.role = 'donor';
     const session = yield mongoose_1.default.startSession();
     try {
+        userData.id = yield (0, user_utils_1.generateDonorId)();
         session.startTransaction();
         const newUser = yield user_model_1.User.create([userData], { session });
         if (!newUser.length) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create user');
         }
-        donorData.email = newUser[0].email;
-        donorData.user = newUser[0]._id;
-        const newVolunteer = yield donor_model_1.Donor.create([donorData], { session });
+        payload.id = newUser[0].id;
+        payload.email = newUser[0].email;
+        payload.user = newUser[0]._id;
+        const newVolunteer = yield donor_model_1.Donor.create([payload], { session });
         if (!newVolunteer.length) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create donor');
         }

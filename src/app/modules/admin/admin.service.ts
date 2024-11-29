@@ -35,9 +35,15 @@ const updateAdminIntroDB = async (
 ): Promise<TAdmin | null> => {
   //
 
-  const isExist = await User.isUserExistByEmail(email);
+  const user = await User.isUserExistByEmail(email);
 
-  if (!isExist) {
+  const isDeleted = user?.isDeleted;
+
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
+  }
+
+  if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'Admin Not found');
   }
 
@@ -65,9 +71,15 @@ const updateAdminIntroDB = async (
 
 const deleteAdminFromDB = async (email: string) => {
   //
-  const isExist = await User.isUserExistByEmail(email);
+  const user = await User.isUserExistByEmail(email);
 
-  if (!isExist) {
+  const isDeleted = user?.isDeleted;
+
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'This user is already deleted !');
+  }
+
+  if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'Admin Not found');
   }
 

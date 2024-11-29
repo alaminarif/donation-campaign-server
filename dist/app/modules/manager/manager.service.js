@@ -47,18 +47,21 @@ const getAllmanager = (query) => __awaiter(void 0, void 0, void 0, function* () 
         meta,
     };
 });
-const getSingleManagerFromDB = (adminId) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield manager_model_1.Manager.findOne({ email: adminId });
+const getSingleManagerFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield manager_model_1.Manager.findById(id);
     return result;
 });
 const updateManagerIntroDB = (email, payload) => __awaiter(void 0, void 0, void 0, function* () {
     //
-    const isExist = yield manager_model_1.Manager.findOne({ email: email });
-    if (!isExist) {
+    const user = yield user_model_1.User.isUserExistByEmail(email);
+    const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
+    if (isDeleted) {
+        throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is deleted !');
+    }
+    if (!user) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Manager Not found');
     }
     const { name } = payload, remainingManagerData = __rest(payload, ["name"]);
-    console.log('name:', payload);
     const modifiedUpdatedData = Object.assign({}, remainingManagerData);
     if (name && Object.keys(name).length) {
         for (const [key, value] of Object.entries(name)) {
@@ -72,6 +75,14 @@ const updateManagerIntroDB = (email, payload) => __awaiter(void 0, void 0, void 
     return result;
 });
 const deleteManagerFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.User.isUserExistByEmail(email);
+    const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
+    if (isDeleted) {
+        throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is deleted !');
+    }
+    if (!user) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Manager Not found');
+    }
     const session = yield mongoose_1.default.startSession();
     try {
         session.startTransaction();

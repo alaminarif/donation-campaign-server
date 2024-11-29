@@ -37,9 +37,14 @@ const updateManagerIntroDB = async (
 ): Promise<TManager | null> => {
   //
 
-  const isExist = await User.isUserExistByEmail(email);
+  const user = await User.isUserExistByEmail(email);
+  const isDeleted = user?.isDeleted;
 
-  if (!isExist) {
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
+  }
+
+  if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'Manager Not found');
   }
 
@@ -66,9 +71,14 @@ const updateManagerIntroDB = async (
 };
 
 const deleteManagerFromDB = async (email: string) => {
-  const isExist = await User.isUserExistByEmail(email);
+  const user = await User.isUserExistByEmail(email);
+  const isDeleted = user?.isDeleted;
 
-  if (!isExist) {
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
+  }
+
+  if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'Manager Not found');
   }
   const session = await mongoose.startSession();

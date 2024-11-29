@@ -8,13 +8,11 @@ const express_1 = __importDefault(require("express"));
 const donor_controller_1 = require("./donor.controller");
 const validateRequest_1 = __importDefault(require("../../middlewares/validateRequest"));
 const donor_validation_1 = require("./donor.validation");
+const user_constant_1 = require("../user/user.constant");
+const auth_1 = __importDefault(require("../../middlewares/auth"));
 const router = express_1.default.Router();
-router.get('/', donor_controller_1.DonorController.getAllDonor);
-router.get('/:email', 
-// auth(ENUM_USER_ROLE.ADMIN),
-donor_controller_1.DonorController.getSingleDonor);
-router.patch('/:email', (0, validateRequest_1.default)(donor_validation_1.DonorValidation.updateDonorValidationSchema), 
-// auth(ENUM_USER_ROLE.ADMIN),
-donor_controller_1.DonorController.updateDonor);
-router.delete('/:email', donor_controller_1.DonorController.deleteDonor);
+router.get('/', (0, auth_1.default)(user_constant_1.USER_ROLE.donor, user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), donor_controller_1.DonorController.getAllDonor);
+router.get('/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), donor_controller_1.DonorController.getSingleDonor);
+router.patch('/:email', (0, validateRequest_1.default)(donor_validation_1.DonorValidation.updateDonorValidationSchema), (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), donor_controller_1.DonorController.updateDonor);
+router.delete('/:email', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), donor_controller_1.DonorController.deleteDonor);
 exports.DonorRoutes = router;

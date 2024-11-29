@@ -33,9 +33,9 @@ const updateVolunteerIntoDB = async (
   payload: Partial<TVolunteer>
 ) => {
   //
-  const isExist = await Volunteer.isUserExists(email);
+  const user = await Volunteer.isUserExists(email);
 
-  if (!isExist) {
+  if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'Volunteer Not found');
   }
 
@@ -61,9 +61,15 @@ const updateVolunteerIntoDB = async (
 };
 
 const deleteVolunteerFromDB = async (email: string) => {
-  const isExist = await User.isUserExistByEmail(email);
+  const user = await User.isUserExistByEmail(email);
 
-  if (!isExist) {
+  const isDeleted = user?.isDeleted;
+
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
+  }
+
+  if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'Volunteer Not found');
   }
 

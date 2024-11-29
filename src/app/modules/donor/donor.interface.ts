@@ -19,7 +19,7 @@ export type TBloodGroup =
   | 'O-';
 
 export type TDonor = {
-  _id?: Types.ObjectId;
+  id: string;
   user: Types.ObjectId;
   name: TUserName;
   email: string;

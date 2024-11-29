@@ -12,29 +12,39 @@ import { TVolunteer } from '../volunteer/volunteer.interface';
 import { Volunteer } from '../volunteer/volunteer.model';
 import { TDonor } from '../donor/donor.interface';
 import { Donor } from '../donor/donor.model';
+import {
+  generateAdminId,
+  generateDonorId,
+  generateManagerId,
+  generateVolunteerId,
+} from './user.utils';
 
-const createAdminIntoDB = async (password: string, adminData: TAdmin) => {
+const createAdminIntoDB = async (password: string, payload: TAdmin) => {
   //
   const userData: Partial<TUser> = {};
 
   userData.role = 'admin';
   userData.password = password;
-  userData.email = adminData.email;
+  userData.email = payload.email;
 
   const session = await mongoose.startSession();
 
   try {
     session.startTransaction();
 
+    userData.id = await generateAdminId();
+
     const newUser = await User.create([userData], { session });
 
     if (!newUser.length) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
     }
-    adminData.email = newUser[0].email;
-    adminData.user = newUser[0]._id;
 
-    const newAdmin = await Admin.create([adminData], { session });
+    payload.id = newUser[0].id;
+    payload.email = newUser[0].email;
+    payload.user = newUser[0]._id;
+
+    const newAdmin = await Admin.create([payload], { session });
 
     if (!newAdmin.length) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
@@ -51,16 +61,17 @@ const createAdminIntoDB = async (password: string, adminData: TAdmin) => {
   }
 };
 
-const createManagerIntoDB = async (password: string, managerData: TManager) => {
+const createManagerIntoDB = async (password: string, payload: TManager) => {
   const userData: Partial<TUser> = {};
 
   userData.role = 'manager';
   userData.password = password;
-  userData.email = managerData.email;
+  userData.email = payload.email;
 
   const session = await mongoose.startSession();
 
   try {
+    userData.id = await generateManagerId();
     session.startTransaction();
 
     const newUser = await User.create([userData], { session });
@@ -68,10 +79,11 @@ const createManagerIntoDB = async (password: string, managerData: TManager) => {
     if (!newUser.length) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
     }
-    managerData.email = newUser[0].email;
-    managerData.user = newUser[0]._id;
+    payload.id = newUser[0].id;
+    payload.email = newUser[0].email;
+    payload.user = newUser[0]._id;
 
-    const newManager = await Manager.create([managerData], { session });
+    const newManager = await Manager.create([payload], { session });
 
     if (!newManager.length) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
@@ -88,17 +100,17 @@ const createManagerIntoDB = async (password: string, managerData: TManager) => {
   }
 };
 
-const createVolunteerIntoDB = async (
-  password: string,
-  volunteerData: TVolunteer
-) => {
+const createVolunteerIntoDB = async (password: string, payload: TVolunteer) => {
   const userData: Partial<TUser> = {};
   userData.password = password;
-  userData.email = volunteerData.email;
+  userData.email = payload.email;
   userData.role = 'volunteer';
 
   const session = await mongoose.startSession();
+
   try {
+    userData.id = await generateVolunteerId();
+
     session.startTransaction();
 
     const newUser = await User.create([userData], { session });
@@ -106,11 +118,11 @@ const createVolunteerIntoDB = async (
     if (!newUser.length) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
     }
+    payload.id = newUser[0].id;
+    payload.email = newUser[0].email;
+    payload.user = newUser[0]._id;
 
-    volunteerData.email = newUser[0].email;
-    volunteerData.user = newUser[0]._id;
-
-    const newVolunteer = await Volunteer.create([volunteerData], { session });
+    const newVolunteer = await Volunteer.create([payload], { session });
     if (!newVolunteer.length) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
     }
@@ -126,14 +138,16 @@ const createVolunteerIntoDB = async (
   }
 };
 
-const createDonorIntoDB = async (password: string, donorData: TDonor) => {
+const createDonorIntoDB = async (password: string, payload: TDonor) => {
   const userData: Partial<TUser> = {};
   userData.password = password;
-  userData.email = donorData.email;
+  userData.email = payload.email;
   userData.role = 'donor';
 
   const session = await mongoose.startSession();
+
   try {
+    userData.id = await generateDonorId();
     session.startTransaction();
 
     const newUser = await User.create([userData], { session });
@@ -141,11 +155,11 @@ const createDonorIntoDB = async (password: string, donorData: TDonor) => {
     if (!newUser.length) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
     }
+    payload.id = newUser[0].id;
+    payload.email = newUser[0].email;
+    payload.user = newUser[0]._id;
 
-    donorData.email = newUser[0].email;
-    donorData.user = newUser[0]._id;
-
-    const newVolunteer = await Donor.create([donorData], { session });
+    const newVolunteer = await Donor.create([payload], { session });
     if (!newVolunteer.length) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create donor');
     }
