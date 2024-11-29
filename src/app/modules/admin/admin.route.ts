@@ -7,28 +7,20 @@ import { USER_ROLE } from '../user/user.constant';
 
 const router = express.Router();
 
-router.get(
-  '/',
-  auth(USER_ROLE.super_admin, USER_ROLE.admin),
-  AdminController.getAllAdmin
-);
+router.get('/', auth(USER_ROLE.super_admin), AdminController.getAllAdmin);
 
-router.get(
-  '/:email',
-  auth(USER_ROLE.super_admin, USER_ROLE.admin),
-  AdminController.getSingleAdmin
-);
+router.get('/:id', auth(USER_ROLE.super_admin), AdminController.getSingleAdmin);
 
 router.patch(
   '/:email',
   validateRequest(AdminValidation.updateAdminValidationSchema),
-  auth(USER_ROLE.super_admin, USER_ROLE.admin),
+  auth(USER_ROLE.super_admin),
   AdminController.updateAdmin
 );
 
 router.delete(
   '/:email',
-  auth(USER_ROLE.super_admin, USER_ROLE.admin),
+  auth(USER_ROLE.super_admin),
   AdminController.deleteAdmin
 );
 

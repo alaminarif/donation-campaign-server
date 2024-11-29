@@ -51,9 +51,7 @@ const getAllDonationFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getSingleDonationFromDB = async (id: string) => {
-  const result = await Donation.findById({ _id: id }).populate(
-    'campaign donor'
-  );
+  const result = await Donation.findById(id).populate('campaign donor');
   return result;
 };
 

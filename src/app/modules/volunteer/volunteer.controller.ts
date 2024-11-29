@@ -15,8 +15,8 @@ const getAllVolunteers = catchAsync(async (req, res) => {
 });
 
 const getSingleVolunteer = catchAsync(async (req, res) => {
-  const { email } = req.params;
-  const result = await VolunteerService.getSingleVolunteerFromDB(email);
+  const { id } = req.params;
+  const result = await VolunteerService.getSingleVolunteerFromDB(id);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,

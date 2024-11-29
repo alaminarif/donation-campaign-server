@@ -26,8 +26,8 @@ const getAllmanager = async (query: Record<string, unknown>) => {
   };
 };
 
-const getSingleManagerFromDB = async (adminId: string) => {
-  const result = await Manager.findOne({ email: adminId });
+const getSingleManagerFromDB = async (id: string) => {
+  const result = await Manager.findById(id);
   return result;
 };
 
@@ -37,14 +37,13 @@ const updateManagerIntroDB = async (
 ): Promise<TManager | null> => {
   //
 
-  const isExist = await Manager.findOne({ email: email });
+  const isExist = await User.isUserExistByEmail(email);
+
   if (!isExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'Manager Not found');
   }
 
   const { name, ...remainingManagerData } = payload;
-
-  console.log('name:', payload);
 
   const modifiedUpdatedData: Record<string, unknown> = {
     ...remainingManagerData,
@@ -67,6 +66,11 @@ const updateManagerIntroDB = async (
 };
 
 const deleteManagerFromDB = async (email: string) => {
+  const isExist = await User.isUserExistByEmail(email);
+
+  if (!isExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Manager Not found');
+  }
   const session = await mongoose.startSession();
 
   try {

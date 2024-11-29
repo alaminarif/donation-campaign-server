@@ -18,9 +18,10 @@ const getAllAdmin = catchAsync(async (req, res) => {
 });
 
 const getSingleAdmin = catchAsync(async (req, res) => {
-  const { email } = req.params;
+  const { id } = req.params;
+  console.log(id);
 
-  const result = await AdminService.getSingleAdminFromDB(email);
+  const result = await AdminService.getSingleAdminFromDB(id);
 
   sendResponse(res, {
     success: true,

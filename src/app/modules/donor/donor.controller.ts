@@ -17,9 +17,9 @@ const getAllDonor = catchAsync(async (req, res) => {
 });
 
 const getSingleDonor = catchAsync(async (req, res) => {
-  const { email } = req.params;
+  const { id } = req.params;
 
-  const result = await DonorService.getSingleDonorFromDB(email);
+  const result = await DonorService.getSingleDonorFromDB(id);
 
   sendResponse(res, {
     success: true,
@@ -31,9 +31,7 @@ const getSingleDonor = catchAsync(async (req, res) => {
 
 const updateDonor = catchAsync(async (req, res) => {
   const { email } = req.params;
-  console.log('manage email :', email);
   const { donor } = req.body;
-  // console.log('admin : ', id);
   const result = await DonorService.updateDonorIntroDB(email, donor);
 
   sendResponse(res, {

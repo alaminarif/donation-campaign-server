@@ -24,8 +24,8 @@ const getAllDonor = async (query: Record<string, unknown>) => {
   };
 };
 
-const getSingleDonorFromDB = async (adminId: string) => {
-  const result = await Donor.findOne({ email: adminId });
+const getSingleDonorFromDB = async (id: string) => {
+  const result = await Donor.findById(id);
   return result;
 };
 
@@ -34,15 +34,13 @@ const updateDonorIntroDB = async (
   payload: Partial<TDonor>
 ): Promise<TDonor | null> => {
   //
+  const isExist = await User.isUserExistByEmail(email);
 
-  // const isExist = await Admin.findOne({ email: email });
-  // if (!isExist) {
-  //   throw new AppError(httpStatus.NOT_FOUND, 'Admin Not found');
-  // }
+  if (!isExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Donor Not found');
+  }
 
   const { name, ...remainingDonorData } = payload;
-
-  console.log('name:', payload);
 
   const modifiedUpdatedData: Record<string, unknown> = {
     ...remainingDonorData,
@@ -65,6 +63,12 @@ const updateDonorIntroDB = async (
 };
 
 const deleteDonorFromDB = async (email: string) => {
+  const isExist = await User.isUserExistByEmail(email);
+
+  if (!isExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Donor Not found');
+  }
+
   const session = await mongoose.startSession();
 
   try {

@@ -23,8 +23,8 @@ const getAllvolunteersFromDB = async (query: Record<string, unknown>) => {
   };
 };
 
-const getSingleVolunteerFromDB = async (volunteerId: string) => {
-  const result = await Volunteer.findOne({ email: volunteerId });
+const getSingleVolunteerFromDB = async (id: string) => {
+  const result = await Volunteer.findById(id);
   return result;
 };
 
@@ -32,7 +32,7 @@ const updateVolunteerIntoDB = async (
   email: string,
   payload: Partial<TVolunteer>
 ) => {
-  // const isExist = await Volunteer.findOne({ email: email });
+  //
   const isExist = await Volunteer.isUserExists(email);
 
   if (!isExist) {
@@ -61,10 +61,10 @@ const updateVolunteerIntoDB = async (
 };
 
 const deleteVolunteerFromDB = async (email: string) => {
-  const isExist = await Volunteer.findOne({ email: email });
+  const isExist = await User.isUserExistByEmail(email);
 
   if (!isExist) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Admin Not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'Volunteer Not found');
   }
 
   const session = await mongoose.startSession();

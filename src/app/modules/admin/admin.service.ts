@@ -24,8 +24,8 @@ const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
   };
 };
 
-const getSingleAdminFromDB = async (adminId: string) => {
-  const result = await Admin.find({ email: adminId });
+const getSingleAdminFromDB = async (id: string) => {
+  const result = await Admin.findById(id);
   return result;
 };
 
@@ -35,7 +35,7 @@ const updateAdminIntroDB = async (
 ): Promise<TAdmin | null> => {
   //
 
-  const isExist = await Admin.findOne({ email: email });
+  const isExist = await User.isUserExistByEmail(email);
 
   if (!isExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'Admin Not found');
@@ -65,7 +65,7 @@ const updateAdminIntroDB = async (
 
 const deleteAdminFromDB = async (email: string) => {
   //
-  const isExist = await Admin.findOne({ email: email });
+  const isExist = await User.isUserExistByEmail(email);
 
   if (!isExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'Admin Not found');
