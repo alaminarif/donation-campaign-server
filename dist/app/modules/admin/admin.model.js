@@ -102,9 +102,9 @@ AdminSchema.pre('aggregate', function (next) {
     this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
     next();
 });
-AdminSchema.statics.isUserExists = function (email) {
+AdminSchema.statics.isAdminExistsById = function (id) {
     return __awaiter(this, void 0, void 0, function* () {
-        const existingUser = yield exports.Admin.findOne({ email });
+        const existingUser = yield exports.Admin.findOne({ id });
         return existingUser;
     });
 };

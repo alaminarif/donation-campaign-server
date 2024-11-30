@@ -50,9 +50,9 @@ const getSingleAdminFromDB = (id) => __awaiter(void 0, void 0, void 0, function*
     const result = yield admin_model_1.Admin.findById(id);
     return result;
 });
-const updateAdminIntroDB = (email, payload) => __awaiter(void 0, void 0, void 0, function* () {
+const updateAdminIntroDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     //
-    const user = yield user_model_1.User.isUserExistByEmail(email);
+    const user = yield admin_model_1.Admin.isAdminExistsById(id);
     const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
     if (isDeleted) {
         throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is deleted !');
@@ -67,15 +67,15 @@ const updateAdminIntroDB = (email, payload) => __awaiter(void 0, void 0, void 0,
             modifiedUpdatedData[`name.${key}`] = value;
         }
     }
-    const result = yield admin_model_1.Admin.findOneAndUpdate({ email: email }, modifiedUpdatedData, {
+    const result = yield admin_model_1.Admin.findOneAndUpdate({ id }, modifiedUpdatedData, {
         new: true,
         runValidators: true,
     });
     return result;
 });
-const deleteAdminFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteAdminFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     //
-    const user = yield user_model_1.User.isUserExistByEmail(email);
+    const user = yield admin_model_1.Admin.isAdminExistsById(id);
     const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
     if (isDeleted) {
         throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is already deleted !');
@@ -86,11 +86,11 @@ const deleteAdminFromDB = (email) => __awaiter(void 0, void 0, void 0, function*
     const session = yield mongoose_1.default.startSession();
     try {
         session.startTransaction();
-        const deletedAdmin = yield admin_model_1.Admin.findOneAndUpdate({ email }, { isDeleted: true }, { new: true, session });
+        const deletedAdmin = yield admin_model_1.Admin.findOneAndUpdate({ id }, { isDeleted: true }, { new: true, session });
         if (!deletedAdmin) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'failed to delete Admin');
         }
-        const deletedUser = yield user_model_1.User.findOneAndUpdate({ email }, { isDeleted: true }, { new: true, session });
+        const deletedUser = yield user_model_1.User.findOneAndUpdate({ id }, { isDeleted: true }, { new: true, session });
         if (!deletedUser) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'failed to delete User');
         }

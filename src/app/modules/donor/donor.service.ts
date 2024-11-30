@@ -25,16 +25,29 @@ const getAllDonor = async (query: Record<string, unknown>) => {
 };
 
 const getSingleDonorFromDB = async (id: string) => {
+  //
+  const user = await User.isUserExistById(id);
+  const isDeleted = user?.isDeleted;
+
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
+  }
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Donor Not found');
+  }
+
   const result = await Donor.findById(id);
+
   return result;
 };
 
 const updateDonorIntroDB = async (
-  email: string,
+  id: string,
   payload: Partial<TDonor>
 ): Promise<TDonor | null> => {
   //
-  const user = await User.isUserExistByEmail(email);
+  const user = await Donor.isDonorExistsById(id);
   const isDeleted = user?.isDeleted;
 
   if (isDeleted) {
@@ -56,19 +69,15 @@ const updateDonorIntroDB = async (
       modifiedUpdatedData[`name.${key}`] = value;
     }
   }
-  const result = await Donor.findOneAndUpdate(
-    { email: email },
-    modifiedUpdatedData,
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const result = await Donor.findOneAndUpdate({ id }, modifiedUpdatedData, {
+    new: true,
+    runValidators: true,
+  });
   return result;
 };
 
-const deleteDonorFromDB = async (email: string) => {
-  const user = await User.isUserExistByEmail(email);
+const deleteDonorFromDB = async (id: string) => {
+  const user = await Donor.isDonorExistsById(id);
   const isDeleted = user?.isDeleted;
 
   if (isDeleted) {
@@ -85,7 +94,7 @@ const deleteDonorFromDB = async (email: string) => {
     session.startTransaction();
 
     const deletedDonor = await Donor.findOneAndUpdate(
-      { email },
+      { id },
       { isDeleted: true },
       { new: true, session }
     );
@@ -95,7 +104,7 @@ const deleteDonorFromDB = async (email: string) => {
     }
 
     const deletedUser = await User.findOneAndUpdate(
-      { email },
+      { id },
       { isDeleted: true },
       { new: true, session }
     );

@@ -110,8 +110,8 @@ ManagerSchema.pre('aggregate', function (next) {
   next();
 });
 
-ManagerSchema.statics.isUserExists = async function (email: string) {
-  const existingUser = await Manager.findOne({ email });
+ManagerSchema.statics.isManagerExistsById = async function (id: string) {
+  const existingUser = await Manager.findOne({ id });
   return existingUser;
 };
 

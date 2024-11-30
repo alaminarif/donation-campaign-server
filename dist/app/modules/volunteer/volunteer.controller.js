@@ -38,9 +38,9 @@ const getSingleVolunteer = (0, catchAsync_1.default)((req, res) => __awaiter(voi
     });
 }));
 const updatedVolunteer = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = req.params;
+    const { id } = req.params;
     const { volunteer } = req.body;
-    const result = yield volunteer_service_1.VolunteerService.updateVolunteerIntoDB(email, volunteer);
+    const result = yield volunteer_service_1.VolunteerService.updateVolunteerIntoDB(id, volunteer);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -50,8 +50,8 @@ const updatedVolunteer = (0, catchAsync_1.default)((req, res) => __awaiter(void 
 }));
 const deleteVolunteer = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // paginationOptions
-    const { email } = req.params;
-    const result = yield volunteer_service_1.VolunteerService.deleteVolunteerFromDB(email);
+    const { id } = req.params;
+    const result = yield volunteer_service_1.VolunteerService.deleteVolunteerFromDB(id);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,

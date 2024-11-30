@@ -110,8 +110,8 @@ AdminSchema.pre('aggregate', function (next) {
   next();
 });
 
-AdminSchema.statics.isUserExists = async function (email: string) {
-  const existingUser = await Admin.findOne({ email });
+AdminSchema.statics.isAdminExistsById = async function (id: string) {
+  const existingUser = await Admin.findOne({ id });
   return existingUser;
 };
 

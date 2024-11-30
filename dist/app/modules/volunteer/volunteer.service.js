@@ -46,12 +46,17 @@ const getAllvolunteersFromDB = (query) => __awaiter(void 0, void 0, void 0, func
     };
 });
 const getSingleVolunteerFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield volunteer_model_1.Volunteer.findById(id);
+    //
+    const result = yield volunteer_model_1.Volunteer.findById({ _id: id });
     return result;
 });
-const updateVolunteerIntoDB = (email, payload) => __awaiter(void 0, void 0, void 0, function* () {
+const updateVolunteerIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     //
-    const user = yield volunteer_model_1.Volunteer.isUserExists(email);
+    const user = yield volunteer_model_1.Volunteer.isVolunteerExistsById(id);
+    const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
+    if (isDeleted) {
+        throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is deleted !');
+    }
     if (!user) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Volunteer Not found');
     }
@@ -62,11 +67,14 @@ const updateVolunteerIntoDB = (email, payload) => __awaiter(void 0, void 0, void
             modifiedUpdatedData[`name.${key}`] = value;
         }
     }
-    const result = yield volunteer_model_1.Volunteer.findOneAndUpdate({ email: email }, modifiedUpdatedData, { runValidators: true });
+    const result = yield volunteer_model_1.Volunteer.findOneAndUpdate({ id }, modifiedUpdatedData, {
+        runValidators: true,
+    });
     return result;
 });
-const deleteVolunteerFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.User.isUserExistByEmail(email);
+const deleteVolunteerFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    //
+    const user = yield volunteer_model_1.Volunteer.isVolunteerExistsById(id);
     const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
     if (isDeleted) {
         throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is deleted !');
@@ -77,11 +85,11 @@ const deleteVolunteerFromDB = (email) => __awaiter(void 0, void 0, void 0, funct
     const session = yield mongoose_1.default.startSession();
     try {
         session.startTransaction();
-        const deletedVolunteer = yield volunteer_model_1.Volunteer.findOneAndUpdate({ email }, { isDeleted: true }, { new: true, session });
+        const deletedVolunteer = yield volunteer_model_1.Volunteer.findOneAndUpdate({ id }, { isDeleted: true }, { new: true, session });
         if (!deletedVolunteer) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'failed to delete Volunteer');
         }
-        const deletedUser = yield user_model_1.User.findOneAndUpdate({ email }, { isDeleted: true }, { new: true, session });
+        const deletedUser = yield user_model_1.User.findOneAndUpdate({ id }, { isDeleted: true }, { new: true, session });
         if (!deletedUser) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'failed to delete User');
         }

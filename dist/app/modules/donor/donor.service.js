@@ -47,12 +47,21 @@ const getAllDonor = (query) => __awaiter(void 0, void 0, void 0, function* () {
     };
 });
 const getSingleDonorFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    //
+    const user = yield user_model_1.User.isUserExistById(id);
+    const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
+    if (isDeleted) {
+        throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is deleted !');
+    }
+    if (!user) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Donor Not found');
+    }
     const result = yield donor_model_1.Donor.findById(id);
     return result;
 });
-const updateDonorIntroDB = (email, payload) => __awaiter(void 0, void 0, void 0, function* () {
+const updateDonorIntroDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     //
-    const user = yield user_model_1.User.isUserExistByEmail(email);
+    const user = yield donor_model_1.Donor.isDonorExistsById(id);
     const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
     if (isDeleted) {
         throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is deleted !');
@@ -67,14 +76,14 @@ const updateDonorIntroDB = (email, payload) => __awaiter(void 0, void 0, void 0,
             modifiedUpdatedData[`name.${key}`] = value;
         }
     }
-    const result = yield donor_model_1.Donor.findOneAndUpdate({ email: email }, modifiedUpdatedData, {
+    const result = yield donor_model_1.Donor.findOneAndUpdate({ id }, modifiedUpdatedData, {
         new: true,
         runValidators: true,
     });
     return result;
 });
-const deleteDonorFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.User.isUserExistByEmail(email);
+const deleteDonorFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield donor_model_1.Donor.isDonorExistsById(id);
     const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
     if (isDeleted) {
         throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is deleted !');
@@ -85,11 +94,11 @@ const deleteDonorFromDB = (email) => __awaiter(void 0, void 0, void 0, function*
     const session = yield mongoose_1.default.startSession();
     try {
         session.startTransaction();
-        const deletedDonor = yield donor_model_1.Donor.findOneAndUpdate({ email }, { isDeleted: true }, { new: true, session });
+        const deletedDonor = yield donor_model_1.Donor.findOneAndUpdate({ id }, { isDeleted: true }, { new: true, session });
         if (!deletedDonor) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'failed to delete Donor');
         }
-        const deletedUser = yield user_model_1.User.findOneAndUpdate({ email }, { isDeleted: true }, { new: true, session });
+        const deletedUser = yield user_model_1.User.findOneAndUpdate({ id }, { isDeleted: true }, { new: true, session });
         if (!deletedUser) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'failed to delete User');
         }

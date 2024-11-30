@@ -30,12 +30,12 @@ const getSingleAdminFromDB = async (id: string) => {
 };
 
 const updateAdminIntroDB = async (
-  email: string,
+  id: string,
   payload: Partial<TAdmin>
 ): Promise<TAdmin | null> => {
   //
 
-  const user = await User.isUserExistByEmail(email);
+  const user = await Admin.isAdminExistsById(id);
 
   const isDeleted = user?.isDeleted;
 
@@ -58,20 +58,16 @@ const updateAdminIntroDB = async (
       modifiedUpdatedData[`name.${key}`] = value;
     }
   }
-  const result = await Admin.findOneAndUpdate(
-    { email: email },
-    modifiedUpdatedData,
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const result = await Admin.findOneAndUpdate({ id }, modifiedUpdatedData, {
+    new: true,
+    runValidators: true,
+  });
   return result;
 };
 
-const deleteAdminFromDB = async (email: string) => {
+const deleteAdminFromDB = async (id: string) => {
   //
-  const user = await User.isUserExistByEmail(email);
+  const user = await Admin.isAdminExistsById(id);
 
   const isDeleted = user?.isDeleted;
 
@@ -89,7 +85,7 @@ const deleteAdminFromDB = async (email: string) => {
     session.startTransaction();
 
     const deletedAdmin = await Admin.findOneAndUpdate(
-      { email },
+      { id },
       { isDeleted: true },
       { new: true, session }
     );
@@ -99,7 +95,7 @@ const deleteAdminFromDB = async (email: string) => {
     }
 
     const deletedUser = await User.findOneAndUpdate(
-      { email },
+      { id },
       { isDeleted: true },
       { new: true, session }
     );

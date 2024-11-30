@@ -33,7 +33,7 @@ export type TManager = {
 };
 
 export type ManagerModel = {
-  isUserExists(email: string): Promise<TManager | null>;
+  isManagerExistsById(id: string): Promise<TManager | null>;
 } & Model<TManager>;
 
 export type TManagerFilters = {

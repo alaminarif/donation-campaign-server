@@ -39,9 +39,9 @@ const getSingleDonor = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
     });
 }));
 const updateDonor = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = req.params;
+    const { id } = req.params;
     const { donor } = req.body;
-    const result = yield donor_service_1.DonorService.updateDonorIntroDB(email, donor);
+    const result = yield donor_service_1.DonorService.updateDonorIntroDB(id, donor);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -51,8 +51,8 @@ const updateDonor = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
 }));
 const deleteDonor = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // paginationOptions
-    const { email } = req.params;
-    const result = yield donor_service_1.DonorService.deleteDonorFromDB(email);
+    const { id } = req.params;
+    const result = yield donor_service_1.DonorService.deleteDonorFromDB(id);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,

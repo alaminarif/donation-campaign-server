@@ -13,6 +13,6 @@ const user_constant_1 = require("../user/user.constant");
 const router = express_1.default.Router();
 router.get('/', (0, auth_1.default)(user_constant_1.USER_ROLE.volunteer, user_constant_1.USER_ROLE.manager, user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), volunteer_controller_1.VolunteerController.getAllVolunteers);
 router.get('/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.manager, user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), volunteer_controller_1.VolunteerController.getSingleVolunteer);
-router.patch('/:email', (0, validateRequest_1.default)(volunteer_validation_1.VolunteerValidation.updateVolunteerValidationSchema), (0, auth_1.default)(user_constant_1.USER_ROLE.manager, user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), volunteer_controller_1.VolunteerController.updatedVolunteer);
-router.delete('/:email', (0, auth_1.default)(user_constant_1.USER_ROLE.manager, user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), volunteer_controller_1.VolunteerController.deleteVolunteer);
+router.patch('/:id', (0, validateRequest_1.default)(volunteer_validation_1.VolunteerValidation.updateVolunteerValidationSchema), (0, auth_1.default)(user_constant_1.USER_ROLE.manager, user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), volunteer_controller_1.VolunteerController.updatedVolunteer);
+router.delete('/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.manager, user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), volunteer_controller_1.VolunteerController.deleteVolunteer);
 exports.VolunteerRoutes = router;

@@ -25,14 +25,14 @@ router.get(
 );
 
 router.patch(
-  '/:email',
+  '/:id',
   validateRequest(VolunteerValidation.updateVolunteerValidationSchema),
   auth(USER_ROLE.manager, USER_ROLE.admin, USER_ROLE.super_admin),
   VolunteerController.updatedVolunteer
 );
 
 router.delete(
-  '/:email',
+  '/:id',
   auth(USER_ROLE.manager, USER_ROLE.admin, USER_ROLE.super_admin),
   VolunteerController.deleteVolunteer
 );

@@ -14,20 +14,20 @@ router.get(
 );
 
 router.get(
-  '/:email',
+  '/:id',
   auth(USER_ROLE.admin, USER_ROLE.super_admin),
   ManagerController.getSingleManager
 );
 
 router.patch(
-  '/:email',
+  '/:id',
   validateRequest(ManagerValidation.updateManagerValidationSchema),
   auth(USER_ROLE.admin, USER_ROLE.super_admin),
   ManagerController.updateManager
 );
 
 router.delete(
-  '/:email',
+  '/:id',
   auth(USER_ROLE.admin, USER_ROLE.super_admin),
   ManagerController.deleteManager
 );

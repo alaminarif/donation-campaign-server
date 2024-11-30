@@ -40,9 +40,9 @@ const getSingleAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
     });
 }));
 const updateAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = req.params;
+    const { id } = req.params;
     const { admin } = req.body;
-    const result = yield admin_service_1.AdminService.updateAdminIntroDB(email, admin);
+    const result = yield admin_service_1.AdminService.updateAdminIntroDB(id, admin);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -52,8 +52,8 @@ const updateAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
 }));
 const deleteAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // paginationOptions
-    const { email } = req.params;
-    const result = yield admin_service_1.AdminService.deleteAdminFromDB(email);
+    const { id } = req.params;
+    const result = yield admin_service_1.AdminService.deleteAdminFromDB(id);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,

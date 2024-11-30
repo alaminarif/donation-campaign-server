@@ -55,7 +55,6 @@ const DonorSchema = new Schema<TDonor, DonorModel>(
     contactNo: {
       type: String,
       required: [true, 'Contact number is required'],
-      
     },
 
     bloodGroup: {
@@ -109,8 +108,8 @@ DonorSchema.pre('aggregate', function (next) {
   next();
 });
 
-DonorSchema.statics.isUserExists = async function (email: string) {
-  const existingUser = await Donor.findOne({ email });
+DonorSchema.statics.isDonorExistsById = async function (id: string) {
+  const existingUser = await Donor.findOne({ id });
   return existingUser;
 };
 

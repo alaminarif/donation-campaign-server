@@ -12,16 +12,12 @@ router.get('/', auth(USER_ROLE.super_admin), AdminController.getAllAdmin);
 router.get('/:id', auth(USER_ROLE.super_admin), AdminController.getSingleAdmin);
 
 router.patch(
-  '/:email',
+  '/:id',
   validateRequest(AdminValidation.updateAdminValidationSchema),
   auth(USER_ROLE.super_admin),
   AdminController.updateAdmin
 );
 
-router.delete(
-  '/:email',
-  auth(USER_ROLE.super_admin),
-  AdminController.deleteAdmin
-);
+router.delete('/:id', auth(USER_ROLE.super_admin), AdminController.deleteAdmin);
 
 export const AdminRoutes = router;

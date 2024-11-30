@@ -13,6 +13,6 @@ const auth_1 = __importDefault(require("../../middlewares/auth"));
 const router = express_1.default.Router();
 router.get('/', (0, auth_1.default)(user_constant_1.USER_ROLE.donor, user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), donor_controller_1.DonorController.getAllDonor);
 router.get('/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), donor_controller_1.DonorController.getSingleDonor);
-router.patch('/:email', (0, validateRequest_1.default)(donor_validation_1.DonorValidation.updateDonorValidationSchema), (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), donor_controller_1.DonorController.updateDonor);
-router.delete('/:email', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), donor_controller_1.DonorController.deleteDonor);
+router.patch('/:id', (0, validateRequest_1.default)(donor_validation_1.DonorValidation.updateDonorValidationSchema), (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), donor_controller_1.DonorController.updateDonor);
+router.delete('/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.super_admin), donor_controller_1.DonorController.deleteDonor);
 exports.DonorRoutes = router;

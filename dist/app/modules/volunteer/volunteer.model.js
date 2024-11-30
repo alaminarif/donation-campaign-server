@@ -124,9 +124,9 @@ VolunteerSchema.pre('aggregate', function (next) {
     this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
     next();
 });
-VolunteerSchema.statics.isUserExists = function (email) {
+VolunteerSchema.statics.isVolunteerExistsById = function (id) {
     return __awaiter(this, void 0, void 0, function* () {
-        const existingUser = yield exports.Volunteer.findOne({ email });
+        const existingUser = yield exports.Volunteer.findOne({ id });
         return existingUser;
     });
 };

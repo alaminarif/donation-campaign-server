@@ -33,7 +33,7 @@ export type TAdmin = {
 };
 
 export type AdminModel = {
-  isUserExists(email: string): Promise<TAdmin | null>;
+  isAdminExistsById(id: string): Promise<TAdmin | null>;
 } & Model<TAdmin>;
 
 export type TAdminFilters = {

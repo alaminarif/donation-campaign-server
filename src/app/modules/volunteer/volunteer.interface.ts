@@ -49,7 +49,7 @@ export type TVolunteer = {
 };
 
 export type VolunteerModel = {
-  isUserExists(email: string): Promise<TVolunteer | null>;
+  isVolunteerExistsById(id: string): Promise<TVolunteer | null>;
 } & Model<TVolunteer>;
 
 export type TVolunteerFilters = {

@@ -100,9 +100,9 @@ DonorSchema.pre('aggregate', function (next) {
     this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
     next();
 });
-DonorSchema.statics.isUserExists = function (email) {
+DonorSchema.statics.isDonorExistsById = function (id) {
     return __awaiter(this, void 0, void 0, function* () {
-        const existingUser = yield exports.Donor.findOne({ email });
+        const existingUser = yield exports.Donor.findOne({ id });
         return existingUser;
     });
 };

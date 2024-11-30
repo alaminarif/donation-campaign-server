@@ -102,9 +102,9 @@ ManagerSchema.pre('aggregate', function (next) {
     this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
     next();
 });
-ManagerSchema.statics.isUserExists = function (email) {
+ManagerSchema.statics.isManagerExistsById = function (id) {
     return __awaiter(this, void 0, void 0, function* () {
-        const existingUser = yield exports.Manager.findOne({ email });
+        const existingUser = yield exports.Manager.findOne({ id });
         return existingUser;
     });
 };

@@ -51,9 +51,9 @@ const getSingleManagerFromDB = (id) => __awaiter(void 0, void 0, void 0, functio
     const result = yield manager_model_1.Manager.findById(id);
     return result;
 });
-const updateManagerIntroDB = (email, payload) => __awaiter(void 0, void 0, void 0, function* () {
+const updateManagerIntroDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     //
-    const user = yield user_model_1.User.isUserExistByEmail(email);
+    const user = yield manager_model_1.Manager.isManagerExistsById(id);
     const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
     if (isDeleted) {
         throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is deleted !');
@@ -68,14 +68,14 @@ const updateManagerIntroDB = (email, payload) => __awaiter(void 0, void 0, void 
             modifiedUpdatedData[`name.${key}`] = value;
         }
     }
-    const result = yield manager_model_1.Manager.findOneAndUpdate({ email: email }, modifiedUpdatedData, {
+    const result = yield manager_model_1.Manager.findOneAndUpdate({ id }, modifiedUpdatedData, {
         new: true,
         runValidators: true,
     });
     return result;
 });
-const deleteManagerFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.User.isUserExistByEmail(email);
+const deleteManagerFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield manager_model_1.Manager.isManagerExistsById(id);
     const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
     if (isDeleted) {
         throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is deleted !');
@@ -86,11 +86,11 @@ const deleteManagerFromDB = (email) => __awaiter(void 0, void 0, void 0, functio
     const session = yield mongoose_1.default.startSession();
     try {
         session.startTransaction();
-        const deletedmanager = yield manager_model_1.Manager.findOneAndUpdate({ email }, { isDeleted: true }, { new: true, session });
+        const deletedmanager = yield manager_model_1.Manager.findOneAndUpdate({ id }, { isDeleted: true }, { new: true, session });
         if (!deletedmanager) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'failed to delete manager');
         }
-        const deletedUser = yield user_model_1.User.findOneAndUpdate({ email }, { isDeleted: true }, { new: true, session });
+        const deletedUser = yield user_model_1.User.findOneAndUpdate({ id }, { isDeleted: true }, { new: true, session });
         if (!deletedUser) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'failed to delete User');
         }

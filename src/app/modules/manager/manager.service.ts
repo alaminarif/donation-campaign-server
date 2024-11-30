@@ -32,12 +32,12 @@ const getSingleManagerFromDB = async (id: string) => {
 };
 
 const updateManagerIntroDB = async (
-  email: string,
+  id: string,
   payload: Partial<TManager>
 ): Promise<TManager | null> => {
   //
 
-  const user = await User.isUserExistByEmail(email);
+  const user = await Manager.isManagerExistsById(id);
   const isDeleted = user?.isDeleted;
 
   if (isDeleted) {
@@ -59,19 +59,15 @@ const updateManagerIntroDB = async (
       modifiedUpdatedData[`name.${key}`] = value;
     }
   }
-  const result = await Manager.findOneAndUpdate(
-    { email: email },
-    modifiedUpdatedData,
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const result = await Manager.findOneAndUpdate({ id }, modifiedUpdatedData, {
+    new: true,
+    runValidators: true,
+  });
   return result;
 };
 
-const deleteManagerFromDB = async (email: string) => {
-  const user = await User.isUserExistByEmail(email);
+const deleteManagerFromDB = async (id: string) => {
+  const user = await Manager.isManagerExistsById(id);
   const isDeleted = user?.isDeleted;
 
   if (isDeleted) {
@@ -87,7 +83,7 @@ const deleteManagerFromDB = async (email: string) => {
     session.startTransaction();
 
     const deletedmanager = await Manager.findOneAndUpdate(
-      { email },
+      { id },
       { isDeleted: true },
       { new: true, session }
     );
@@ -97,7 +93,7 @@ const deleteManagerFromDB = async (email: string) => {
     }
 
     const deletedUser = await User.findOneAndUpdate(
-      { email },
+      { id },
       { isDeleted: true },
       { new: true, session }
     );

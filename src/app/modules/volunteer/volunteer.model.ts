@@ -132,8 +132,8 @@ VolunteerSchema.pre('aggregate', function (next) {
   next();
 });
 
-VolunteerSchema.statics.isUserExists = async function (email: string) {
-  const existingUser = await Volunteer.findOne({ email });
+VolunteerSchema.statics.isVolunteerExistsById = async function (id: string) {
+  const existingUser = await Volunteer.findOne({ id });
   return existingUser;
 };
 

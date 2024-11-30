@@ -17,9 +17,9 @@ const getAllManager = catchAsync(async (req, res) => {
 });
 
 const getSingleManager = catchAsync(async (req, res) => {
-  const { email } = req.params;
+  const { id } = req.params;
 
-  const result = await ManagerService.getSingleManagerFromDB(email);
+  const result = await ManagerService.getSingleManagerFromDB(id);
 
   sendResponse(res, {
     success: true,
@@ -30,11 +30,11 @@ const getSingleManager = catchAsync(async (req, res) => {
 });
 
 const updateManager = catchAsync(async (req, res) => {
-  const { email } = req.params;
-  console.log('manage email :', email);
+  const { id } = req.params;
+  console.log('manage id :', id);
   const { manager } = req.body;
   // console.log('admin : ', id);
-  const result = await ManagerService.updateManagerIntroDB(email, manager);
+  const result = await ManagerService.updateManagerIntroDB(id, manager);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -46,9 +46,9 @@ const updateManager = catchAsync(async (req, res) => {
 
 const deleteManager = catchAsync(async (req, res) => {
   // paginationOptions
-  const { email } = req.params;
+  const { id } = req.params;
 
-  const result = await ManagerService.deleteManagerFromDB(email);
+  const result = await ManagerService.deleteManagerFromDB(id);
 
   sendResponse(res, {
     success: true,

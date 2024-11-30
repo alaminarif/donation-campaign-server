@@ -24,16 +24,23 @@ const getAllvolunteersFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getSingleVolunteerFromDB = async (id: string) => {
-  const result = await Volunteer.findById(id);
+  //
+
+  const result = await Volunteer.findById({ _id: id });
   return result;
 };
 
 const updateVolunteerIntoDB = async (
-  email: string,
+  id: string,
   payload: Partial<TVolunteer>
 ) => {
   //
-  const user = await Volunteer.isUserExists(email);
+  const user = await Volunteer.isVolunteerExistsById(id);
+  const isDeleted = user?.isDeleted;
+
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
+  }
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'Volunteer Not found');
@@ -51,18 +58,16 @@ const updateVolunteerIntoDB = async (
     }
   }
 
-  const result = await Volunteer.findOneAndUpdate(
-    { email: email },
-    modifiedUpdatedData,
-    { runValidators: true }
-  );
+  const result = await Volunteer.findOneAndUpdate({ id }, modifiedUpdatedData, {
+    runValidators: true,
+  });
 
   return result;
 };
 
-const deleteVolunteerFromDB = async (email: string) => {
-  const user = await User.isUserExistByEmail(email);
-
+const deleteVolunteerFromDB = async (id: string) => {
+  //
+  const user = await Volunteer.isVolunteerExistsById(id);
   const isDeleted = user?.isDeleted;
 
   if (isDeleted) {
@@ -79,7 +84,7 @@ const deleteVolunteerFromDB = async (email: string) => {
     session.startTransaction();
 
     const deletedVolunteer = await Volunteer.findOneAndUpdate(
-      { email },
+      { id },
       { isDeleted: true },
       { new: true, session }
     );
@@ -89,7 +94,7 @@ const deleteVolunteerFromDB = async (email: string) => {
     }
 
     const deletedUser = await User.findOneAndUpdate(
-      { email },
+      { id },
       { isDeleted: true },
       { new: true, session }
     );

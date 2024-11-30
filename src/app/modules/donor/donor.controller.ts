@@ -30,9 +30,9 @@ const getSingleDonor = catchAsync(async (req, res) => {
 });
 
 const updateDonor = catchAsync(async (req, res) => {
-  const { email } = req.params;
+  const { id } = req.params;
   const { donor } = req.body;
-  const result = await DonorService.updateDonorIntroDB(email, donor);
+  const result = await DonorService.updateDonorIntroDB(id, donor);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -44,9 +44,9 @@ const updateDonor = catchAsync(async (req, res) => {
 
 const deleteDonor = catchAsync(async (req, res) => {
   // paginationOptions
-  const { email } = req.params;
+  const { id } = req.params;
 
-  const result = await DonorService.deleteDonorFromDB(email);
+  const result = await DonorService.deleteDonorFromDB(id);
 
   sendResponse(res, {
     success: true,

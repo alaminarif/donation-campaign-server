@@ -19,14 +19,14 @@ router.get(
 );
 
 router.patch(
-  '/:email',
+  '/:id',
   validateRequest(DonorValidation.updateDonorValidationSchema),
   auth(USER_ROLE.admin, USER_ROLE.super_admin),
   DonorController.updateDonor
 );
 
 router.delete(
-  '/:email',
+  '/:id',
   auth(USER_ROLE.admin, USER_ROLE.super_admin),
   DonorController.deleteDonor
 );

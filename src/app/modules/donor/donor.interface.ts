@@ -33,7 +33,7 @@ export type TDonor = {
 };
 
 export type DonorModel = {
-  isUserExists(email: string): Promise<TDonor | null>;
+  isDonorExistsById(id: string): Promise<TDonor | null>;
 } & Model<TDonor>;
 
 export type TDonorFilters = {

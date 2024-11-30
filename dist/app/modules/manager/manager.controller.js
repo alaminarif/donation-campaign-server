@@ -29,8 +29,8 @@ const getAllManager = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
     });
 }));
 const getSingleManager = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = req.params;
-    const result = yield manager_service_1.ManagerService.getSingleManagerFromDB(email);
+    const { id } = req.params;
+    const result = yield manager_service_1.ManagerService.getSingleManagerFromDB(id);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,
@@ -39,11 +39,11 @@ const getSingleManager = (0, catchAsync_1.default)((req, res) => __awaiter(void 
     });
 }));
 const updateManager = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = req.params;
-    console.log('manage email :', email);
+    const { id } = req.params;
+    console.log('manage id :', id);
     const { manager } = req.body;
     // console.log('admin : ', id);
-    const result = yield manager_service_1.ManagerService.updateManagerIntroDB(email, manager);
+    const result = yield manager_service_1.ManagerService.updateManagerIntroDB(id, manager);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -53,8 +53,8 @@ const updateManager = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
 }));
 const deleteManager = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // paginationOptions
-    const { email } = req.params;
-    const result = yield manager_service_1.ManagerService.deleteManagerFromDB(email);
+    const { id } = req.params;
+    const result = yield manager_service_1.ManagerService.deleteManagerFromDB(id);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,

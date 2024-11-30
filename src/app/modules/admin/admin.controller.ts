@@ -32,9 +32,9 @@ const getSingleAdmin = catchAsync(async (req, res) => {
 });
 
 const updateAdmin = catchAsync(async (req, res) => {
-  const { email } = req.params;
+  const { id } = req.params;
   const { admin } = req.body;
-  const result = await AdminService.updateAdminIntroDB(email, admin);
+  const result = await AdminService.updateAdminIntroDB(id, admin);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -46,9 +46,9 @@ const updateAdmin = catchAsync(async (req, res) => {
 
 const deleteAdmin = catchAsync(async (req, res) => {
   // paginationOptions
-  const { email } = req.params;
+  const { id } = req.params;
 
-  const result = await AdminService.deleteAdminFromDB(email);
+  const result = await AdminService.deleteAdminFromDB(id);
 
   sendResponse(res, {
     success: true,

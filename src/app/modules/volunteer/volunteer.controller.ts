@@ -26,10 +26,10 @@ const getSingleVolunteer = catchAsync(async (req, res) => {
 });
 
 const updatedVolunteer = catchAsync(async (req, res) => {
-  const { email } = req.params;
+  const { id } = req.params;
   const { volunteer } = req.body;
 
-  const result = await VolunteerService.updateVolunteerIntoDB(email, volunteer);
+  const result = await VolunteerService.updateVolunteerIntoDB(id, volunteer);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -41,9 +41,9 @@ const updatedVolunteer = catchAsync(async (req, res) => {
 
 const deleteVolunteer = catchAsync(async (req, res) => {
   // paginationOptions
-  const { email } = req.params;
+  const { id } = req.params;
 
-  const result = await VolunteerService.deleteVolunteerFromDB(email);
+  const result = await VolunteerService.deleteVolunteerFromDB(id);
 
   sendResponse(res, {
     success: true,
